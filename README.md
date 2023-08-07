@@ -1,70 +1,81 @@
-# Getting Started with Create React App
+# Underpass UI components
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+You can run the components playground following these steps.
 
-## Available Scripts
+## Requirements
 
-In the project directory, you can run:
+First, install and run the [Underpass REST API](https://github.com/hotosm/underpass/blob/master/docs/python-rest-api.md)
 
-### `npm start`
+Then, for running the playground, you'll need:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+* Node
+* NPM
+* Yarn
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+If you have problems installing Yarn, try with this approach:
 
-### `npm test`
+```sh
+npm install -g n
+n stable
+npm install --global yarn
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Run
 
-### `npm run build`
+```sh
+cd js
+yarn install
+yarn cosmos
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The default URL for the Underpass REST API is `http://localhost:8000`, but you can change it 
+using an environment variable:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```sh
+REACT_APP_UNDERPASS_API=http:://underpass.live:8000 yarn cosmos
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+## UnderpassMap component
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+This component shows a map updated with the latest changes made into OSM and the option to highlight certain aspects of data.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Basic view
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```js
+<UnderpassMap 
+	center={[-0.74293, -90.31972]}
+/>
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+It will show a map with all buildings highlighted, as “building” is the default tag key.
 
-## Learn More
+<img width="689" alt="Screenshot 2023-07-13 at 21 20 22" src="https://github.com/hotosm/underpass/assets/1226194/a9ce1a9c-d5ae-4205-a7f8-927e6ebe60df">
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+If you want to highlight other feature, like “natural”, just pass the “tag” property:
 
-### Code Splitting
+```js
+<UnderpassMap 
+	center={[-0.74293, -90.31972]}
+    tagKey="building"
+    tagValue="yes"
+/>
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+<img width="694" alt="Screenshot 2023-07-13 at 21 20 33" src="https://github.com/hotosm/underpass/assets/1226194/c5b62e9d-4d34-442e-9726-8477cac2c59f">
 
-### Analyzing the Bundle Size
+### Data Quality
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Use the property “highlightDataQualityIssues” to highlight features suspicious of having some issue with quality.
 
-### Making a Progressive Web App
+```js
+<UnderpassMap 
+	center={[-0.74293, -90.31972]}
+	highlightDataQualityIssues
+/>
+```
+<img width="694" alt="Screenshot 2023-07-13 at 21 20 53" src="https://github.com/hotosm/underpass/assets/1226194/82ae40e9-8ca5-4ab5-b866-41182b942f15">
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
