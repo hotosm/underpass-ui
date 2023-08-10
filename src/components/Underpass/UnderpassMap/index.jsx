@@ -5,7 +5,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 
 import HOTTheme from '../../HOTTheme';
 import API from '../api';
-import { mapStyle } from './mapStyle';
+import { getMapStyle } from './mapStyle';
 import './styles.css';
 
 export default function UnderpassMap({
@@ -18,6 +18,7 @@ export default function UnderpassMap({
   tagKey,
   tagValue,
   highlightDataQualityIssues = true,
+  isShowGrayscale,
 }) {
   const mapContainer = useRef(null);
   const mapRef = useRef(null);
@@ -31,7 +32,7 @@ export default function UnderpassMap({
     if (mapRef.current) return;
 
     const hottheme = HOTTheme();
-    const theme = {...hottheme, ...propsTheme};
+    const theme = { ...hottheme, ...propsTheme };
 
     theme.map.waysFill = {
       'fill-color': highlightDataQualityIssues
@@ -61,7 +62,7 @@ export default function UnderpassMap({
 
     setTheme(theme);
 
-    let rasterStyle = mapStyle;
+    let rasterStyle = getMapStyle(isShowGrayscale);
     if (theme.map.raster) {
       rasterStyle.layers[0].paint = theme.map.raster;
     }
@@ -92,14 +93,14 @@ export default function UnderpassMap({
               type: 'fill',
               source: 'ways',
               layout: {},
-              paint: theme.map.waysFill
+              paint: theme.map.waysFill,
             });
             map.addLayer({
               id: 'waysLine',
               type: 'line',
               source: 'ways',
               layout: {},
-              paint: theme.map.waysLine
+              paint: theme.map.waysLine,
             });
           }
         },
@@ -140,7 +141,6 @@ export default function UnderpassMap({
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map]);
-
 
   return (
     <div className={mapClassName || 'underpassMap-wrap'}>

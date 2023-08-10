@@ -28,11 +28,14 @@ const theme = {
   // }
 };
 
-export default <UnderpassMap 
-  mapClassName={"customMap"}
-  center={center}
-  theme={theme}
-  tagKey="building"
-  tagValue="yes"
-  highlightDataQualityIssues
-/>;
+export default (
+  <UnderpassMap
+    mapClassName={'customMap'}
+    center={center}
+    theme={theme}
+    tagKey='building'
+    tagValue='yes'
+    highlightDataQualityIssues
+    isShowGrayscale={true}
+  />
+);
