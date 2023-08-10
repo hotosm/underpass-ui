@@ -17,6 +17,7 @@ export default function UnderpassMap({
   mapClassName,
   tagKey,
   tagValue,
+  isHighlightingDataQualityIssues = true,
 }) {
   const mapContainer = useRef(null);
   const mapRef = useRef(null);
@@ -33,24 +34,28 @@ export default function UnderpassMap({
     const theme = {...hottheme, ...propsTheme};
 
     theme.map.waysFill = {
-      'fill-color': [
-        'match',
-        ['get', 'status'],
-        'badgeom',
-        `rgb(${theme.colors.primary})`,
-        `rgb(${theme.colors.secondary})`
-      ],
+      'fill-color': isHighlightingDataQualityIssues
+        ? [
+            'match',
+            ['get', 'status'],
+            'badgeom',
+            `rgb(${theme.colors.primary})`,
+            `rgb(${theme.colors.secondary})`,
+          ]
+        : `rgb(${theme.colors.secondary})`,
       ...theme.map.waysFill,
     };
 
     theme.map.waysLine = {
-      'line-color': [
-        'match',
-        ['get', 'status'],
-        'badgeom',
-        `rgb(${theme.colors.primary})`,
-        `rgb(${theme.colors.secondary})`
-      ],
+      'line-color': isHighlightingDataQualityIssues
+        ? [
+            'match',
+            ['get', 'status'],
+            'badgeom',
+            `rgb(${theme.colors.primary})`,
+            `rgb(${theme.colors.secondary})`,
+          ]
+        : `rgb(${theme.colors.secondary})`,
       ...theme.map.waysLine,
     };
 
@@ -116,7 +121,12 @@ export default function UnderpassMap({
 
     map.on('click', 'waysFill', (e) => {
       const popupNode = document.createElement('div');
-      createRoot(popupNode).render(<Popup feature={e.features[0]} />);
+      createRoot(popupNode).render(
+        <Popup
+          feature={e.features[0]}
+          isHighlightingDataQualityIssues={isHighlightingDataQualityIssues}
+        />
+      );
       popUpRef.current.setLngLat(e.lngLat).setDOMContent(popupNode).addTo(map);
     });
 
@@ -139,7 +149,7 @@ export default function UnderpassMap({
   );
 }
 
-const Popup = ({ feature }) => {
+const Popup = ({ feature, isHighlightingDataQualityIssues }) => {
   const tags = JSON.parse(feature.properties.tags);
 
   return (
@@ -163,7 +173,7 @@ const Popup = ({ feature }) => {
               <td>{tags[tag]}</td>
             </tr>
           ))}
-          {feature.properties.status && (
+          {isHighlightingDataQualityIssues && feature.properties.status && (
             <tr>
               <td colSpan='2'>
                 <strong className='status'>{feature.properties.status}</strong>
