@@ -34,4 +34,5 @@ export default <UnderpassMap
   theme={theme}
   tagKey="building"
   tagValue="yes"
+  highlightDataQualityIssues
 />;
