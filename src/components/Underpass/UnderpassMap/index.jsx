@@ -17,7 +17,7 @@ export default function UnderpassMap({
   mapClassName,
   tagKey,
   tagValue,
-  isHighlightingDataQualityIssues = true,
+  highlightDataQualityIssues = true,
 }) {
   const mapContainer = useRef(null);
   const mapRef = useRef(null);
@@ -34,7 +34,7 @@ export default function UnderpassMap({
     const theme = {...hottheme, ...propsTheme};
 
     theme.map.waysFill = {
-      'fill-color': isHighlightingDataQualityIssues
+      'fill-color': highlightDataQualityIssues
         ? [
             'match',
             ['get', 'status'],
@@ -47,7 +47,7 @@ export default function UnderpassMap({
     };
 
     theme.map.waysLine = {
-      'line-color': isHighlightingDataQualityIssues
+      'line-color': highlightDataQualityIssues
         ? [
             'match',
             ['get', 'status'],
@@ -124,7 +124,7 @@ export default function UnderpassMap({
       createRoot(popupNode).render(
         <Popup
           feature={e.features[0]}
-          isHighlightingDataQualityIssues={isHighlightingDataQualityIssues}
+          highlightDataQualityIssues={highlightDataQualityIssues}
         />
       );
       popUpRef.current.setLngLat(e.lngLat).setDOMContent(popupNode).addTo(map);
@@ -149,7 +149,7 @@ export default function UnderpassMap({
   );
 }
 
-const Popup = ({ feature, isHighlightingDataQualityIssues }) => {
+const Popup = ({ feature, highlightDataQualityIssues }) => {
   const tags = JSON.parse(feature.properties.tags);
 
   return (
@@ -173,7 +173,7 @@ const Popup = ({ feature, isHighlightingDataQualityIssues }) => {
               <td>{tags[tag]}</td>
             </tr>
           ))}
-          {isHighlightingDataQualityIssues && feature.properties.status && (
+          {highlightDataQualityIssues && feature.properties.status && (
             <tr>
               <td colSpan='2'>
                 <strong className='status'>{feature.properties.status}</strong>
