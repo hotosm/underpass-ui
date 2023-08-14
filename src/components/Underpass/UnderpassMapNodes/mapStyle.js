@@ -1,4 +1,4 @@
-export const getMapStyle = (isShowGrayscale) => {
+export const getMapStyle = (grayscale) => {
   return {
     version: 8,
     sources: {
@@ -15,7 +15,7 @@ export const getMapStyle = (isShowGrayscale) => {
         id: 'osm',
         type: 'raster',
         source: 'osm',
-        ...(isShowGrayscale
+        ...(grayscale
           ? {
               paint: {
                 'raster-opacity': 0.72,

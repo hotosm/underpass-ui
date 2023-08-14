@@ -17,7 +17,7 @@ export default function UnderpassMapNodes({
   mapClassName,
   tagKey,
   tagValue,
-  isShowGrayscale = true,
+  grayscale = true,
 }) {
   const mapContainer = useRef(null);
   const mapRef = useRef(null);
@@ -45,7 +45,7 @@ export default function UnderpassMapNodes({
 
     setTheme(theme);
 
-    let rasterStyle = getMapStyle(isShowGrayscale);
+    let rasterStyle = getMapStyle(grayscale);
     if (theme.map.raster) {
       rasterStyle.layers[0].paint = theme.map.raster;
     }

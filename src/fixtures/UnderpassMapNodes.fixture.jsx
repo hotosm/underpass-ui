@@ -7,6 +7,6 @@ export default (
     center={center}
     tagKey='amenity'
     tagValue=''
-    isShowGrayscale
+    grayscale
   />
 );

@@ -36,6 +36,6 @@ export default (
     tagKey='building'
     tagValue='yes'
     highlightDataQualityIssues
-    isShowGrayscale={true}
+    grayscale={true}
   />
 );
