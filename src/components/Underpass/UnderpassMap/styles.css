@@ -64,14 +64,19 @@ from https://github.com/mapbox/mapbox-gl-js/issues/8368#issuecomment-537597959*/
 table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
+  margin-bottom: 0.5rem;
 }
 
-tr:not(:last-child) {
+tr {
   border-bottom: 1px solid var(--hottheme-color-divider);
 }
 
 td {
   padding: 0.5rem 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 a {
@@ -84,7 +89,28 @@ a:hover {
   text-decoration: underline;
 }
 
+.more-btn {
+  display: block;
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+  text-decoration: underline;
+}
+
+.more-btn:hover {
+  cursor: pointer;
+}
+
 .status {
-  color: rgb(var(--hottheme-color-primary));
+  display: inline-block;
+  color: #fff;
   text-transform: capitalize;
+  margin-top: 0.75rem;
+  border-radius: 0.125rem;
+  font-weight: bold;
+  padding: 0.25rem 0.5rem;
+}
+
+.status-bg-badgeom {
+  background-color: rgb(var(--hottheme-color-primary));
 }

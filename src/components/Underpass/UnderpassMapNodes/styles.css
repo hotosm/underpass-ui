@@ -85,6 +85,11 @@ a:hover {
 }
 
 .status {
-  color: rgb(var(--hottheme-color-primary));
+  display: inline-block;
+  color: #fff;
   text-transform: capitalize;
+  margin-top: 0.75rem;
+  border-radius: 0.125rem;
+  font-weight: bold;
+  padding: 0.25rem 0.5rem;
 }
