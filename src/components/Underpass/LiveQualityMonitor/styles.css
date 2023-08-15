@@ -1,0 +1,4 @@
+/* Apply border to all cards except the last one */
+.feature-cards-ctr .feature-card {
+  border-bottom: 1px solid #ccc; /* Adjust the color and size as needed */
+}
