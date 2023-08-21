@@ -1,3 +1,4 @@
 {
-    "staticPath": "public"
+  "globalImports": ["src/index.css"],
+  "staticPath": "public"
 }

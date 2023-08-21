@@ -151,6 +151,15 @@ export default function UnderpassMap({
 
 const Popup = ({ feature, highlightDataQualityIssues }) => {
   const tags = JSON.parse(feature.properties.tags);
+  const [showAll, setShowAll] = useState(false);
+
+  const toggleShowAll = () => {
+    setShowAll(!showAll);
+  };
+
+  const visibleTags = showAll
+    ? Object.keys(tags)
+    : Object.keys(tags).slice(0, 2);
 
   return (
     <div className='popup'>
@@ -167,10 +176,10 @@ const Popup = ({ feature, highlightDataQualityIssues }) => {
               </a>
             </td>
           </tr>
-          {Object.keys(tags).map((tag) => (
+          {visibleTags.map((tag) => (
             <tr key={tag}>
-              <td>{tag}</td>
-              <td>{tags[tag]}</td>
+              <td width='60%'>{tag}</td>
+              <td width='40%'>{tags[tag]}</td>
             </tr>
           ))}
           {highlightDataQualityIssues && feature.properties.status && (
@@ -182,6 +191,18 @@ const Popup = ({ feature, highlightDataQualityIssues }) => {
           )}
         </tbody>
       </table>
+      {!showAll && Object.keys(tags).length > 2 && (
+        <button className='more-btn' onClick={toggleShowAll}>
+          More ...
+        </button>
+      )}
+      {feature.properties.status && (
+        <div
+          className={`status status-bg-${feature.properties.status.toLowerCase()}`}
+        >
+          {feature.properties.status}
+        </div>
+      )}
     </div>
   );
 };
