@@ -5,7 +5,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 
 import HOTTheme from '../../HOTTheme';
 import API from '../api';
-import { mapStyle } from './mapStyle';
+import { getMapStyle } from './mapStyle';
 import './styles.css';
 
 export default function UnderpassMapNodes({
@@ -16,7 +16,8 @@ export default function UnderpassMapNodes({
   minZoom = 13,
   mapClassName,
   tagKey,
-  tagValue
+  tagValue,
+  grayscale = true,
 }) {
   const mapContainer = useRef(null);
   const mapRef = useRef(null);
@@ -30,7 +31,7 @@ export default function UnderpassMapNodes({
     if (mapRef.current) return;
 
     const hottheme = HOTTheme();
-    const theme = {...hottheme, ...propsTheme};
+    const theme = { ...hottheme, ...propsTheme };
 
     theme.map.nodesFill = {
       'fill-color': `rgb(${theme.colors.primary})`,
@@ -44,7 +45,7 @@ export default function UnderpassMapNodes({
 
     setTheme(theme);
 
-    let rasterStyle = mapStyle;
+    let rasterStyle = getMapStyle(grayscale);
     if (theme.map.raster) {
       rasterStyle.layers[0].paint = theme.map.raster;
     }
@@ -76,7 +77,7 @@ export default function UnderpassMapNodes({
               source: 'nodes',
               layout: {
                 'icon-image': 'custom-marker',
-              }
+              },
             });
           }
         },
@@ -89,7 +90,8 @@ export default function UnderpassMapNodes({
     map.on('load', () => {
       fetchNodes(); // Run immediately on the first time
       isRealTime && setInterval(fetchNodes, 5000);
-      map.loadImage(theme.map.nodesSymbol || '/images/blue-circle.png',
+      map.loadImage(
+        theme.map.nodesSymbol || '/images/blue-circle.png',
         (error, image) => {
           map.addImage('custom-marker', image);
         }
@@ -117,7 +119,6 @@ export default function UnderpassMapNodes({
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map]);
-
 
   return (
     <div className={mapClassName || 'underpassMap-wrap'}>
