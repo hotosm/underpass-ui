@@ -16,7 +16,7 @@ from https://github.com/mapbox/mapbox-gl-js/issues/8368#issuecomment-537597959*/
 
 /* This is the new tip */
 .underpassMaplibregl-popup-content:before {
-  content: '';
+  content: "";
   position: absolute;
   /* They've found 9px looks better than 10px */
   top: -webkit-calc(100% - 9px);

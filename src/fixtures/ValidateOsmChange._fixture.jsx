@@ -1,7 +1,8 @@
-import React from 'react';
-import { ValidateOsmChange } from '../components/Underpass/ValidateOsmChange';
+import React from "react";
+import { ValidateOsmChange } from "../components/Underpass/ValidateOsmChange";
 
-const osmChange = "\
+const osmChange =
+  "\
 <?xml version='1.0' encoding='UTF-8'?> \
 <osmChange version='0.6' generator='Osmo sis 0.47.4'> \
   <create> \
@@ -21,7 +22,4 @@ const osmChange = "\
   </create> \
 </osmChange>";
 
-export default (
-    <ValidateOsmChange osmchange={osmChange} check="building" />
-)
-
+export default <ValidateOsmChange osmchange={osmChange} check="building" />;

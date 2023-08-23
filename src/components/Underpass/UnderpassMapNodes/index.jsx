@@ -1,12 +1,12 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { createRoot } from 'react-dom/client';
-import maplibregl from 'maplibre-gl';
-import 'maplibre-gl/dist/maplibre-gl.css';
+import React, { useEffect, useState, useRef } from "react";
+import { createRoot } from "react-dom/client";
+import maplibregl from "maplibre-gl";
+import "maplibre-gl/dist/maplibre-gl.css";
 
-import HOTTheme from '../../HOTTheme';
-import API from '../api';
-import { getMapStyle } from './mapStyle';
-import './styles.css';
+import HOTTheme from "../../HOTTheme";
+import API from "../api";
+import { getMapStyle } from "./mapStyle";
+import "./styles.css";
 
 export default function UnderpassMapNodes({
   center,
@@ -24,7 +24,7 @@ export default function UnderpassMapNodes({
   const [theme, setTheme] = useState(null);
   const [map, setMap] = useState(null);
   const popUpRef = useRef(
-    new maplibregl.Popup({ closeOnMove: true, closeButton: false })
+    new maplibregl.Popup({ closeOnMove: true, closeButton: false }),
   );
 
   useEffect(() => {
@@ -34,25 +34,25 @@ export default function UnderpassMapNodes({
     const theme = { ...hottheme, ...propsTheme };
 
     theme.map.nodesFill = {
-      'fill-color': `rgb(${theme.colors.primary})`,
+      "fill-color": `rgb(${theme.colors.primary})`,
       ...theme.map.nodesFill,
     };
 
     theme.map.nodesLine = {
-      'line-color': `rgb(${theme.colors.primary})`,
+      "line-color": `rgb(${theme.colors.primary})`,
       ...theme.map.nodesLine,
     };
 
     setTheme(theme);
 
-    let rasterStyle = getMapStyle(grayscale);
+    const rasterStyle = getMapStyle(grayscale);
     if (theme.map.raster) {
       rasterStyle.layers[0].paint = theme.map.raster;
     }
     mapRef.current = new maplibregl.Map({
       container: mapContainer.current,
       style: rasterStyle,
-      center: center,
+      center,
       zoom: defaultZoom,
     });
     mapRef.current.addControl(new maplibregl.NavigationControl());
@@ -62,21 +62,21 @@ export default function UnderpassMapNodes({
   useEffect(() => {
     if (!map) return;
     async function fetchNodes() {
-      await API()['rawNodes'](getBBoxString(map), tagKey, tagValue, {
+      await API().rawNodes(getBBoxString(map), tagKey, tagValue, {
         onSuccess: (data) => {
-          if (map.getSource('nodes')) {
-            map.getSource('nodes').setData(data);
+          if (map.getSource("nodes")) {
+            map.getSource("nodes").setData(data);
           } else {
-            map.addSource('nodes', {
-              type: 'geojson',
-              data: data,
+            map.addSource("nodes", {
+              type: "geojson",
+              data,
             });
             map.addLayer({
-              id: 'nodesFill',
-              type: 'symbol',
-              source: 'nodes',
+              id: "nodesFill",
+              type: "symbol",
+              source: "nodes",
               layout: {
-                'icon-image': 'custom-marker',
+                "icon-image": "custom-marker",
               },
             });
           }
@@ -87,58 +87,58 @@ export default function UnderpassMapNodes({
       });
     }
 
-    map.on('load', () => {
+    map.on("load", () => {
       fetchNodes(); // Run immediately on the first time
       isRealTime && setInterval(fetchNodes, 5000);
       map.loadImage(
-        theme.map.nodesSymbol || '/images/blue-circle.png',
+        theme.map.nodesSymbol || "/images/blue-circle.png",
         (error, image) => {
-          map.addImage('custom-marker', image);
-        }
+          map.addImage("custom-marker", image);
+        },
       );
     });
 
-    map.on('moveend', () => {
+    map.on("moveend", () => {
       const zoom = map.getZoom();
       zoom > minZoom && fetchNodes();
     });
 
-    map.on('click', 'nodesFill', (e) => {
-      const popupNode = document.createElement('div');
+    map.on("click", "nodesFill", (e) => {
+      const popupNode = document.createElement("div");
       createRoot(popupNode).render(<Popup feature={e.features[0]} />);
       popUpRef.current.setLngLat(e.lngLat).setDOMContent(popupNode).addTo(map);
     });
 
     // Display pointer cursor for polygons
-    map.on('mouseenter', 'nodesFill', () => {
-      map.getCanvas().style.cursor = 'pointer';
+    map.on("mouseenter", "nodesFill", () => {
+      map.getCanvas().style.cursor = "pointer";
     });
 
-    map.on('mouseleave', 'nodesFill', () => {
-      map.getCanvas().style.cursor = '';
+    map.on("mouseleave", "nodesFill", () => {
+      map.getCanvas().style.cursor = "";
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map]);
 
   return (
-    <div className={mapClassName || 'underpassMap-wrap'}>
-      <div ref={mapContainer} className='underpassMap' />
+    <div className={mapClassName || "underpassMap-wrap"}>
+      <div ref={mapContainer} className="underpassMap" />
     </div>
   );
 }
 
-const Popup = ({ feature }) => {
+function Popup({ feature }) {
   const tags = JSON.parse(feature.properties.tags);
 
   return (
-    <div className='popup'>
+    <div className="popup">
       <table>
         <tbody>
           <tr>
-            <td colSpan='2'>
+            <td colSpan="2">
               <b>Way:</b>&nbsp;
               <a
-                target='blank'
+                target="blank"
                 href={`https://www.openstreetmap.org/node/${feature.id}`}
               >
                 {feature.id}
@@ -153,8 +153,8 @@ const Popup = ({ feature }) => {
           ))}
           {feature.properties.status && (
             <tr>
-              <td colSpan='2'>
-                <strong className='status'>{feature.properties.status}</strong>
+              <td colSpan="2">
+                <strong className="status">{feature.properties.status}</strong>
               </td>
             </tr>
           )}
@@ -162,30 +162,30 @@ const Popup = ({ feature }) => {
       </table>
     </div>
   );
-};
+}
 
 function getBBoxString(map) {
-  let bbox = [
+  const bbox = [
     [
       map.getBounds().getNorthEast().lng,
       map.getBounds().getNorthEast().lat,
-    ].join(' '),
+    ].join(" "),
     [
       map.getBounds().getNorthWest().lng,
       map.getBounds().getNorthWest().lat,
-    ].join(' '),
+    ].join(" "),
     [
       map.getBounds().getSouthWest().lng,
       map.getBounds().getSouthWest().lat,
-    ].join(' '),
+    ].join(" "),
     [
       map.getBounds().getSouthEast().lng,
       map.getBounds().getSouthEast().lat,
-    ].join(' '),
+    ].join(" "),
     [
       map.getBounds().getNorthEast().lng,
       map.getBounds().getNorthEast().lat,
-    ].join(' '),
-  ].join(',');
+    ].join(" "),
+  ].join(",");
   return bbox;
 }
