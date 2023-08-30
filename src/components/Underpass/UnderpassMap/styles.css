@@ -16,7 +16,7 @@ from https://github.com/mapbox/mapbox-gl-js/issues/8368#issuecomment-537597959*/
 
 /* This is the new tip */
 .underpassMaplibregl-popup-content:before {
-  content: '';
+  content: "";
   position: absolute;
   /* They've found 9px looks better than 10px */
   top: -webkit-calc(100% - 9px);
@@ -57,13 +57,19 @@ from https://github.com/mapbox/mapbox-gl-js/issues/8368#issuecomment-537597959*/
   left: 0;
 }
 
+.underpassMap .maplibregl-popup-content {
+  padding: .4rem 1rem;
+}
+
 .popup {
+  padding: 0;
   font-size: 1rem;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
 }
 
 .popup tr:not(:last-child) {
@@ -72,6 +78,9 @@ table {
 
 .popup td {
   padding: 0.5rem 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .popup a {

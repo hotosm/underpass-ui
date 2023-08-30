@@ -1,7 +1,7 @@
-import React from 'react';
-import UnderpassMap from '../components/Underpass/UnderpassMap';
-import { center } from './center';
-import hottheme from '../components/HOTTheme';
+import React from "react";
+import UnderpassMap from "../components/Underpass/UnderpassMap";
+import { center } from "./center";
+import hottheme from "../components/HOTTheme";
 // import './UnderpassMap.css';
 
 const HOTTheme = hottheme();
@@ -28,11 +28,14 @@ const theme = {
   // }
 };
 
-export default <UnderpassMap 
-  mapClassName={"customMap"}
-  center={center}
-  theme={theme}
-  tagKey="building"
-  tagValue="yes"
-  highlightDataQualityIssues
-/>;
+export default (
+  <UnderpassMap
+    mapClassName="customMap"
+    center={center}
+    theme={theme}
+    tagKey="building"
+    tagValue="yes"
+    highlightDataQualityIssues
+    grayscale
+  />
+);

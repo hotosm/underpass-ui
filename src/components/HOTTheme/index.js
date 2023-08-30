@@ -1,8 +1,7 @@
-import './theme.css';
+import "./theme.css";
 
 function cssValue(property) {
-  return getComputedStyle(document.documentElement)
-    .getPropertyValue(property);
+  return getComputedStyle(document.documentElement).getPropertyValue(property);
 }
 
 export default function HOTTheme() {
@@ -12,14 +11,14 @@ export default function HOTTheme() {
   };
 
   return {
-    colors: colors,
+    colors,
     map: {
       waysFill: {
-        'fill-opacity': .2,
+        "fill-opacity": 0.2,
       },
       waysLine: {
-        'line-width': 1.5
-      }
-    }
-  }
+        "line-width": 1.5,
+      },
+    },
+  };
 }
