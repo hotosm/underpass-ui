@@ -1,12 +1,12 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { createRoot } from 'react-dom/client';
-import maplibregl from 'maplibre-gl';
-import 'maplibre-gl/dist/maplibre-gl.css';
+import React, { useEffect, useState, useRef } from "react";
+import { createRoot } from "react-dom/client";
+import maplibregl from "maplibre-gl";
+import "maplibre-gl/dist/maplibre-gl.css";
 
-import HOTTheme from '../../HOTTheme';
-import API from '../api';
-import { getMapStyle } from './mapStyle';
-import './styles.css';
+import HOTTheme from "../../HOTTheme";
+import API from "../api";
+import { getMapStyle } from "./mapStyle";
+import "./styles.css";
 
 export default function UnderpassMap({
   center,
@@ -25,7 +25,7 @@ export default function UnderpassMap({
   const [theme, setTheme] = useState(null);
   const [map, setMap] = useState(null);
   const popUpRef = useRef(
-    new maplibregl.Popup({ closeOnMove: true, closeButton: false })
+    new maplibregl.Popup({ closeOnMove: true, closeButton: false }),
   );
 
   useEffect(() => {
@@ -35,11 +35,11 @@ export default function UnderpassMap({
     const theme = { ...hottheme, ...propsTheme };
 
     theme.map.waysFill = {
-      'fill-color': highlightDataQualityIssues
+      "fill-color": highlightDataQualityIssues
         ? [
-            'match',
-            ['get', 'status'],
-            'badgeom',
+            "match",
+            ["get", "status"],
+            "badgeom",
             `rgb(${theme.colors.primary})`,
             `rgb(${theme.colors.secondary})`,
           ]
@@ -48,11 +48,11 @@ export default function UnderpassMap({
     };
 
     theme.map.waysLine = {
-      'line-color': highlightDataQualityIssues
+      "line-color": highlightDataQualityIssues
         ? [
-            'match',
-            ['get', 'status'],
-            'badgeom',
+            "match",
+            ["get", "status"],
+            "badgeom",
             `rgb(${theme.colors.primary})`,
             `rgb(${theme.colors.secondary})`,
           ]
@@ -62,14 +62,14 @@ export default function UnderpassMap({
 
     setTheme(theme);
 
-    let rasterStyle = getMapStyle(grayscale);
+    const rasterStyle = getMapStyle(grayscale);
     if (theme.map.raster) {
       rasterStyle.layers[0].paint = theme.map.raster;
     }
     mapRef.current = new maplibregl.Map({
       container: mapContainer.current,
       style: rasterStyle,
-      center: center,
+      center,
       zoom: defaultZoom,
     });
     mapRef.current.addControl(new maplibregl.NavigationControl());
@@ -79,26 +79,26 @@ export default function UnderpassMap({
   useEffect(() => {
     if (!map) return;
     async function fetchWays() {
-      await API()['rawPolygons'](getBBoxString(map), tagKey, tagValue, {
+      await API().rawPolygons(getBBoxString(map), tagKey, tagValue, {
         onSuccess: (data) => {
-          if (map.getSource('ways')) {
-            map.getSource('ways').setData(data);
+          if (map.getSource("ways")) {
+            map.getSource("ways").setData(data);
           } else {
-            map.addSource('ways', {
-              type: 'geojson',
-              data: data,
+            map.addSource("ways", {
+              type: "geojson",
+              data,
             });
             map.addLayer({
-              id: 'waysFill',
-              type: 'fill',
-              source: 'ways',
+              id: "waysFill",
+              type: "fill",
+              source: "ways",
               layout: {},
               paint: theme.map.waysFill,
             });
             map.addLayer({
-              id: 'waysLine',
-              type: 'line',
-              source: 'ways',
+              id: "waysLine",
+              type: "line",
+              source: "ways",
               layout: {},
               paint: theme.map.waysLine,
             });
@@ -110,46 +110,46 @@ export default function UnderpassMap({
       });
     }
 
-    map.on('load', () => {
+    map.on("load", () => {
       fetchWays(); // Run immediately on the first time
       isRealTime && setInterval(fetchWays, 5000);
     });
 
-    map.on('moveend', () => {
+    map.on("moveend", () => {
       const zoom = map.getZoom();
       zoom > minZoom && fetchWays();
     });
 
-    map.on('click', 'waysFill', (e) => {
-      const popupNode = document.createElement('div');
+    map.on("click", "waysFill", (e) => {
+      const popupNode = document.createElement("div");
       createRoot(popupNode).render(
         <Popup
           feature={e.features[0]}
           highlightDataQualityIssues={highlightDataQualityIssues}
-        />
+        />,
       );
       popUpRef.current.setLngLat(e.lngLat).setDOMContent(popupNode).addTo(map);
     });
 
     // Display pointer cursor for polygons
-    map.on('mouseenter', 'waysFill', () => {
-      map.getCanvas().style.cursor = 'pointer';
+    map.on("mouseenter", "waysFill", () => {
+      map.getCanvas().style.cursor = "pointer";
     });
 
-    map.on('mouseleave', 'waysFill', () => {
-      map.getCanvas().style.cursor = '';
+    map.on("mouseleave", "waysFill", () => {
+      map.getCanvas().style.cursor = "";
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map]);
 
   return (
-    <div className={mapClassName || 'underpassMap-wrap'}>
-      <div ref={mapContainer} className='underpassMap' />
+    <div className={mapClassName || "underpassMap-wrap"}>
+      <div ref={mapContainer} className="underpassMap" />
     </div>
   );
 }
 
-const Popup = ({ feature, highlightDataQualityIssues }) => {
+function Popup({ feature, highlightDataQualityIssues }) {
   const tags = JSON.parse(feature.properties.tags);
   const [showAll, setShowAll] = useState(false);
 
@@ -162,14 +162,14 @@ const Popup = ({ feature, highlightDataQualityIssues }) => {
     : Object.keys(tags).slice(0, 2);
 
   return (
-    <div className='popup'>
+    <div className="popup">
       <table>
         <tbody>
           <tr>
-            <td colSpan='2'>
+            <td colSpan="2">
               <b>Way:</b>&nbsp;
               <a
-                target='blank'
+                target="blank"
                 href={`https://www.openstreetmap.org/way/${feature.id}`}
               >
                 {feature.id}
@@ -178,21 +178,21 @@ const Popup = ({ feature, highlightDataQualityIssues }) => {
           </tr>
           {visibleTags.map((tag) => (
             <tr key={tag}>
-              <td width='60%'>{tag}</td>
-              <td width='40%'>{tags[tag]}</td>
+              <td width="60%">{tag}</td>
+              <td width="40%">{tags[tag]}</td>
             </tr>
           ))}
           {highlightDataQualityIssues && feature.properties.status && (
             <tr>
-              <td colSpan='2'>
-                <strong className='status'>{feature.properties.status}</strong>
+              <td colSpan="2">
+                <strong className="status">{feature.properties.status}</strong>
               </td>
             </tr>
           )}
         </tbody>
       </table>
       {!showAll && Object.keys(tags).length > 2 && (
-        <button className='more-btn' onClick={toggleShowAll}>
+        <button className="more-btn" onClick={toggleShowAll}>
           More ...
         </button>
       )}
@@ -205,30 +205,30 @@ const Popup = ({ feature, highlightDataQualityIssues }) => {
       )}
     </div>
   );
-};
+}
 
 function getBBoxString(map) {
-  let bbox = [
+  const bbox = [
     [
       map.getBounds().getNorthEast().lng,
       map.getBounds().getNorthEast().lat,
-    ].join(' '),
+    ].join(" "),
     [
       map.getBounds().getNorthWest().lng,
       map.getBounds().getNorthWest().lat,
-    ].join(' '),
+    ].join(" "),
     [
       map.getBounds().getSouthWest().lng,
       map.getBounds().getSouthWest().lat,
-    ].join(' '),
+    ].join(" "),
     [
       map.getBounds().getSouthEast().lng,
       map.getBounds().getSouthEast().lat,
-    ].join(' '),
+    ].join(" "),
     [
       map.getBounds().getNorthEast().lng,
       map.getBounds().getNorthEast().lat,
-    ].join(' '),
-  ].join(',');
+    ].join(" "),
+  ].join(",");
   return bbox;
 }

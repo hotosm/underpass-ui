@@ -3,24 +3,24 @@ export const getMapStyle = (grayscale) => {
     version: 8,
     sources: {
       osm: {
-        type: 'raster',
-        tiles: ['https://a.tile.openstreetmap.org/{z}/{x}/{y}.png'],
+        type: "raster",
+        tiles: ["https://a.tile.openstreetmap.org/{z}/{x}/{y}.png"],
         tileSize: 256,
-        attribution: '&copy; OpenStreetMap Contributors',
+        attribution: "&copy; OpenStreetMap Contributors",
         maxzoom: 19,
       },
     },
     layers: [
       {
-        id: 'osm',
-        type: 'raster',
-        source: 'osm',
+        id: "osm",
+        type: "raster",
+        source: "osm",
         ...(grayscale
           ? {
               paint: {
-                'raster-opacity': 0.72,
-                'raster-brightness-max': 1,
-                'raster-saturation': -1,
+                "raster-opacity": 0.72,
+                "raster-brightness-max": 1,
+                "raster-saturation": -1,
               },
             }
           : {}),

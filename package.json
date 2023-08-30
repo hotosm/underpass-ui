@@ -18,13 +18,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "cosmos": "cosmos",
-    "cosmos:export": "cosmos-export"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "cosmos:export": "cosmos-export",
+    "lint": "eslint --fix --ext .js,.jsx src/",
+    "format": "prettier -w ."
   },
   "browserslist": {
     "production": [
@@ -39,6 +35,15 @@
     ]
   },
   "devDependencies": {
+    "eslint": "^8.47.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "prettier": "^3.0.2",
     "react-cosmos": "^5.7.2"
   }
 }
