@@ -4,6 +4,7 @@ import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 
 import HOTTheme from "../../HOTTheme";
+import StatusBox from '../StatusBox';
 import API from "../api";
 import { getMapStyle } from "./mapStyle";
 import "./styles.css";
@@ -185,7 +186,7 @@ function Popup({ feature, highlightDataQualityIssues }) {
           {highlightDataQualityIssues && feature.properties.status && (
             <tr>
               <td colSpan="2">
-                <strong className="status">{feature.properties.status}</strong>
+                <StatusBox status={feature.properties.status} />
               </td>
             </tr>
           )}
@@ -195,13 +196,6 @@ function Popup({ feature, highlightDataQualityIssues }) {
         <button className="more-btn" onClick={toggleShowAll}>
           More ...
         </button>
-      )}
-      {feature.properties.status && (
-        <div
-          className={`status status-bg-${feature.properties.status.toLowerCase()}`}
-        >
-          {feature.properties.status}
-        </div>
       )}
     </div>
   );

@@ -230,28 +230,51 @@ const API = (url) => {
     },
 
     rawNodes: async (area, key, value, options = {}) => {
-      fetch(`${API_URL}/raw/nodes`, {
-        method: "POST",
-        headers,
-        body: JSON.stringify({
-          area,
-          key,
-          value,
-        }),
-      })
-        .then((res) => {
-          return res.json();
+        fetch(API_URL + "/raw/nodes", {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify({
+                area: area,
+                key: key,
+                value: value
+            })
+        })
+        .then(res => {
+            return res.json();
         })
         .then(
-          (result) => {
-            options.onSuccess && options.onSuccess(result);
-          },
-          (error) => {
-            options.onError && options.onError(error);
-          },
-        );
+            (result) => {
+                options.onSuccess && options.onSuccess(result);
+            },
+            (error) => {
+                options.onError && options.onError(error);
+            }
+        )
     },
-  };
-};
+
+    rawPolygonsList: async (key, value, page, options = {}) => {
+        fetch(API_URL + "/raw/polygonsList", {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify({
+                key: key,
+                value: value,
+                page,
+            })
+        })
+        .then(res => {
+            return res.json();
+        })
+        .then(
+            (result) => {
+                options.onSuccess && options.onSuccess(result);
+            },
+            (error) => {
+                options.onError && options.onError(error);
+            }
+        )
+    }
+  }
+}
 
 export default API;

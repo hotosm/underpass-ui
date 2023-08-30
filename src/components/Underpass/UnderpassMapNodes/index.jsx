@@ -135,8 +135,8 @@ function Popup({ feature }) {
       <table>
         <tbody>
           <tr>
-            <td colSpan="2">
-              <b>Way:</b>&nbsp;
+            <td colSpan='2'>
+              <b>Node:</b>&nbsp;
               <a
                 target="blank"
                 href={`https://www.openstreetmap.org/node/${feature.id}`}

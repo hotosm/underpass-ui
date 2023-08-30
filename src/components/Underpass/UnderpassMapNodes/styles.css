@@ -66,27 +66,26 @@ table {
   border-collapse: collapse;
 }
 
-tr:not(:last-child) {
+.popup tr:not(:last-child) {
   border-bottom: 1px solid var(--hottheme-color-divider);
 }
 
-td {
+.popup td {
   padding: 0.5rem 0;
 }
 
-a {
+.popup a {
   color: inherit;
   text-decoration: none;
   font-weight: 600;
 }
 
-a:hover {
+.popup a:hover {
   text-decoration: underline;
 }
 
-.status {
-  display: inline-block;
-  color: #fff;
+.popup .status {
+  color: rgb(var(--hottheme-color-primary));
   text-transform: capitalize;
   margin-top: 0.75rem;
   border-radius: 0.125rem;
