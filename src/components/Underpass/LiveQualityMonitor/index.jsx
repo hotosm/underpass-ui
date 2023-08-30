@@ -1,31 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
 import './styles.css';
 import FeatureDetailCard from '../FeatureDetailCard';
+import API from '../api';
 
-const features = [
-  {
-    id: '327848392',
-    timestamp: '6 minutes ago',
-    buildingType: 'yes',
-    status: 'Un-squared',
-    comments: ['#hotosm-project-14262', '#MappingEcuador'],
-  },
-  {
-    id: '372848392',
-    timestamp: '8 minutes ago',
-    buildingType: 'house',
-    comments: ['#hotosm-project-14262'],
-  },
-  {
-    id: '327488392',
-    timestamp: '12 minutes ago',
-    buildingType: 'yes',
-    status: 'Overlapping',
-    comments: ['#hotosm-project-14262', '#MappingEcuador'],
-  },
-];
+function LiveQualityMonitor({
+  tagKey,
+  tagValue,
+  page
+}) {
 
-function LiveQualityMonitor() {
+  const [features, setFeatures] = useState([]);
+
+  useEffect(() => {
+    async function fetchWays() {
+      await API()['rawPolygonsList'](tagKey, tagValue, page, {
+        onSuccess: (data) => {
+          setFeatures(data);
+        },
+        onError: (error) => {
+          console.log(error);
+        },
+      });
+    }
+    fetchWays();
+  }, [tagKey, tagValue]);
+
   return (
     <div className='feature-cards-ctr'>
       {features.map((feature) => (

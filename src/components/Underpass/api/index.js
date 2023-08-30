@@ -6,7 +6,7 @@ headers.append("Content-Type", "application/json");
 const API = (url) => {
     const API_URL = url ||
         process.env.REACT_APP_UNDERPASS_API
-        || "http://localhost:8000";
+        || "http://underpass.live:8000";
     return {
         reportDataQualityTag: async (fromDate, toDate, hashtags, page = 0, options = {}) => {
             fetch(API_URL + "/report/dataQualityTag", {
@@ -203,6 +203,29 @@ const API = (url) => {
                     area: area,
                     key: key,
                     value: value
+                })
+            })
+            .then(res => {
+                return res.json();
+            })
+            .then(
+                (result) => {
+                    options.onSuccess && options.onSuccess(result);
+                },
+                (error) => {
+                    options.onError && options.onError(error);
+                }
+            )
+        },
+
+        rawPolygonsList: async (key, value, page, options = {}) => {
+            fetch(API_URL + "/raw/polygonsList", {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify({
+                    key: key,
+                    value: value,
+                    page,
                 })
             })
             .then(res => {
