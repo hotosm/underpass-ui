@@ -10,6 +10,14 @@ yarn add "https://github.com/hotosm/underpass-ui.git
 
 ## Usage
 
+Include the styles file on your project:
+
+```js
+import "@hotosm/underpass-ui/dist/index.css"``
+```
+
+And use the components:
+
 ```jsx
 <UnderpassMap
   center={[-79.64696, 0.95953]}
@@ -20,7 +28,7 @@ yarn add "https://github.com/hotosm/underpass-ui.git
 />
 ```
 
-See the examples folder for more.
+See the `example` and `playground` folders for more.
 
 ## Configure
 
