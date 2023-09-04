@@ -1,30 +1,33 @@
-# underpass-ui-dev
+# Underpass UI
 
-> Underpass UI
-
-[![NPM](https://img.shields.io/npm/v/underpass-ui-dev.svg)](https://www.npmjs.com/package/underpass-ui-dev) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+A set of UI components for Underpass.
 
 ## Install
 
-```bash
-npm install --save underpass-ui-dev
+```sh
+yarn add "https://github.com/hotosm/underpass-ui.git
 ```
 
 ## Usage
 
 ```jsx
-import React, { Component } from 'react'
-
-import MyComponent from 'underpass-ui-dev'
-import 'underpass-ui-dev/dist/index.css'
-
-class Example extends Component {
-  render() {
-    return <MyComponent />
-  }
-}
+<UnderpassMap
+  center={[-79.64696, 0.95953]}
+  tagKey="building"
+  tagValue="yes"
+  highlightDataQualityIssues
+  grayscale
+/>
 ```
 
-## License
+See the examples folder for more.
 
-MIT © [hotosm](https://github.com/hotosm)
+## Configure
+
+The default URL for the Underpass REST API is `http://underpass.live:8000` (an Underpass development server), but you can change it using an environment variable:
+
+```sh
+export REACT_APP_UNDERPASS_API=http:://localhost:8000
+```
+
+

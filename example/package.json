@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@hotosm/underpass-ui-dev": "https://github.com/hotosm/underpass-ui.git#feature/npm-package",
+    "@hotosm/underpass-ui": "https://github.com/hotosm/underpass-ui.git",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1"

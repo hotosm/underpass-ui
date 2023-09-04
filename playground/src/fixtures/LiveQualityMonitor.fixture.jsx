@@ -1,5 +1,5 @@
 import React from "react";
-import { LiveQualityMonitor } from "@hotosm/underpass-ui-dev";
+import { LiveQualityMonitor } from "@hotosm/underpass-ui";
 
 export default <LiveQualityMonitor 
     tagKey="amenity"

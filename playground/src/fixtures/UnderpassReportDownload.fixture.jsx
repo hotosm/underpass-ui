@@ -1,5 +1,5 @@
 import React from "react";
-import { UnderpassReportDownload } from "@hotosm/underpass-ui-dev";
+import { UnderpassReportDownload } from "@hotosm/underpass-ui";
 
 const fromDate = () => {
   const now = new Date();

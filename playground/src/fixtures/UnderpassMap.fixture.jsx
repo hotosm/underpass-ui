@@ -1,5 +1,5 @@
 import React from "react";
-import { UnderpassMap } from "@hotosm/underpass-ui-dev";
+import { UnderpassMap } from "@hotosm/underpass-ui";
 import { center } from "./center";
 
 export default (
