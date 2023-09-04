@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import "@hotosm/underpass-ui-dev/index.css"
+import "@hotosm/underpass-ui-dev/dist/index.css"
 import { LiveQualityMonitor, UnderpassMap } from '@hotosm/underpass-ui-dev'
 
 class App extends Component {
