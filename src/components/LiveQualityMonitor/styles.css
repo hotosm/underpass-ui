@@ -1,0 +1,9 @@
+/* Apply border to all cards except the last one */
+.featureCard {
+  border-bottom: 1px solid #ccc; /* Adjust the color and size as needed */
+}
+
+.featureCardsCtr {
+  height: 100vh;
+  overflow-y: scroll;
+}

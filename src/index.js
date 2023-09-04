@@ -1,17 +1,16 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import "./index.css";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
+import './components/HOTTheme/theme.css'
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-);
+import UnderpassMapNodesComponent from './components/UnderpassMapNodes'
+import UnderpassMapComponent from './components/UnderpassMap'
+import FeatureDetailCardComponent from './components/FeatureDetailCard'
+import LiveQualityMonitorComponent from './components/LiveQualityMonitor'
+import UnderpassReportComponent from './components/UnderpassReport'
+import UnderpassReportDownloadComponent from './components/UnderpassReportDownload'
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+export const FeatureDetailCard = FeatureDetailCardComponent
+export const LiveQualityMonitor = LiveQualityMonitorComponent
+export const UnderpassMap = UnderpassMapComponent
+export const UnderpassMapNodes = UnderpassMapNodesComponent
+
+export const UnderpassReport = UnderpassReportComponent
+export const UnderpassReportDownload = UnderpassReportDownloadComponent

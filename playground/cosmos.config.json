@@ -1,0 +1,4 @@
+{
+  "globalImports": ["@hotosm/underpass-ui-dev/index.css"],
+  "staticPath": "public"
+}
