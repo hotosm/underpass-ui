@@ -1,0 +1,19 @@
+.statusCtr {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.125rem;
+  font-weight: bold;
+  color: #fff;
+  text-transform: capitalize;
+  font-size: .9rem;
+}
+
+.statusOverlapping,
+.statusBadgeom,
+.statusDefault {
+  background-color: rgb(var(--hottheme-color-primary));
+}
+
+.statusUnSquared {
+  background-color: rgb(var(--hottheme-color-unsquared-status));
+}

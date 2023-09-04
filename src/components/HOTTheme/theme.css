@@ -6,3 +6,7 @@
     --hottheme-color-divider: #cbcaca;
     --hottheme-color-unsquared-status: 250,167,30;
 }
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
