@@ -14,7 +14,7 @@ function FeatureDetailCard({ feature }) {
     <article className={styles.featureCard}>
       <div className={styles.timeInfo}>
         <strong>Way&nbsp;<a rel="noreferrer" target="_blank" href={"https://osm.org/way/" + feature.id}>{feature.id}</a></strong>
-        <abbr className="text-secondary" title={feature.timestamp}>
+        <abbr title={feature.timestamp}>
           <TimeAgo date={feature.timestamp} formatter={formatter} />
         </abbr>
       </div>
