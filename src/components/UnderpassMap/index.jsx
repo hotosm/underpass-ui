@@ -11,10 +11,12 @@ import styles from "./styles.css";
 
 export default function UnderpassMap({
   center,
+  popupFeature,
   isRealTime = false,
   theme: propsTheme = {},
   defaultZoom = 18,
   minZoom = 13,
+  zoom,
   mapClassName,
   tagKey,
   tagValue,
@@ -23,6 +25,8 @@ export default function UnderpassMap({
 }) {
   const mapContainer = useRef(null);
   const mapRef = useRef(null);
+  const tagKeyRef = useRef(tagKey);
+  const tagValueRef = useRef(tagValue);
   const [theme, setTheme] = useState(null);
   const [map, setMap] = useState(null);
   const popUpRef = useRef(
@@ -78,9 +82,53 @@ export default function UnderpassMap({
   }, [center]);
 
   useEffect(() => {
+    if (!map || !center) return;
+    map.setCenter(center);
+  }, [map, center]);
+
+  useEffect(() => {
+    if (!map || !zoom) return;
+    map.setZoom(zoom);
+  }, [map, zoom]);
+  
+  useEffect(() => {
+    if (!map || !popupFeature) return;
+    const popupNode = document.createElement("div");
+    createRoot(popupNode).render(
+      <Popup
+        feature={popupFeature}
+        highlightDataQualityIssues={highlightDataQualityIssues}
+      />,
+    );
+    popUpRef.current.setLngLat([popupFeature.lat, popupFeature.lon]).setDOMContent(popupNode).addTo(map);
+  }, [map, popupFeature]);
+
+  useEffect(() => {
+    tagKeyRef.current = tagKey;
+    tagValueRef.current = tagValue;
+  }, [tagKey, tagValue]);
+
+  useEffect(() => {
+    if (!map || (!tagKeyRef.current && !tagValueRef.current)) return;
+    async function fetchWays() {
+      await API().rawPolygons(getBBoxString(map), tagKeyRef.current, tagValueRef.current, {
+        onSuccess: (data) => {
+          if (map.getSource("ways")) {
+            map.getSource("ways").setData(data);
+          }
+        },
+        onError: (error) => {
+          console.log(error);
+        },
+      });
+    }
+    fetchWays();
+  }, [map]);
+
+  useEffect(() => {
     if (!map) return;
     async function fetchWays() {
-      await API().rawPolygons(getBBoxString(map), tagKey, tagValue, {
+      await API().rawPolygons(getBBoxString(map), tagKeyRef.current, tagValueRef.current, {
         onSuccess: (data) => {
           if (map.getSource("ways")) {
             map.getSource("ways").setData(data);
