@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import './App.css';
-import "@hotosm/underpass-ui/dist/index.css"
-import { LiveQualityMonitor, UnderpassMap } from '@hotosm/underpass-ui'
+import React, { Component } from "react";
+import "./App.css";
+import "@hotosm/underpass-ui/dist/index.css";
+import { LiveQualityMonitor, UnderpassMap } from "@hotosm/underpass-ui";
 
 class App extends Component {
   render() {
@@ -17,11 +17,7 @@ class App extends Component {
           />
         </div>
         <div className="section1">
-          <LiveQualityMonitor
-            tagKey="amenity"
-            tagValue=""
-            page={1}
-          />
+          <LiveQualityMonitor tagKey="amenity" tagValue="" page={1} />
         </div>
       </div>
     );
