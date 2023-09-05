@@ -7,7 +7,8 @@ import API from '../api';
 function LiveQualityMonitor({
   tagKey,
   tagValue,
-  page
+  page,
+  onSelect
 }) {
 
   const [features, setFeatures] = useState([]);
@@ -29,7 +30,14 @@ function LiveQualityMonitor({
   return (
     <div className={styles.featureCardsCtr}>
       {features.map((feature) => (
-        <FeatureDetailCard key={feature.id} feature={feature} />
+        <div onClick={() => {
+          onSelect && onSelect(feature)
+        }}>
+          <FeatureDetailCard
+            key={feature.id}
+            feature={feature}
+          />
+        </div>
       ))}
     </div>
   );
