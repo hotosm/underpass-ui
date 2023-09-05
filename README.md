@@ -28,7 +28,7 @@ And use the components:
 />
 ```
 
-See the `example` and `playground` folders for more.
+See the `playground` folder for more examples.
 
 ## Configure
 
@@ -37,5 +37,3 @@ The default URL for the Underpass REST API is `http://underpass.live:8000` (an U
 ```sh
 export REACT_APP_UNDERPASS_API=http:://localhost:8000
 ```
-
-

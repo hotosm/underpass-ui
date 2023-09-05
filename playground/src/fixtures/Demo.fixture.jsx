@@ -1,9 +1,10 @@
 import React, { useState, useRef } from "react";
 import { LiveQualityMonitor, UnderpassMap } from "@hotosm/underpass-ui";
+import { center } from "./center";
 import "./Demo.css";
 
 export default () => {
-    const [center, setCenter] = useState([0.95953, -79.64696].reverse());
+    const [coords, setCoords] = useState(center.reverse());
     const [activeFeature, setActiveFeature] = useState(null);
     const [tagKey, setTagKey] = useState("building");
     const [tagValue, setTagValue] = useState("yes");
@@ -39,7 +40,7 @@ export default () => {
             <div className="container">
                 <div className="section2">
                     <UnderpassMap
-                        center={center.reverse()}
+                        center={coords}
                         tagKey={tagKey}
                         tagValue={tagValue}
                         highlightDataQualityIssues
@@ -54,7 +55,7 @@ export default () => {
                         tagValue={tagValue}
                         page={1}
                         onSelect={(feature) => {
-                            setCenter([feature.lon, feature.lat]);
+                            setCoords([feature.lat, feature.lon]);
                             const tags = JSON.stringify(feature.tags);
                             setActiveFeature({properties: { tags: tags } , ...feature});
                         }}
