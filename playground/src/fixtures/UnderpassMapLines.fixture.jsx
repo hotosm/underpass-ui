@@ -1,12 +1,12 @@
 import React from "react";
-import { UnderpassMap } from "@hotosm/underpass-ui";
+import { UnderpassMapLines } from "@hotosm/underpass-ui";
 import { center } from "./center";
 
 export default (
   <div style={{height: "100vh"}}>
-    <UnderpassMap
+    <UnderpassMapLines
       center={center}
-      tagKey="building"
+      tagKey="waterway"
       tagValue=""
       highlightDataQualityIssues
       grayscale

@@ -258,6 +258,32 @@ const API = (url) => {
         );
     },
 
+    rawLines: async (area, key, value, options = {}) => {
+      fetch(API_URL + "/raw/lines", {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify({
+          area: area,
+          key: key,
+          value: value,
+        }),
+      })
+        .then((res) => {
+          return res.json();
+        })
+        .then(
+          (result) => {
+            if (result.features == null) {
+              result.features = [];
+            }
+            options.onSuccess && options.onSuccess(result);
+          },
+          (error) => {
+            options.onError && options.onError(error);
+          },
+        );
+    },
+
     rawPolygonsList: async (key, value, page, options = {}) => {
       fetch(API_URL + "/raw/polygonsList", {
         method: "POST",
