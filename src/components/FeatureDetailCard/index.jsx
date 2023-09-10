@@ -3,11 +3,10 @@ import React from 'react'
 import StatusBox from "../StatusBox";
 import styles from "./styles.css";
 import TimeAgo from 'react-timeago'
-
-import frenchStrings from 'react-timeago/lib/language-strings/en'
+import enStrings from 'react-timeago/lib/language-strings/en'
 import buildFormatter from 'react-timeago/lib/formatters/buildFormatter'
 
-const formatter = buildFormatter(frenchStrings)
+const formatter = buildFormatter(enStrings)
 
 function FeatureDetailCard({ feature }) {
   return (

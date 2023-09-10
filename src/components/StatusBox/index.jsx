@@ -3,11 +3,9 @@ import styles from './styles.css'
 
 const getStatusClass = (status) => {
   switch (status) {
-    case 'Un-squared':
-      return 'statusUnSquared'
-    case 'Overlapping':
+    case 'overlapping':
       return 'statusOverlapping'
-    case 'Badgeom':
+    case 'badgeom':
       return 'statusBadgeom'
     // Add more cases for other statuses and classes
     default:

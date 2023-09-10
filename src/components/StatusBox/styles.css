@@ -14,6 +14,12 @@
   background-color: rgb(var(--hottheme-color-primary));
 }
 
+.statusOverlapping,
+.statusDefault {
+  display: none;
+}
+
 .statusUnSquared {
   background-color: rgb(var(--hottheme-color-unsquared-status));
 }
+

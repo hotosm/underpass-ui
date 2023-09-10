@@ -29,7 +29,7 @@ function LiveQualityMonitor({
 
   return (
     <div className={styles.featureCardsCtr}>
-      {features.map((feature) => (
+      {features && features.map((feature) => (
         <div onClick={() => {
           onSelect && onSelect(feature)
         }}>

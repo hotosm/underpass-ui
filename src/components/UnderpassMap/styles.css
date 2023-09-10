@@ -43,6 +43,11 @@ from https://github.com/mapbox/mapbox-gl-js/issues/8368#issuecomment-537597959*/
   display: none;
 }
 
+.timestamp {
+  font-size: .8rem;
+  opacity: .8;
+}
+
 .underpassMapWrap {
   position: relative;
   width: 100%;

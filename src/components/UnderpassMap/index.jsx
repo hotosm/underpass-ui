@@ -9,6 +9,12 @@ import API from "../api";
 import { getMapStyle } from "./mapStyle";
 import styles from "./styles.css";
 
+import TimeAgo from 'react-timeago'
+import enStrings from 'react-timeago/lib/language-strings/en'
+import buildFormatter from 'react-timeago/lib/formatters/buildFormatter'
+
+const formatter = buildFormatter(enStrings)
+
 export default function UnderpassMap({
   center,
   popupFeature,
@@ -223,6 +229,10 @@ function Popup({ feature, highlightDataQualityIssues }) {
               >
                 {feature.id}
               </a>
+              <br />
+              <abbr className={styles.timestamp} title={feature.properties.timestamp}>
+                <TimeAgo date={feature.properties.timestamp} formatter={formatter} />
+              </abbr>
             </td>
           </tr>
           {visibleTags.map((tag) => (
