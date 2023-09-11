@@ -8,14 +8,20 @@ export default () => {
     const [activeFeature, setActiveFeature] = useState(null);
     const [tagKey, setTagKey] = useState("building");
     const [tagValue, setTagValue] = useState("yes");
+    const [mapSource, setMapSource] = useState("osm");
     const tagKeyRef = useRef();
     const tagValueRef = useRef();
+    const styleSelectRef = useRef();
 
     const handleFilterClick = (e) => {
         e.preventDefault();
         setTagKey(tagKeyRef.current.value);
         setTagValue(tagValueRef.current.value);
         return false;
+    }
+
+    const handleMapSourceSelect = (e) => {
+        setMapSource(e.target.options[e.target.selectedIndex].value);
     }
 
     return (
@@ -36,6 +42,11 @@ export default () => {
                      &nbsp;
                     <button onClick={handleFilterClick}>Filter</button>
                 </form>
+                <select onChange={handleMapSourceSelect} ref={styleSelectRef} className="mapSourceSelect">
+                    <option value="osm">OSM</option>
+                    <option value="esri">ESRI</option>
+                    <option value="mapbox">Mapbox</option>
+                </select>
             </div>
             <div className="container">
                 <div className="section2">
@@ -44,8 +55,9 @@ export default () => {
                         tagKey={tagKey}
                         tagValue={tagValue}
                         highlightDataQualityIssues
-                        grayscale
+                        // grayscale
                         popupFeature={activeFeature}
+                        source={mapSource}
                     />
                 </div>
                 <div className="section1">

@@ -40,14 +40,22 @@
     padding: 0.4rem;
   }
 
-  .top button {
-    border: 1px solid #ddd;
+  .top button, .mapSourceSelect {
+    border: 1px solid rgb(var(--hottheme-color-primary));
     padding: 0.4rem;
     border-radius: 2px;
     font-weight: bold;
     background: rgb(var(--hottheme-color-primary));
     color: white;
     cursor: pointer;
+  }
+
+  .mapSourceSelect {
+    background-color: white;
+    color: #333;
+    margin-top: 10px;
+    font-weight: normal;
+    border: 1px solid white;
   }
 
   h2 {

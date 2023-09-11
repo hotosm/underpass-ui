@@ -28,6 +28,7 @@ export default function UnderpassMap({
   tagValue,
   highlightDataQualityIssues = true,
   grayscale,
+  source = "osm"
 }) {
   const mapContainer = useRef(null);
   const mapRef = useRef(null);
@@ -73,9 +74,10 @@ export default function UnderpassMap({
 
     setTheme(theme);
 
-    const rasterStyle = getMapStyle(grayscale);
+    const rasterStyle = getMapStyle(grayscale, source);
+    console.log(rasterStyle);
     if (theme.map.raster) {
-      rasterStyle.layers[0].paint = theme.map.raster;
+      rasterStyle.layers[1].paint = theme.map.raster;
     }
     mapRef.current = new maplibregl.Map({
       container: mapContainer.current,
@@ -83,9 +85,16 @@ export default function UnderpassMap({
       center,
       zoom: defaultZoom,
     });
+
     mapRef.current.addControl(new maplibregl.NavigationControl());
     setMap(mapRef.current);
   }, [center]);
+
+  useEffect(() => {
+    if (!map || !center) return;
+    const rasterStyle = getMapStyle(grayscale, source);
+    mapRef.current.setStyle(rasterStyle);
+  }, [map, source]);
 
   useEffect(() => {
     if (!map || !center) return;

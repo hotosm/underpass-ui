@@ -10,6 +10,7 @@ export default (
       tagValue=""
       highlightDataQualityIssues
       grayscale
+      source="osm"
     />
   </div>
 );
