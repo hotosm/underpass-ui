@@ -7,9 +7,9 @@ import "./Demo.css";
 export default () => {
     const [coords, setCoords] = useState(center.reverse());
     const [activeFeature, setActiveFeature] = useState(null);
-    const [tagKeyInput, setTagKeyInput] = useState("highway");
+    const [tagKeyInput, setTagKeyInput] = useState("building");
     const [tagValueInput, setTagValueInput] = useState("");
-    const [tagKey, setTagKey] = useState("highway");
+    const [tagKey, setTagKey] = useState("building");
     const [tagValue, setTagValue] = useState("");
     const [mapSource, setMapSource] = useState("osm");
     const [realtime, setRealtime] = useState(false);
@@ -20,28 +20,35 @@ export default () => {
 
     const hottheme = HOTTheme();
 
-    const [demoTheme, setDemoTheme] = useState({
-        map: {
-            waysLine: {
-                ...hottheme.map.waysLine,
-                "line-opacity": 1,
-            },
-            waysFill: {
-                ...hottheme.map.waysFill,
-                "fill-opacity": .5,
-            },
-            nodesSymbol: {
-                ...hottheme.map.nodesSymbol,
-                "icon-opacity": 1,
-            },
+    const defaultMapStyle = {
+        waysLine: {
+            ...hottheme.map.waysLine,
+            "line-opacity": 1,
         },
+        waysFill: {
+            ...hottheme.map.waysFill,
+            "fill-opacity":
+            [
+                "match",
+                ["get", "type"],
+                "LineString", 0, .5
+            ]
+        },
+        nodesSymbol: {
+            ...hottheme.map.nodesSymbol,
+            "icon-opacity": 1,
+        },
+    };
+
+    const [demoTheme, setDemoTheme] = useState({
+        map: defaultMapStyle
     });
 
     useEffect(() => {
     
-        let waysLineStyle = {"line-opacity": 1};
-        let waysFillStyle = {"fill-opacity": .5};
-        let nodesSymbolStyle = {"icon-opacity": 1};
+        let waysLineStyle = defaultMapStyle.waysLine;
+        let waysFillStyle = defaultMapStyle.waysFill;
+        let nodesSymbolStyle = defaultMapStyle.nodesSymbol;
 
         if (!showLines) {
             waysLineStyle["line-opacity"] = [
@@ -120,12 +127,12 @@ export default () => {
                     <button onClick={handleFilterClick}>Filter</button>
                 </form>
                 <select onChange={handleMapSourceSelect} ref={styleSelectRef} className="mapSourceSelect">
-                    <option value="white">Blank</option>
-                    <option value="dark">Blank (dark)</option>
                     <option value="osm">OSM</option>
                     <option value="bing">Bing</option>
                     <option value="esri">ESRI</option>
                     <option value="mapbox">Mapbox</option>
+                    <option value="white">Blank</option>
+                    <option value="dark">Blank (dark)</option>
                 </select>
             </div>
             <div className="container">
