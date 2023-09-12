@@ -63,3 +63,13 @@
     border-bottom: 1px solid var(--hottheme-color-divider);
     padding-bottom: 1.3rem;
   }
+
+  .optionsForm {
+    display: flex;
+    padding: 10px;
+  }
+  .optionsForm label {
+    padding-left: .2rem;
+    padding-right: .4rem;
+  }
+

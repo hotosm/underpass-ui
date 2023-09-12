@@ -1,6 +1,4 @@
-const MAPBOX_TOKEN = "";
-
-export const getMapStyle = (grayscale, source = "osm") => {
+export const getMapStyle = (grayscale, source = "osm", config) => {
   const sources = {
     osm: {
       type: "raster",
@@ -13,7 +11,7 @@ export const getMapStyle = (grayscale, source = "osm") => {
       type: "raster",
       tiles: [
         "https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/{z}/{x}/{y}?access_token=" +
-          MAPBOX_TOKEN,
+          (config && config.MAPBOX_TOKEN),
       ],
       tileSize: 512,
       attribution: "&copy; OpenStreetMap Contributors &copy; Mapbox",
@@ -27,6 +25,27 @@ export const getMapStyle = (grayscale, source = "osm") => {
       tileSize: 256,
       attribution: "&copy; OpenStreetMap Contributors &copy; ESRI",
       maxzoom: 18,
+    },
+    bing: {
+      type: "raster",
+      tiles: ["http://ecn.t3.tiles.virtualearth.net/tiles/a{quadkey}.jpeg?g=1"],
+      tileSize: 256,
+      attribution: "&copy; OpenStreetMap Contributors",
+      maxzoom: 18,
+    },
+    white: {
+      type: "raster",
+      tiles: ["/white.png?{z}{x}{y}.png"],
+      tileSize: 256,
+      attribution: "&copy; OpenStreetMap Contributors",
+      maxzoom: 19,
+    },
+    dark: {
+      type: "raster",
+      tiles: ["/dark.png?{z}{x}{y}.png"],
+      tileSize: 256,
+      attribution: "&copy; OpenStreetMap Contributors",
+      maxzoom: 19,
     },
   };
 
@@ -46,7 +65,7 @@ export const getMapStyle = (grayscale, source = "osm") => {
                 "raster-saturation": -1,
               },
             }
-          : {}),
+          : { paint: {} }),
       },
     ],
   };

@@ -13,12 +13,10 @@ export default function HOTTheme() {
   return {
     colors,
     map: {
-      waysFill: {
-        "fill-opacity": 0.2,
-      },
       waysLine: {
-        "line-width": 1.5,
+        "line-width": 2,
       },
+      nodesSymbol: {},
     },
   };
 }

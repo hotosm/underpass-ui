@@ -1,7 +1,7 @@
 import React from "react";
-import { LiveQualityMonitor } from "@hotosm/underpass-ui";
+import { UnderpassFeatureList } from "@hotosm/underpass-ui";
 
-export default <LiveQualityMonitor 
+export default <UnderpassFeatureList 
     tagKey="amenity"
     tagValue=""
     page={1}

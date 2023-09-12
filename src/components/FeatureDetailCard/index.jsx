@@ -12,19 +12,25 @@ function FeatureDetailCard({ feature }) {
   return (
     <article className={styles.featureCard}>
       <div className={styles.timeInfo}>
-        <strong>Way&nbsp;<a rel="noreferrer" target="_blank" href={"https://osm.org/way/" + feature.id}>{feature.id}</a></strong>
+        <strong>{feature.type} &nbsp;<a rel="noreferrer" target="_blank" href={"https://osm.org/" + feature.type + "/" + feature.id}>{feature.id}</a></strong>
         <abbr title={feature.timestamp}>
           <TimeAgo date={feature.timestamp} formatter={formatter} />
         </abbr>
       </div>
       <div>
       <table>
-        {Object.keys(feature.tags).map((key) => (
+        <tbody>
+        {feature.tags && Object.keys(feature.tags).map((key) => (
           <tr className={styles.tags}>
             <td className={styles.key}>{key}</td>
-            <td className={styles.value}>{feature.tags[key]}</td>
+            <td className={styles.value}>
+            <abbr title={feature.tags[key]}>
+              {feature.tags[key]}
+            </abbr>
+            </td>
           </tr>
         ))}
+        </tbody>
       </table>
       </div>
       {/* Including this additional div to preserve the inline-block style of the StatusBox. */}

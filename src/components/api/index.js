@@ -306,6 +306,55 @@ const API = (url) => {
           },
         );
     },
+
+    raw: async (area, key, value, options = {}) => {
+      fetch(`${API_URL}/raw/all`, {
+        method: "POST",
+        headers,
+        body: JSON.stringify({
+          area,
+          key,
+          value,
+        }),
+      })
+        .then((res) => {
+          return res.json();
+        })
+        .then(
+          (result) => {
+            if (result.features == null) {
+              result.features = [];
+            }
+            options.onSuccess && options.onSuccess(result);
+          },
+          (error) => {
+            options.onError && options.onError(error);
+          },
+        );
+    },
+
+    rawList: async (key, value, page, options = {}) => {
+      fetch(API_URL + "/raw/allList", {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify({
+          key: key,
+          value: value,
+          page,
+        }),
+      })
+        .then((res) => {
+          return res.json();
+        })
+        .then(
+          (result) => {
+            options.onSuccess && options.onSuccess(result);
+          },
+          (error) => {
+            options.onError && options.onError(error);
+          },
+        );
+    },
   };
 };
 
