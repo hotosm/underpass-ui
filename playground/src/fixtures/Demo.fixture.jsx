@@ -3,6 +3,10 @@ import { UnderpassFeatureList, UnderpassMap, HOTTheme } from "@hotosm/underpass-
 import { center } from "./center";
 import "./Demo.css";
 
+const config = {
+    MAPBOX_TOKEN: "YOUR_TOKEN",
+    API_URL: "http://localhost:8000"
+};
 
 export default () => {
     const [coords, setCoords] = useState(center.reverse());
@@ -11,7 +15,7 @@ export default () => {
     const [tagValueInput, setTagValueInput] = useState("");
     const [tagKey, setTagKey] = useState("building");
     const [tagValue, setTagValue] = useState("");
-    const [mapSource, setMapSource] = useState("osm");
+    const [mapSource, setMapSource] = useState("dark");
     const [realtime, setRealtime] = useState(false);
     const [showPoints, setShowPoints] = useState(true);
     const [showLines, setShowLines] = useState(true);
@@ -20,10 +24,18 @@ export default () => {
 
     const hottheme = HOTTheme();
 
+    useEffect(() => {
+        if (mapSource == "dark") {
+            document.body.style.backgroundColor = `rgb(${hottheme.colors.dark})`;
+        } else {
+            document.body.style.backgroundColor = `rgb(${hottheme.colors.white})`;
+        }
+    }, [mapSource])
+
     const defaultMapStyle = {
         waysLine: {
             ...hottheme.map.waysLine,
-            "line-opacity": 1,
+            "line-opacity": .8,
         },
         waysFill: {
             ...hottheme.map.waysFill,
@@ -31,12 +43,16 @@ export default () => {
             [
                 "match",
                 ["get", "type"],
-                "LineString", 0, .5
+                "LineString", 0, .1
             ]
         },
         nodesSymbol: {
             ...hottheme.map.nodesSymbol,
-            "icon-opacity": 1,
+            "icon-opacity": [
+                "match",
+                ["get", "type"],
+                "Point", .8, 0
+              ],        
         },
     };
 
@@ -145,23 +161,23 @@ export default () => {
                         // grayscale
                         popupFeature={activeFeature}
                         source={mapSource}
-                        config={{
-                            MAPBOX_TOKEN: "YOUR_TOKEN"
-                        }}
+                        config={config}
                         realtime={realtime}
                         theme={demoTheme}
                     />
                 </div>
-                <div className="section1">
+                <div className="section1" style={{
+                    backgroundColor: `rgb(${hottheme.colors.white})`}}
+                >
                     <h2>Latest mapped features</h2>
                     <form className="optionsForm">
                         <input onChange={() => { setRealtime(!realtime)}} name="liveCheckbox" type="checkbox" />
                         <label>Live</label>
-                        <input onClick={() => { setShowPoints(!showPoints)}} name="pointsCheckbox" checked={showPoints} type="checkbox" />
+                        <input onClick={() => { setShowPoints(!showPoints)}} name="pointsCheckbox" defaultChecked={showPoints} type="checkbox" />
                         <label>Points</label>
-                        <input onClick={() => { setShowPolygons(!showPolygons)}} name="polygonsCheckbox" checked={showPolygons} type="checkbox" />
+                        <input onClick={() => { setShowPolygons(!showPolygons)}} name="polygonsCheckbox" defaultChecked={showPolygons} type="checkbox" />
                         <label>Polygons</label>
-                        <input onClick={() => { setShowLines(!showLines)}} name="linesCheckbox" checked={showLines} type="checkbox" />
+                        <input onClick={() => { setShowLines(!showLines)}} name="linesCheckbox" defaultChecked={showLines} type="checkbox" />
                         <label>Lines</label>
                     </form>
                     <UnderpassFeatureList
@@ -174,13 +190,17 @@ export default () => {
                             setActiveFeature({properties: { tags: tags } , ...feature});
                         }}
                         realtime={realtime}
-                        onUpdate={(mostRecentFeature) => {
+                        config={config}
+                        onUpdate={realtime ? (mostRecentFeature) => {
                             if (mostRecentFeature) {
                                 setCoords([mostRecentFeature.lat, mostRecentFeature.lon]);
                                 const tags = JSON.stringify(mostRecentFeature.tags);
                                 setActiveFeature({properties: { tags: tags } , ...mostRecentFeature});    
                             }
-                        }}
+                        } : false}
+                        hidePolygons={!showPolygons}
+                        hideNodes={!showPoints}
+                        hideLines={!showLines}
                     />
                 </div>
             </div>

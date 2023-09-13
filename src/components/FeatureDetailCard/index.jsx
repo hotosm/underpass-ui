@@ -21,7 +21,7 @@ function FeatureDetailCard({ feature }) {
       <table>
         <tbody>
         {feature.tags && Object.keys(feature.tags).map((key) => (
-          <tr className={styles.tags}>
+          <tr className={styles.tags} key={[key,feature.tags[key]].join('=')}>
             <td className={styles.key}>{key}</td>
             <td className={styles.value}>
             <abbr title={feature.tags[key]}>

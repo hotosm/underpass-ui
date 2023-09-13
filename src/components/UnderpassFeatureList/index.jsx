@@ -10,17 +10,26 @@ function UnderpassFeatureList({
   page,
   onSelect,
   realtime,
-  onUpdate
+  onUpdate,
+  config,
+  hidePolygons,
+  hideNodes,
+  hideLines
 }) {
 
   const [features, setFeatures] = useState([]);
   const realtimeIntervalRef = useRef();
 
   async function fetch() {
-    await API()["rawList"](tagKey, tagValue, page, {
+    await API(config.API_URL)["rawList"](tagKey, tagValue, page, {
       onSuccess: (data) => {
-        setFeatures(data);
-        onUpdate && onUpdate(data[0]);
+        const filteredData = data.filter((feature) => (
+            !hidePolygons && feature.geotype == "Polygon" ||
+            !hideNodes && feature.geotype == "Point" ||
+            !hideLines && feature.geotype == "LineString"
+        ));
+        setFeatures(filteredData);
+        onUpdate && onUpdate(filteredData[0]);
       },
       onError: (error) => {
         console.log(error);
@@ -30,7 +39,7 @@ function UnderpassFeatureList({
 
   useEffect(() => {
     fetch();
-  }, [tagKey, tagValue]);
+  }, [tagKey, tagValue, hidePolygons, hideNodes, hideLines]);
 
   useEffect(() => {
     if (realtime) {
@@ -45,8 +54,10 @@ function UnderpassFeatureList({
 
   return (
     <div className={styles.featureCardsCtr}>
-      {features && features.map((feature) => (
-        <div onClick={() => {
+      {features && features.sort((a,b) => (
+          new Date(a.timestamp) < new Date(b.timestamp)
+        )).map((feature) => (
+        <div key={feature.id} onClick={() => {
           onSelect && onSelect(feature)
         }}>
           <FeatureDetailCard

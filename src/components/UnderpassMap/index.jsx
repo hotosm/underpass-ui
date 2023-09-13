@@ -24,8 +24,7 @@ export default function UnderpassMap({
   highlightDataQualityIssues = true,
   grayscale,
   source = "osm",
-  config,
-  dataFunc
+  config
 }) {
   const mapContainer = useRef(null);
   const mapRef = useRef(null);
@@ -46,7 +45,7 @@ export default function UnderpassMap({
       tagValueRef.current,
       mapRef.current,
       theme,
-      dataFunc
+      config
     )
   }
 
@@ -60,10 +59,10 @@ export default function UnderpassMap({
             "match",
             ["get", "status"],
             "badgeom",
-            `rgb(${theme.colors.primary})`,
-            `rgb(${theme.colors.secondary})`,
+            `rgb(${theme.colors.warning})`,
+            `rgb(${theme.colors.valid})`,
           ]
-        : `rgb(${theme.colors.secondary})`,
+        : `rgb(${theme.colors.valid})`,
         "fill-opacity": [
             "match",
             ["get", "type"],
@@ -78,11 +77,20 @@ export default function UnderpassMap({
             "match",
             ["get", "status"],
             "badgeom",
-            `rgb(${theme.colors.primary})`,
-            `rgb(${theme.colors.secondary})`,
+            `rgb(${theme.colors.warning})`,
+            `rgb(${theme.colors.valid})`,
           ]
-        : `rgb(${theme.colors.secondary})`,
+        : `rgb(${theme.colors.valid})`,
       ...theme.map.waysLine,
+    };
+
+    theme.map.nodesSymbol = {
+      "icon-opacity": [
+        "match",
+        ["get", "type"],
+        "Point", 1, 0
+      ],
+      ...theme.map.nodesSymbol,
     };
 
     return theme;
@@ -90,10 +98,7 @@ export default function UnderpassMap({
 
   useEffect(() => {
     if (mapRef.current) return;
-
     const theme = getTheme();
-    // setTheme(theme);
-
     const rasterStyle = getMapStyle(grayscale, source, config);
     if (theme.map.raster) {
       rasterStyle.layers[1].paint = theme.map.raster;
@@ -109,20 +114,13 @@ export default function UnderpassMap({
     setMap(mapRef.current);
   }, [center]);
 
-  // TODO: fixme
   useEffect(() => {
-    if (!map || !propsTheme) return;
-    
-    const theme = getTheme();
-    // setTheme(theme);
-
+    if (!map || !propsTheme) return;    
     const rasterStyle = getMapStyle(grayscale, source, config);
-
     map.once("styledata", () => {
       fetch();
     });
     mapRef.current.setStyle(rasterStyle);
-
   }, [map, propsTheme]);
 
   useEffect(() => {

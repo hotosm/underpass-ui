@@ -3,7 +3,6 @@
     overflow: hidden;
   }
 
-
   .container {
     display: flex;
     flex-direction: row;
@@ -46,16 +45,16 @@
     border-radius: 2px;
     font-weight: bold;
     background: rgb(var(--hottheme-color-primary));
-    color: white;
+    color: rgb(var(--hottheme-color-primary-fg));
     cursor: pointer;
   }
 
   .mapSourceSelect {
-    background-color: white;
-    color: #333;
+    background-color: rgb(var(--hottheme-color-white));
+    color: rgb(var(--hottheme-color-text-primary));
     margin-top: 10px;
     font-weight: normal;
-    border: 1px solid white;
+    border: 1px solid rgb(var(--hottheme-color-white));
   }
 
   h2 {
@@ -65,8 +64,8 @@
   }
 
   .optionsForm {
-    display: flex;
-    padding: 10px;
+    padding: 1.3rem;
+    margin-bottom: 1.3rem;
   }
   .optionsForm label {
     padding-left: .2rem;
