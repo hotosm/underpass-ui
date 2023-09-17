@@ -9,17 +9,12 @@ const config = {
 };
 
 export default () => {
-    const [coords, setCoords] = useState(center.reverse());
+    const [coords, setCoords] = useState(center);
     const [activeFeature, setActiveFeature] = useState(null);
-    const [tagKeyInput, setTagKeyInput] = useState("building");
-    const [tagValueInput, setTagValueInput] = useState("");
-    const [tagKey, setTagKey] = useState("building");
-    const [tagValue, setTagValue] = useState("");
-    const [mapSource, setMapSource] = useState("dark");
+    const [tags, setTags] = useState("building=yes");
+    const [mapSource, setMapSource] = useState("osm");
     const [realtime, setRealtime] = useState(false);
-    const [showPoints, setShowPoints] = useState(true);
-    const [showLines, setShowLines] = useState(true);
-    const [showPolygons, setShowPolygons] = useState(true);
+    const tagsInputRef = useRef("");
     const styleSelectRef = useRef();
 
     const hottheme = HOTTheme();
@@ -43,7 +38,7 @@ export default () => {
             [
                 "match",
                 ["get", "type"],
-                "LineString", 0, .1
+                "LineString", 0, .3
             ]
         },
         nodesSymbol: {
@@ -60,57 +55,9 @@ export default () => {
         map: defaultMapStyle
     });
 
-    useEffect(() => {
-    
-        let waysLineStyle = defaultMapStyle.waysLine;
-        let waysFillStyle = defaultMapStyle.waysFill;
-        let nodesSymbolStyle = defaultMapStyle.nodesSymbol;
-
-        if (!showLines) {
-            waysLineStyle["line-opacity"] = [
-                "match",
-                ["get", "type"],
-                "LineString", 0, showPolygons ? 1 : 0
-            ]
-        }
-        if (!showPolygons) {
-            waysLineStyle["line-opacity"] = [
-                "match",
-                ["get", "type"],
-                "Polygon", 0, showLines ? 1 : 0
-            ]
-            waysFillStyle["fill-opacity"] = [
-                "match",
-                ["get", "type"],
-                "Polygon", 0, 0
-            ]
-        }
-        if (!showPoints) {
-            nodesSymbolStyle["icon-opacity"] = 0
-        }
-
-        setDemoTheme({
-            map: {
-                waysLine: {
-                    ...hottheme.map.waysLine,
-                    ...waysLineStyle,
-                },
-                waysFill: {
-                    ...hottheme.map.waysFill,
-                    ...waysFillStyle,
-                },
-                nodesSymbol: {
-                    ...hottheme.map.nodesSymbol,
-                    ...nodesSymbolStyle,
-                }
-            }
-        })
-    }, [showPoints, showLines, showPolygons])
-
     const handleFilterClick = (e) => {
         e.preventDefault();
-        setTagKey(tagKeyInput);
-        setTagValue(tagValueInput);
+        setTags(tagsInputRef.current.value);
         return false;
     }
 
@@ -124,23 +71,11 @@ export default () => {
                 <form>
                     <input
                         type="text"
-                        placeholder="key (ex: natural)"
-                        value={tagKeyInput}
-                        onChange={(e) => {
-                            setTagKeyInput(e.target.value);
-                        }}
-                    />
-                    &nbsp;
-                    <input
-                        type="text"
-                        placeholder="value (ex: water)"
-                        value={tagValueInput}
-                        onChange={(e) => {
-                            setTagValueInput(e.target.value);
-                        }}
+                        placeholder="key (ex: building=yes)"
+                        ref={tagsInputRef}
                     />
                      &nbsp;
-                    <button onClick={handleFilterClick}>Filter</button>
+                    <button onClick={handleFilterClick}>Search</button>
                 </form>
                 <select onChange={handleMapSourceSelect} ref={styleSelectRef} className="mapSourceSelect">
                     <option value="osm">OSM</option>
@@ -149,40 +84,37 @@ export default () => {
                     <option value="mapbox">Mapbox</option>
                     <option value="white">Blank</option>
                     <option value="dark">Blank (dark)</option>
+                    <option value="oam">OAM</option>
                 </select>
             </div>
             <div className="container">
                 <div className="section2">
                     <UnderpassMap
                         center={coords}
-                        tagKey={tagKey}
-                        tagValue={tagValue}
+                        tags={tags}
                         highlightDataQualityIssues
-                        // grayscale
+                        grayscale
                         popupFeature={activeFeature}
                         source={mapSource}
                         config={config}
                         realtime={realtime}
                         theme={demoTheme}
+                        zoom={17}
                     />
                 </div>
                 <div className="section1" style={{
                     backgroundColor: `rgb(${hottheme.colors.white})`}}
                 >
-                    <h2>Latest mapped features</h2>
+                    <h2>
+                        <img src="https://www.hotosm.org/images/hot-logo-icon-nav.svg" />
+                        <span>Latest mapped features</span>
+                    </h2>
                     <form className="optionsForm">
                         <input onChange={() => { setRealtime(!realtime)}} name="liveCheckbox" type="checkbox" />
                         <label>Live</label>
-                        <input onClick={() => { setShowPoints(!showPoints)}} name="pointsCheckbox" defaultChecked={showPoints} type="checkbox" />
-                        <label>Points</label>
-                        <input onClick={() => { setShowPolygons(!showPolygons)}} name="polygonsCheckbox" defaultChecked={showPolygons} type="checkbox" />
-                        <label>Polygons</label>
-                        <input onClick={() => { setShowLines(!showLines)}} name="linesCheckbox" defaultChecked={showLines} type="checkbox" />
-                        <label>Lines</label>
                     </form>
                     <UnderpassFeatureList
-                        tagKey={tagKey}
-                        tagValue={tagValue}
+                        tags={tags}
                         page={1}
                         onSelect={(feature) => {
                             setCoords([feature.lat, feature.lon]);
@@ -198,9 +130,6 @@ export default () => {
                                 setActiveFeature({properties: { tags: tags } , ...mostRecentFeature});    
                             }
                         } : false}
-                        hidePolygons={!showPolygons}
-                        hideNodes={!showPoints}
-                        hideLines={!showLines}
                     />
                 </div>
             </div>

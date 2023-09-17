@@ -1,7 +1,7 @@
 import API from "../api";
 
-export async function fetchService(bbox, keyTag, keyValue, map, theme, config) {
-  await API(config.API_URL).raw(bbox, keyTag, keyValue, {
+export async function fetchService(bbox, tags, map, theme, config) {
+  await API(config && config.API_URL).raw(bbox, tags, {
     onSuccess: (data) => {
       if (map.getSource("raw")) {
         map.getSource("raw").setData(data);

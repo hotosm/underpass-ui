@@ -19,8 +19,7 @@ export default function UnderpassMap({
   minZoom = 13,
   zoom,
   mapClassName,
-  tagKey,
-  tagValue,
+  tags,
   highlightDataQualityIssues = true,
   grayscale,
   source = "osm",
@@ -28,8 +27,7 @@ export default function UnderpassMap({
 }) {
   const mapContainer = useRef(null);
   const mapRef = useRef(null);
-  const tagKeyRef = useRef(tagKey);
-  const tagValueRef = useRef(tagValue);
+  const tagsRef = useRef(tags);
   const realtimeIntervalRef = useRef();
   const [map, setMap] = useState(null);
   const popUpRef = useRef(
@@ -41,8 +39,7 @@ export default function UnderpassMap({
     if (!mapRef || !theme) return;
     fetchService(
       getBBoxString(mapRef.current),
-      tagKeyRef.current,
-      tagValueRef.current,
+      tagsRef.current,
       mapRef.current,
       theme,
       config
@@ -66,7 +63,7 @@ export default function UnderpassMap({
         "fill-opacity": [
             "match",
             ["get", "type"],
-            "LineString", 0, 0.2
+            "LineString", 0, 0.5
           ],
           ...theme.map.waysFill,
     };
@@ -155,19 +152,18 @@ export default function UnderpassMap({
   }, [map, popupFeature]);
 
   useEffect(() => {
-    tagKeyRef.current = tagKey;
-    tagValueRef.current = tagValue;
+    tagsRef.current = tags;
     fetch();
-  }, [tagKey, tagValue]);
+  }, [tags]);
 
   useEffect(() => {
-    if (!map || (!tagKeyRef.current && !tagValueRef.current)) return;
+    if (!map || !tagsRef.current) return;
     fetch();
   }, [map]);
 
   useEffect(() => {
     if (realtime) {
-      realtimeIntervalRef.current = setInterval(fetch, 5000);
+      realtimeIntervalRef.current = setInterval(fetch, 10000);
     } else {
       if (realtimeIntervalRef.current) {
         clearInterval(realtimeIntervalRef.current);

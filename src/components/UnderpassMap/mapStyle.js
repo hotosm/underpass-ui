@@ -47,6 +47,15 @@ export const getMapStyle = (grayscale, source = "osm", config) => {
       attribution: "&copy; OpenStreetMap Contributors",
       maxzoom: 19,
     },
+    oam: {
+      type: "raster",
+      tiles: [
+        "https://tiles.openaerialmap.org/6501a65c0906de000167e64d/0/6501a65c0906de000167e64e/{z}/{x}/{y}",
+      ],
+      tileSize: 256,
+      attribution: "&copy; OpenStreetMap Contributors &copy; OpenAerialMap",
+      maxzoom: 19,
+    },
   };
 
   return {

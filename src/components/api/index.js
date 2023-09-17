@@ -4,7 +4,7 @@ headers.append("Content-Type", "application/json");
 // Send request to the Underpass API
 const API = (url) => {
   const API_URL =
-    url || process.env.REACT_APP_UNDERPASS_API || "http://underpass.live:8000";
+    url || process.env.REACT_APP_UNDERPASS_API || "http://localhost:8000";
   return {
     reportDataQualityTag: async (
       fromDate,
@@ -206,14 +206,13 @@ const API = (url) => {
         );
     },
 
-    rawPolygons: async (area, key, value, options = {}) => {
+    rawPolygons: async (area, tags, options = {}) => {
       fetch(`${API_URL}/raw/polygons`, {
         method: "POST",
         headers,
         body: JSON.stringify({
           area,
-          key,
-          value,
+          tags,
         }),
       })
         .then((res) => {
@@ -232,14 +231,13 @@ const API = (url) => {
         );
     },
 
-    rawNodes: async (area, key, value, options = {}) => {
+    rawNodes: async (area, tags, options = {}) => {
       fetch(API_URL + "/raw/nodes", {
         method: "POST",
         headers: headers,
         body: JSON.stringify({
           area: area,
-          key: key,
-          value: value,
+          tags: tags,
         }),
       })
         .then((res) => {
@@ -258,14 +256,13 @@ const API = (url) => {
         );
     },
 
-    rawLines: async (area, key, value, options = {}) => {
+    rawLines: async (area, tags, options = {}) => {
       fetch(API_URL + "/raw/lines", {
         method: "POST",
         headers: headers,
         body: JSON.stringify({
           area: area,
-          key: key,
-          value: value,
+          tags: tags,
         }),
       })
         .then((res) => {
@@ -284,13 +281,12 @@ const API = (url) => {
         );
     },
 
-    rawPolygonsList: async (key, value, page, options = {}) => {
+    rawPolygonsList: async (tags, page, options = {}) => {
       fetch(API_URL + "/raw/polygonsList", {
         method: "POST",
         headers: headers,
         body: JSON.stringify({
-          key: key,
-          value: value,
+          tags: tags,
           page,
         }),
       })
@@ -307,14 +303,13 @@ const API = (url) => {
         );
     },
 
-    raw: async (area, key, value, options = {}) => {
+    raw: async (area, tags, options = {}) => {
       fetch(`${API_URL}/raw/all`, {
         method: "POST",
         headers,
         body: JSON.stringify({
           area,
-          key,
-          value,
+          tags,
         }),
       })
         .then((res) => {
@@ -333,13 +328,12 @@ const API = (url) => {
         );
     },
 
-    rawList: async (key, value, page, options = {}) => {
+    rawList: async (tags, page, options = {}) => {
       fetch(API_URL + "/raw/allList", {
         method: "POST",
         headers: headers,
         body: JSON.stringify({
-          key: key,
-          value: value,
+          tags,
           page,
         }),
       })
