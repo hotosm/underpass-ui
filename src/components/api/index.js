@@ -4,7 +4,7 @@ headers.append("Content-Type", "application/json");
 // Send request to the Underpass API
 const API = (url) => {
   const API_URL =
-    url || process.env.REACT_APP_UNDERPASS_API || "http://underpass.live:8000";
+    url || process.env.REACT_APP_UNDERPASS_API || "https://underpass.hotosm.org:8000";
   return {
     reportDataQualityTag: async (
       fromDate,

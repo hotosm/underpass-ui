@@ -1,1 +1,1 @@
-export const center = [0.95953, -79.64696].reverse();
+export const center = [30.42250, -7.95156].reverse();
