@@ -5,7 +5,11 @@ import FeatureDetailCard from '../FeatureDetailCard';
 import API from '../api';
 
 function UnderpassFeatureList({
+  area,
   tags,
+  hashtag,
+  dateFrom,
+  dateTo,
   page,
   onSelect,
   realtime,
@@ -17,7 +21,13 @@ function UnderpassFeatureList({
   const realtimeIntervalRef = useRef();
 
   async function fetch() {
-    await API(config && config.API_URL)["rawList"](tags, page, {
+    await API(config && config.API_URL)["rawList"](
+      area,
+      tags,
+      hashtag,
+      dateFrom,
+      dateTo,
+      page, {
       onSuccess: (data) => {
         setFeatures(data);
         onUpdate && onUpdate(data[0]);
@@ -30,7 +40,7 @@ function UnderpassFeatureList({
 
   useEffect(() => {
     fetch();
-  }, [tags]);
+  }, [tags, hashtag]);
 
   useEffect(() => {
     if (realtime) {

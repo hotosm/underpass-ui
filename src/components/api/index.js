@@ -206,13 +206,25 @@ const API = (url) => {
         );
     },
 
-    rawPolygons: async (area, tags, options = {}) => {
+    rawPolygons: async (
+      area,
+      tags,
+      hashtag,
+      dateFrom,
+      dateTo,
+      page,
+      options = {},
+    ) => {
       fetch(`${API_URL}/raw/polygons`, {
         method: "POST",
         headers,
         body: JSON.stringify({
           area,
           tags,
+          hashtag,
+          dateFrom,
+          dateTo,
+          page,
         }),
       })
         .then((res) => {
@@ -231,13 +243,25 @@ const API = (url) => {
         );
     },
 
-    rawNodes: async (area, tags, options = {}) => {
+    rawNodes: async (
+      area,
+      tags,
+      hashtag,
+      dateFrom,
+      dateTo,
+      page,
+      options = {},
+    ) => {
       fetch(API_URL + "/raw/nodes", {
         method: "POST",
         headers: headers,
         body: JSON.stringify({
-          area: area,
-          tags: tags,
+          area,
+          tags,
+          hashtag,
+          dateFrom,
+          dateTo,
+          page,
         }),
       })
         .then((res) => {
@@ -256,13 +280,25 @@ const API = (url) => {
         );
     },
 
-    rawLines: async (area, tags, options = {}) => {
+    rawLines: async (
+      area,
+      tags,
+      hashtag,
+      dateFrom,
+      dateTo,
+      page,
+      options = {},
+    ) => {
       fetch(API_URL + "/raw/lines", {
         method: "POST",
         headers: headers,
         body: JSON.stringify({
-          area: area,
-          tags: tags,
+          area,
+          tags,
+          hashtag,
+          dateFrom,
+          dateTo,
+          page,
         }),
       })
         .then((res) => {
@@ -281,12 +317,24 @@ const API = (url) => {
         );
     },
 
-    rawPolygonsList: async (tags, page, options = {}) => {
+    rawPolygonsList: async (
+      area,
+      tags,
+      hashtag,
+      dateFrom,
+      dateTo,
+      page,
+      options = {},
+    ) => {
       fetch(API_URL + "/raw/polygonsList", {
         method: "POST",
         headers: headers,
         body: JSON.stringify({
-          tags: tags,
+          area,
+          tags,
+          hashtag,
+          dateFrom,
+          dateTo,
           page,
         }),
       })
@@ -303,13 +351,16 @@ const API = (url) => {
         );
     },
 
-    raw: async (area, tags, options = {}) => {
+    raw: async (area, tags, hashtag, dateFrom, dateTo, options = {}) => {
       fetch(`${API_URL}/raw/all`, {
         method: "POST",
         headers,
         body: JSON.stringify({
           area,
           tags,
+          hashtag,
+          dateFrom,
+          dateTo
         }),
       })
         .then((res) => {
@@ -328,12 +379,24 @@ const API = (url) => {
         );
     },
 
-    rawList: async (tags, page, options = {}) => {
+    rawList: async (
+      area,
+      tags,
+      hashtag,
+      dateFrom,
+      dateTo,
+      page,
+      options = {},
+    ) => {
       fetch(API_URL + "/raw/allList", {
         method: "POST",
         headers: headers,
         body: JSON.stringify({
+          area,
           tags,
+          hashtag,
+          dateFrom,
+          dateTo,
           page,
         }),
       })

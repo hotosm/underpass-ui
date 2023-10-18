@@ -45,8 +45,8 @@ export default function Popup({ feature, highlightDataQualityIssues }) {
                   {feature.id}
                 </a>
                 <br />
-                <abbr className={styles.timestamp} title={feature.properties.timestamp}>
-                  <TimeAgo date={feature.properties.timestamp} formatter={formatter} />
+                <abbr className={styles.timestamp} title={feature.properties.created_at}>
+                  <TimeAgo date={feature.properties.created_at} formatter={formatter} />
                 </abbr>
               </td>
             </tr>

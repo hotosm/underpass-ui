@@ -12,9 +12,11 @@ export default () => {
     const [coords, setCoords] = useState(center);
     const [activeFeature, setActiveFeature] = useState(null);
     const [tags, setTags] = useState("building=yes");
+    const [hashtag, setHashtag] = useState("");
     const [mapSource, setMapSource] = useState("osm");
     const [realtime, setRealtime] = useState(false);
     const tagsInputRef = useRef("");
+    const hashtagInputRef = useRef("");
     const styleSelectRef = useRef();
 
     const hottheme = HOTTheme();
@@ -58,6 +60,7 @@ export default () => {
     const handleFilterClick = (e) => {
         e.preventDefault();
         setTags(tagsInputRef.current.value);
+        setHashtag(hashtagInputRef.current.value);
         return false;
     }
 
@@ -73,6 +76,12 @@ export default () => {
                         type="text"
                         placeholder="key (ex: building=yes)"
                         ref={tagsInputRef}
+                    />
+                     &nbsp;
+                     <input
+                        type="text"
+                        placeholder="hashtag (ex: hotosm-project)"
+                        ref={hashtagInputRef}
                     />
                      &nbsp;
                     <button onClick={handleFilterClick}>Search</button>
@@ -92,6 +101,7 @@ export default () => {
                     <UnderpassMap
                         center={coords}
                         tags={tags}
+                        hashtag={hashtag}
                         highlightDataQualityIssues
                         grayscale
                         popupFeature={activeFeature}
@@ -106,7 +116,7 @@ export default () => {
                     backgroundColor: `rgb(${hottheme.colors.white})`}}
                 >
                     <h2>
-                        <img src="https://www.hotosm.org/images/hot-logo-icon-nav.svg" />
+                        <img src="/hot-logo.svg" />
                         <span>Latest mapped features</span>
                     </h2>
                     <form className="optionsForm">
@@ -115,11 +125,13 @@ export default () => {
                     </form>
                     <UnderpassFeatureList
                         tags={tags}
+                        hashtag={hashtag}
                         page={1}
                         onSelect={(feature) => {
                             setCoords([feature.lat, feature.lon]);
                             const tags = JSON.stringify(feature.tags);
-                            setActiveFeature({properties: { tags: tags } , ...feature});
+                            const status = feature.status;
+                            setActiveFeature({properties: { tags, status } , ...feature});
                         }}
                         realtime={realtime}
                         config={config}
@@ -127,7 +139,8 @@ export default () => {
                             if (mostRecentFeature) {
                                 setCoords([mostRecentFeature.lat, mostRecentFeature.lon]);
                                 const tags = JSON.stringify(mostRecentFeature.tags);
-                                setActiveFeature({properties: { tags: tags } , ...mostRecentFeature});    
+                                const status = mostRecentFeature.status;
+                                setActiveFeature({properties: { tags, status } , ...mostRecentFeature});
                             }
                         } : false}
                     />

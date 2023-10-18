@@ -20,6 +20,9 @@ export default function UnderpassMap({
   zoom,
   mapClassName,
   tags,
+  dateFrom = "",
+  dateTo = "",
+  hashtag,
   highlightDataQualityIssues = true,
   grayscale,
   source = "osm",
@@ -28,6 +31,9 @@ export default function UnderpassMap({
   const mapContainer = useRef(null);
   const mapRef = useRef(null);
   const tagsRef = useRef(tags);
+  const hashtagRef = useRef(hashtag);
+  const dateFromRef = useRef(dateFrom);
+  const dateToRef = useRef(dateTo);
   const realtimeIntervalRef = useRef();
   const [map, setMap] = useState(null);
   const popUpRef = useRef(
@@ -40,6 +46,9 @@ export default function UnderpassMap({
     fetchService(
       getBBoxString(mapRef.current),
       tagsRef.current,
+      hashtagRef.current,
+      dateFromRef.current,
+      dateToRef.current,
       mapRef.current,
       theme,
       config
@@ -157,7 +166,18 @@ export default function UnderpassMap({
   }, [tags]);
 
   useEffect(() => {
-    if (!map || !tagsRef.current) return;
+    hashtagRef.current = hashtag;
+    fetch();
+  }, [hashtag]);
+
+  useEffect(() => {
+    dateFrom.current = dateFrom;
+    dateTo.current = dateTo;
+    fetch();
+  }, [dateFrom, dateTo]);
+
+  useEffect(() => {
+    if (!map || !tagsRef.current ) return;
     fetch();
   }, [map]);
 
