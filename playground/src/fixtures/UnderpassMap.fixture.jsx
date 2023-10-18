@@ -6,10 +6,10 @@ export default (
   <div style={{height: "100vh"}}>
     <UnderpassMap
       center={center}
-      tagKey="building"
-      tagValue=""
+      tags="building=yes"
       highlightDataQualityIssues
       grayscale
+      source="osm"
     />
   </div>
 );

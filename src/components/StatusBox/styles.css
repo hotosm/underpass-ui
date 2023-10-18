@@ -3,17 +3,22 @@
   padding: 0.25rem 0.5rem;
   border-radius: 0.125rem;
   font-weight: bold;
-  color: #fff;
+  color: rgb(var(--hottheme-color-white));
   text-transform: capitalize;
   font-size: .9rem;
 }
 
 .statusOverlapping,
-.statusBadgeom,
 .statusDefault {
-  background-color: rgb(var(--hottheme-color-primary));
+  background-color: rgb(var(--hottheme-color-error));
 }
 
-.statusUnSquared {
-  background-color: rgb(var(--hottheme-color-unsquared-status));
+.statusOverlapping,
+.statusDefault {
+  display: none;
+}
+
+.statusBadgeom {
+  background-color: rgb(var(--hottheme-color-warning));
+  color: rgb(var(--hottheme-color-warning-fg));
 }

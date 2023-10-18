@@ -21,8 +21,7 @@ And use the components:
 ```jsx
 <UnderpassMap
   center={[-79.64696, 0.95953]}
-  tagKey="building"
-  tagValue="yes"
+  tags="building=yes"
   highlightDataQualityIssues
   grayscale
 />
