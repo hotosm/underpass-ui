@@ -126,7 +126,7 @@ export default () => {
                     <UnderpassFeatureList
                         tags={tags}
                         hashtag={hashtag}
-                        page={1}
+                        page={0}
                         onSelect={(feature) => {
                             setCoords([feature.lat, feature.lon]);
                             const tags = JSON.stringify(feature.tags);
