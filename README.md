@@ -31,8 +31,11 @@ See the `playground` folder for more examples.
 
 ## Configure
 
-The default URL for the Underpass REST API is `http://underpass.live:8000` (an Underpass development server), but you can change it using an environment variable:
+The default URL for the Underpass REST API is `https://underpass.hotosm.org:8000` (an Underpass development server), but you can change it passing a config property:
 
 ```sh
-export REACT_APP_UNDERPASS_API=http:://localhost:8000
+const config = {
+    MAPBOX_TOKEN: "YOUR_TOKEN",
+    API_URL: "http://localhost:8000"
+};
 ```
