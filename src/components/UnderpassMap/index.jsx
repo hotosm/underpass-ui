@@ -171,8 +171,8 @@ export default function UnderpassMap({
   }, [hashtag]);
 
   useEffect(() => {
-    dateFrom.current = dateFrom;
-    dateTo.current = dateTo;
+    dateFromRef.current = dateFrom;
+    dateToRef.current = dateTo;
     fetch();
   }, [dateFrom, dateTo]);
 
