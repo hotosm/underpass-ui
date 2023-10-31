@@ -2,6 +2,10 @@ import React from "react";
 import { UnderpassMap } from "@hotosm/underpass-ui";
 import { center } from "./center";
 
+const config = {
+  API_URL: "http://localhost:8000"
+};
+
 export default (
   <div style={{height: "100vh"}}>
     <UnderpassMap
@@ -9,7 +13,8 @@ export default (
       tags="building=yes"
       highlightDataQualityIssues
       grayscale
-      source="osm"
+      config={config}
+      source="dark"
     />
   </div>
 );

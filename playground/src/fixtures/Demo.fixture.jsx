@@ -4,17 +4,24 @@ import { center } from "./center";
 import "./Demo.css";
 
 const config = {
-    MAPBOX_TOKEN: "YOUR_TOKEN",
-    API_URL: "http://localhost:8000"
+    API_URL: "http://localhost:8000",
+    MAPBOX_TOKEN: "pk.eyJ1IjoiZW1pNDIwIiwiYSI6ImNqZW9leG5pZTAxYWwyeG83bHU0eHM0ZXcifQ.YWmk4Rp8FBGCLmpx_huJYw",
 };
+
+const statusList = {
+    ALL: "",
+    UNSQUARED: "badgeom",
+    OVERLAPPING: "overlaping",
+}
 
 export default () => {
     const [coords, setCoords] = useState(center);
     const [activeFeature, setActiveFeature] = useState(null);
     const [tags, setTags] = useState("building=yes");
     const [hashtag, setHashtag] = useState("");
-    const [mapSource, setMapSource] = useState("osm");
+    const [mapSource, setMapSource] = useState("dark");
     const [realtime, setRealtime] = useState(false);
+    const [status, setStatus] = useState(statusList.ALL);
     const tagsInputRef = useRef("");
     const hashtagInputRef = useRef("");
     const styleSelectRef = useRef();
@@ -103,7 +110,6 @@ export default () => {
                         tags={tags}
                         hashtag={hashtag}
                         highlightDataQualityIssues
-                        grayscale
                         popupFeature={activeFeature}
                         source={mapSource}
                         config={config}
@@ -121,7 +127,15 @@ export default () => {
                     </h2>
                     <form className="optionsForm">
                         <input onChange={() => { setRealtime(!realtime)}} name="liveCheckbox" type="checkbox" />
-                        <label>Live</label>
+                        <label target="liveCheckbox">Live</label>
+                    </form>
+                    <form className="optionsForm">
+                        <input checked={status == statusList.ALL} onChange={() => { setStatus(statusList.ALL) }} name="allCheckbox" type="radio" />
+                        <label target="allCheckbox">All</label>
+                        <input checked={status == statusList.UNSQUARED} onChange={() => { setStatus(statusList.UNSQUARED) }} name="unsquaredCheckbox" type="radio" />
+                        <label target="unsquaredCheckbox">Un-squared</label>
+                        <input checked={status == statusList.OVERLAPPING} onChange={() => { setStatus(statusList.OVERLAPPING) }} name="overlappingCheckbox" type="radio" />
+                        <label target ="overlappingCheckbox">Overlapping</label>
                     </form>
                     <UnderpassFeatureList
                         tags={tags}
@@ -135,6 +149,7 @@ export default () => {
                         }}
                         realtime={realtime}
                         config={config}
+                        status={status}
                         onUpdate={realtime ? (mostRecentFeature) => {
                             if (mostRecentFeature) {
                                 setCoords([mostRecentFeature.lat, mostRecentFeature.lon]);

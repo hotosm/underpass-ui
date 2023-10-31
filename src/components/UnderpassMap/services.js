@@ -6,6 +6,8 @@ export async function fetchService(
   hashtag,
   dateFrom,
   dateTo,
+  status,
+  page,
   map,
   theme,
   config,
@@ -16,6 +18,8 @@ export async function fetchService(
     hashtag,
     dateFrom,
     dateTo,
+    status,
+    page,
     {
       onSuccess: (data) => {
         if (map.getSource("raw")) {

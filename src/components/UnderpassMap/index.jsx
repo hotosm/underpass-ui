@@ -22,6 +22,7 @@ export default function UnderpassMap({
   tags,
   dateFrom = "",
   dateTo = "",
+  status,
   hashtag,
   highlightDataQualityIssues = true,
   grayscale,
@@ -32,6 +33,7 @@ export default function UnderpassMap({
   const mapRef = useRef(null);
   const tagsRef = useRef(tags);
   const hashtagRef = useRef(hashtag);
+  const statusRef = useRef(status);
   const dateFromRef = useRef(dateFrom);
   const dateToRef = useRef(dateTo);
   const realtimeIntervalRef = useRef();
@@ -49,6 +51,8 @@ export default function UnderpassMap({
       hashtagRef.current,
       dateFromRef.current,
       dateToRef.current,
+      statusRef.current,
+      0, // page always set to 0
       mapRef.current,
       theme,
       config
@@ -169,6 +173,11 @@ export default function UnderpassMap({
     hashtagRef.current = hashtag;
     fetch();
   }, [hashtag]);
+
+  useEffect(() => {
+    statusRef.current = status;
+    fetch();
+  }, [status]);
 
   useEffect(() => {
     dateFromRef.current = dateFrom;

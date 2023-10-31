@@ -214,6 +214,7 @@ const API = (url) => {
       hashtag,
       dateFrom,
       dateTo,
+      status,
       page,
       options = {},
     ) => {
@@ -226,6 +227,7 @@ const API = (url) => {
           hashtag,
           dateFrom,
           dateTo,
+          status,
           page,
         }),
       })
@@ -251,6 +253,7 @@ const API = (url) => {
       hashtag,
       dateFrom,
       dateTo,
+      status,
       page,
       options = {},
     ) => {
@@ -263,6 +266,7 @@ const API = (url) => {
           hashtag,
           dateFrom,
           dateTo,
+          status,
           page,
         }),
       })
@@ -288,6 +292,7 @@ const API = (url) => {
       hashtag,
       dateFrom,
       dateTo,
+      status,
       page,
       options = {},
     ) => {
@@ -300,6 +305,7 @@ const API = (url) => {
           hashtag,
           dateFrom,
           dateTo,
+          status,
           page,
         }),
       })
@@ -325,6 +331,7 @@ const API = (url) => {
       hashtag,
       dateFrom,
       dateTo,
+      status,
       page,
       options = {},
     ) => {
@@ -337,6 +344,7 @@ const API = (url) => {
           hashtag,
           dateFrom,
           dateTo,
+          status,
           page,
         }),
       })
@@ -353,7 +361,16 @@ const API = (url) => {
         );
     },
 
-    raw: async (area, tags, hashtag, dateFrom, dateTo, options = {}) => {
+    raw: async (
+      area,
+      tags,
+      hashtag,
+      dateFrom,
+      dateTo,
+      status,
+      page,
+      options = {},
+    ) => {
       fetch(`${API_URL}/raw/all`, {
         method: "POST",
         headers,
@@ -362,7 +379,9 @@ const API = (url) => {
           tags,
           hashtag,
           dateFrom,
-          dateTo
+          dateTo,
+          status,
+          page,
         }),
       })
         .then((res) => {
@@ -387,9 +406,12 @@ const API = (url) => {
       hashtag,
       dateFrom,
       dateTo,
+      status,
       page,
       options = {},
     ) => {
+      console.log("tags:", tags);
+      console.log("status:", status);
       fetch(API_URL + "/raw/allList", {
         method: "POST",
         headers: headers,
@@ -399,6 +421,7 @@ const API = (url) => {
           hashtag,
           dateFrom,
           dateTo,
+          status,
           page,
         }),
       })

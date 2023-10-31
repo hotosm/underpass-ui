@@ -10,6 +10,7 @@ function UnderpassFeatureList({
   hashtag,
   dateFrom,
   dateTo,
+  status,
   page,
   onSelect,
   realtime,
@@ -27,6 +28,7 @@ function UnderpassFeatureList({
       hashtag,
       dateFrom,
       dateTo,
+      status,
       page, {
       onSuccess: (data) => {
         setFeatures(data);
@@ -40,7 +42,7 @@ function UnderpassFeatureList({
 
   useEffect(() => {
     fetch();
-  }, [tags, hashtag]);
+  }, [tags, hashtag, status]);
 
   useEffect(() => {
     if (realtime) {
