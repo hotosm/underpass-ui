@@ -7,6 +7,8 @@ const getStatusLabel = (status) => {
       return 'Overlapping'
     case 'badgeom':
       return 'Un-squared'
+    case 'badvalue':
+      return 'Bad value'
     // Add more cases for other values
     default:
       return status
@@ -18,6 +20,8 @@ const getStatusClass = (status) => {
       return 'statusOverlapping'
     case 'badgeom':
       return 'statusBadgeom'
+    case 'badvalue':
+      return 'statusBadValue'
     // Add more cases for other values
     default:
       return 'statusDefault'

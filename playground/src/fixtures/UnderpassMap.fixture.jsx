@@ -14,7 +14,7 @@ export default (
       highlightDataQualityIssues
       grayscale
       config={config}
-      source="dark"
+      source="osm"
     />
   </div>
 );

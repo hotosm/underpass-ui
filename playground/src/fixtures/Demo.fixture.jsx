@@ -5,13 +5,13 @@ import "./Demo.css";
 
 const config = {
     API_URL: "http://localhost:8000",
-    MAPBOX_TOKEN: "pk.eyJ1IjoiZW1pNDIwIiwiYSI6ImNqZW9leG5pZTAxYWwyeG83bHU0eHM0ZXcifQ.YWmk4Rp8FBGCLmpx_huJYw",
 };
 
 const statusList = {
     ALL: "",
     UNSQUARED: "badgeom",
-    OVERLAPPING: "overlaping",
+    OVERLAPPING: "overlapping",
+    BADVALUE: "badvalue",
 }
 
 export default () => {
@@ -19,7 +19,7 @@ export default () => {
     const [activeFeature, setActiveFeature] = useState(null);
     const [tags, setTags] = useState("building=yes");
     const [hashtag, setHashtag] = useState("");
-    const [mapSource, setMapSource] = useState("dark");
+    const [mapSource, setMapSource] = useState("osm");
     const [realtime, setRealtime] = useState(false);
     const [status, setStatus] = useState(statusList.ALL);
     const tagsInputRef = useRef("");
@@ -130,12 +130,12 @@ export default () => {
                         <label target="liveCheckbox">Live</label>
                     </form>
                     <form className="optionsForm">
-                        <input checked={status == statusList.ALL} onChange={() => { setStatus(statusList.ALL) }} name="allCheckbox" type="radio" />
-                        <label target="allCheckbox">All</label>
-                        <input checked={status == statusList.UNSQUARED} onChange={() => { setStatus(statusList.UNSQUARED) }} name="unsquaredCheckbox" type="radio" />
-                        <label target="unsquaredCheckbox">Un-squared</label>
-                        <input checked={status == statusList.OVERLAPPING} onChange={() => { setStatus(statusList.OVERLAPPING) }} name="overlappingCheckbox" type="radio" />
-                        <label target ="overlappingCheckbox">Overlapping</label>
+                        <input checked={status == statusList.ALL} onChange={() => { setStatus(statusList.ALL) }} name="allCheckbox" id="allCheckbox" type="radio" />
+                        <label htmlFor="allCheckbox">All</label>
+                        <input checked={status == statusList.UNSQUARED} onChange={() => { setStatus(statusList.UNSQUARED) }} name="geospatialCheckbox" id="geospatialCheckbox" type="radio" />
+                        <label htmlFor="geospatialCheckbox">Geospatial</label>
+                        <input checked={status == statusList.BADVALUE} onChange={() => { setStatus(statusList.BADVALUE) }} name="semanticCheckbox" id="semanticCheckbox" type="radio" />
+                        <label htmlFor="semanticCheckbox">Semantic</label>
                     </form>
                     <UnderpassFeatureList
                         tags={tags}

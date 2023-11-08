@@ -18,7 +18,8 @@
   display: none;
 }
 
-.statusBadgeom {
+.statusBadgeom,
+.statusBadValue {
   background-color: rgb(var(--hottheme-color-warning));
   color: rgb(var(--hottheme-color-warning-fg));
 }
