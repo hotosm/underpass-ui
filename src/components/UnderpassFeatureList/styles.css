@@ -7,3 +7,9 @@
   height: 100vh;
   overflow-y: scroll;
 }
+
+.noResults,
+.loading {
+  padding-left: 20px;
+  color: var(--hottheme-color-text-secondary);  
+}

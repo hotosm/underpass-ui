@@ -38,6 +38,7 @@ export default function UnderpassMap({
   const dateToRef = useRef(dateTo);
   const realtimeIntervalRef = useRef();
   const [map, setMap] = useState(null);
+  const [loading, setLoading] = useState(true);
   const popUpRef = useRef(
     new maplibregl.Popup({ closeOnMove: false, closeButton: false })
   );
@@ -45,6 +46,7 @@ export default function UnderpassMap({
   async function fetch() {
     const theme = getTheme();
     if (!mapRef || !theme) return;
+    setLoading(true);
     fetchService(
       getBBoxString(mapRef.current),
       tagsRef.current,
@@ -55,7 +57,10 @@ export default function UnderpassMap({
       0, // page always set to 0
       mapRef.current,
       theme,
-      config
+      config,
+      () => {
+        setLoading(false);
+      }
     )
   }
 
@@ -282,6 +287,9 @@ export default function UnderpassMap({
   return (
     <div className={mapClassName || styles.underpassMapWrap}>
       <div ref={mapContainer} className={styles.underpassMap} />
+      {loading && 
+        <span className={styles.loading}>Loading ...</span>
+      }
     </div>
   );
 }

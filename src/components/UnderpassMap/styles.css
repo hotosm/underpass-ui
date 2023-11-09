@@ -99,3 +99,14 @@ table {
   color: rgb(var(--hottheme-color-primary));
   text-transform: capitalize;
 }
+
+.loading {
+  background: rgb(var(--hottheme-color-white));
+  color: var(--hottheme-color-text-secondary);
+  padding: 3px;
+  border-radius: 4px;
+  position: absolute;
+  bottom: 9px;
+  left: 9px;
+  font-size: .8rem;
+}

@@ -11,6 +11,7 @@ export async function fetchService(
   map,
   theme,
   config,
+  onSuccess,
 ) {
   await API(config && config.API_URL).raw(
     bbox,
@@ -53,6 +54,7 @@ export async function fetchService(
             paint: theme.map.nodesSymbol || {},
           });
         }
+        onSuccess();
       },
       onError: (error) => {
         console.log(error);

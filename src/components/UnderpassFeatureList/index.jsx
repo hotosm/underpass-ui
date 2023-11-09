@@ -19,9 +19,11 @@ function UnderpassFeatureList({
 }) {
 
   const [features, setFeatures] = useState([]);
+  const [loading, setLoading] = useState(true);
   const realtimeIntervalRef = useRef();
 
   async function fetch() {
+    setLoading(true);
     await API(config && config.API_URL)["rawList"](
       area,
       tags,
@@ -32,6 +34,7 @@ function UnderpassFeatureList({
       page, {
       onSuccess: (data) => {
         setFeatures(data);
+        setLoading(false);
         onUpdate && onUpdate(data[0]);
       },
       onError: (error) => {
@@ -67,6 +70,12 @@ function UnderpassFeatureList({
           />
         </div>
       ))}
+      {!loading && features.length == 0 &&
+        <span className={styles.noResults}>No results</span>
+      }
+      {loading && 
+        <span className={styles.loading}>Loading ...</span>
+      }
     </div>
   );
 }
