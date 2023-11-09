@@ -60,7 +60,7 @@ function UnderpassFeatureList({
 
   return (
     <div className={styles.featureCardsCtr}>
-      {features && features.map((feature) => (
+      {!loading && features && features.map((feature) => (
         <div key={feature.id} onClick={() => {
           onSelect && onSelect(feature)
         }}>
