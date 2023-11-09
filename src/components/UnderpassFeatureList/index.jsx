@@ -45,7 +45,7 @@ function UnderpassFeatureList({
 
   useEffect(() => {
     fetch();
-  }, [tags, hashtag, status]);
+  }, [tags, hashtag, status, area]);
 
   useEffect(() => {
     if (realtime) {

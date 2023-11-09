@@ -21,7 +21,9 @@ export default () => {
     const [hashtag, setHashtag] = useState("");
     const [mapSource, setMapSource] = useState("osm");
     const [realtime, setRealtime] = useState(false);
-    const [status, setStatus] = useState(statusList.ALL);
+    const [updateListWithMap, setUpdateListWithMap] = useState(true);
+    const [status, setStatus] = useState(statusList.UNSQUARED);
+    const [area, setArea] = useState(null);
     const tagsInputRef = useRef("");
     const hashtagInputRef = useRef("");
     const styleSelectRef = useRef();
@@ -75,6 +77,14 @@ export default () => {
         setMapSource(e.target.options[e.target.selectedIndex].value);
     }
 
+    const handleMapMove = ({ bbox }) => {
+        setArea(bbox);
+    }
+    const handleMapLoad = ({ bbox }) => {
+        console.log(bbox);
+        setArea(bbox);
+    }
+    
     return (
         <div>
             <div className="top">
@@ -116,6 +126,8 @@ export default () => {
                         realtime={realtime}
                         theme={demoTheme}
                         zoom={17}
+                        onMove={handleMapMove}
+                        onLoad={handleMapLoad}
                     />
                 </div>
                 <div className="section1" style={{
@@ -128,6 +140,8 @@ export default () => {
                     <form className="optionsForm">
                         <input onChange={() => { setRealtime(!realtime)}} name="liveCheckbox" type="checkbox" />
                         <label target="liveCheckbox">Live</label>
+                        <input checked={updateListWithMap} onChange={() => { setUpdateListWithMap(!updateListWithMap)}} name="visibleCheckbox" type="checkbox" />
+                        <label target="visibleCheckbox">Only visible features</label>
                     </form>
                     <form className="optionsForm">
                         <input checked={status == statusList.ALL} onChange={() => { setStatus(statusList.ALL) }} name="allCheckbox" id="allCheckbox" type="radio" />
@@ -150,6 +164,7 @@ export default () => {
                         realtime={realtime}
                         config={config}
                         status={status}
+                        area={updateListWithMap ? area : null}
                         onUpdate={realtime ? (mostRecentFeature) => {
                             if (mostRecentFeature) {
                                 setCoords([mostRecentFeature.lat, mostRecentFeature.lon]);

@@ -27,6 +27,8 @@ export default function UnderpassMap({
   highlightDataQualityIssues = true,
   grayscale,
   source = "osm",
+  onMove,
+  onLoad,
   config
 }) {
   const mapContainer = useRef(null);
@@ -217,11 +219,13 @@ export default function UnderpassMap({
           map.addImage("custom-marker", image);
         },
       );
+      onLoad && onLoad({ bbox: getBBoxString(mapRef.current) });
     });
 
     map.on("moveend", () => {
       const zoom = map.getZoom();
       zoom > minZoom && fetch();
+      onMove && onMove({ bbox: getBBoxString(mapRef.current) });
     });
 
     map.on("click", "waysFill", (e) => {

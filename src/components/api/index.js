@@ -410,8 +410,6 @@ const API = (url) => {
       page,
       options = {},
     ) => {
-      console.log("tags:", tags);
-      console.log("status:", status);
       fetch(API_URL + "/raw/allList", {
         method: "POST",
         headers: headers,

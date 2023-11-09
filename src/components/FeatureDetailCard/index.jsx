@@ -13,9 +13,11 @@ function FeatureDetailCard({ feature }) {
     <article className={styles.featureCard}>
       <div className={styles.timeInfo}>
         <strong>{feature.type} &nbsp;<a rel="noreferrer" target="_blank" href={"https://osm.org/" + feature.type + "/" + feature.id}>{feature.id}</a></strong>
-        <abbr title={feature.created_at}>
-          <TimeAgo date={feature.created_at} formatter={formatter} />
-        </abbr>
+        { feature.created_at &&
+          <abbr title={feature.created_at}>
+            <TimeAgo date={feature.created_at} formatter={formatter} />
+          </abbr>
+        }
       </div>
       <div>
       <table>
