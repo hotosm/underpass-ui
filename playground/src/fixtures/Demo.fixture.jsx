@@ -17,11 +17,11 @@ const statusList = {
 export default () => {
     const [coords, setCoords] = useState(center);
     const [activeFeature, setActiveFeature] = useState(null);
-    const [tags, setTags] = useState("building=yes");
+    const [tags, setTags] = useState("building");
     const [hashtag, setHashtag] = useState("");
     const [mapSource, setMapSource] = useState("osm");
     const [realtime, setRealtime] = useState(false);
-    const [updateListWithMap, setUpdateListWithMap] = useState(true);
+    const [updateListWithMap, setUpdateListWithMap] = useState(false);
     const [status, setStatus] = useState(statusList.UNSQUARED);
     const [area, setArea] = useState(null);
     const tagsInputRef = useRef("");
@@ -81,7 +81,6 @@ export default () => {
         setArea(bbox);
     }
     const handleMapLoad = ({ bbox }) => {
-        console.log(bbox);
         setArea(bbox);
     }
     

@@ -49,11 +49,10 @@ export const getMapStyle = (grayscale, source = "osm", config) => {
     },
     oam: {
       type: "raster",
-      tiles: [
-        "https://tiles.openaerialmap.org/6501a65c0906de000167e64d/0/6501a65c0906de000167e64e/{z}/{x}/{y}",
-      ],
+      tiles: ["https://apps.kontur.io/raster-tiler/oam/mosaic/{z}/{x}/{y}.png"],
       tileSize: 256,
-      attribution: "&copy; OpenStreetMap Contributors &copy; OpenAerialMap",
+      attribution:
+        "&copy; OpenStreetMap Contributors &copy; OpenAerialMap &copy; Kontur",
       maxzoom: 19,
     },
   };

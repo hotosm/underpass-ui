@@ -36,14 +36,15 @@
     "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "microbundle": "^0.15.1",
+    "microbundle-crl": "^0.13.11",
     "npm-run-all": "4.1.5",
     "prettier": "^3.0.2",
-    "react-scripts": "^5.0.1",
-    "microbundle": "^0.15.1",
-    "microbundle-crl": "^0.13.11"
+    "react-scripts": "^5.0.1"
   },
   "dependencies": {
     "maplibre-gl": "^3.3.1",
+    "react-infinite-scroller": "^1.2.6",
     "react-timeago": "^7.1.0"
   },
   "peerDependencies": {

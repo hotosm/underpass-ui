@@ -52,6 +52,10 @@ from https://github.com/mapbox/mapbox-gl-js/issues/8368#issuecomment-537597959*/
   position: relative;
   width: 100%;
   height: calc(100vh - 16px);
+
+  justify-content: center;
+  align-items: center;
+  position: relative;
 }
 
 .underpassMap {
@@ -109,4 +113,18 @@ table {
   bottom: 9px;
   left: 9px;
   font-size: .8rem;
+}
+.zoomMessage {
+  background: rgb(var(--hottheme-color-white));
+  color: var(--hottheme-color-text-secondary);
+  padding: 7px;
+  border-radius: 4px;
+  font-size: 1.8rem;
+  opacity: .7;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  text-transform: uppercase;
+  transform: translate(-50%,-50%);
+
 }

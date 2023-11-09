@@ -28,7 +28,6 @@ export default function HOTTheme() {
       waysLine: {
         "line-width": 2,
       },
-      nodesSymbol: {},
     },
   };
 }
