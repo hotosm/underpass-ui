@@ -435,6 +435,41 @@ const API = (url) => {
           },
         );
     },
+
+    statsCount: async (
+      area,
+      tags,
+      hashtag,
+      dateFrom,
+      dateTo,
+      status,
+      options = {},
+    ) => {
+      fetch(API_URL + "/stats/count", {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify({
+          area,
+          tags,
+          hashtag,
+          dateFrom,
+          dateTo,
+          status,
+        }),
+      })
+        .then((res) => {
+          return res.json();
+        })
+        .then(
+          (result) => {
+            options.onSuccess && options.onSuccess(result);
+          },
+          (error) => {
+            options.onError && options.onError(error);
+          },
+        );
+    },
+
   };
 };
 

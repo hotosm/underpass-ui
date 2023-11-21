@@ -1,0 +1,18 @@
+.title {
+  color: rgb(var(--hottheme-color-primary));
+  font-size: 1.6em;
+  letter-spacing: -0.03em;
+  margin: 0;
+  font-weight: bolder;
+}
+
+.subTitle {
+  margin-top: 4px;
+  color: --hottheme-color-text-primary;
+  font-weight: bold;
+  text-transform: lowercase;
+}
+
+.label {
+  font-weight: normal;
+}

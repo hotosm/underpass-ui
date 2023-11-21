@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { UnderpassFeatureList, UnderpassMap, HOTTheme } from "@hotosm/underpass-ui";
+import { UnderpassFeatureList, UnderpassMap, HOTTheme, UnderpassFeatureStats, UnderpassValidationStats } from "@hotosm/underpass-ui";
 import { center } from "./center";
 import "./Demo.css";
 
@@ -92,6 +92,7 @@ export default () => {
                         type="text"
                         placeholder="key (ex: building=yes)"
                         ref={tagsInputRef}
+                        defaultValue="building"
                     />
                      &nbsp;
                      <input
@@ -132,24 +133,35 @@ export default () => {
                 <div className="section1" style={{
                     backgroundColor: `rgb(${hottheme.colors.white})`}}
                 >
-                    <h2>
-                        <img src="/hot-logo.svg" />
-                        <span>Latest mapped features</span>
-                    </h2>
-                    <form className="optionsForm">
-                        <input onChange={() => { setRealtime(!realtime)}} name="liveCheckbox" type="checkbox" />
-                        <label target="liveCheckbox">Live</label>
-                        <input checked={updateListWithMap} onChange={() => { setUpdateListWithMap(!updateListWithMap)}} name="visibleCheckbox" type="checkbox" />
-                        <label target="visibleCheckbox">Only visible features</label>
-                    </form>
-                    <form className="optionsForm">
-                        <input checked={status == statusList.ALL} onChange={() => { setStatus(statusList.ALL) }} name="allCheckbox" id="allCheckbox" type="radio" />
-                        <label htmlFor="allCheckbox">All</label>
-                        <input checked={status == statusList.UNSQUARED} onChange={() => { setStatus(statusList.UNSQUARED) }} name="geospatialCheckbox" id="geospatialCheckbox" type="radio" />
-                        <label htmlFor="geospatialCheckbox">Geospatial</label>
-                        <input checked={status == statusList.BADVALUE} onChange={() => { setStatus(statusList.BADVALUE) }} name="semanticCheckbox" id="semanticCheckbox" type="radio" />
-                        <label htmlFor="semanticCheckbox">Semantic</label>
-                    </form>
+                    <div className="stats">
+                        <UnderpassFeatureStats
+                            tags={tags}
+                            hashtag={hashtag}
+                            apiUrl={config.API_URL}
+                        />
+                        <UnderpassValidationStats
+                            tags={tags}
+                            hashtag={hashtag}
+                            apiUrl={config.API_URL}
+                            status="badgeom"
+                        />
+                    </div>
+                    <div className="options">
+                        <form className="optionsForm">
+                            <input onChange={() => { setRealtime(!realtime)}} name="liveCheckbox" type="checkbox" />
+                            <label target="liveCheckbox">Live</label>
+                            <input checked={updateListWithMap} onChange={() => { setUpdateListWithMap(!updateListWithMap)}} name="visibleCheckbox" type="checkbox" />
+                            <label target="visibleCheckbox">Only visible features</label>
+                        </form>
+                        <form className="optionsForm">
+                            <input checked={status == statusList.ALL} onChange={() => { setStatus(statusList.ALL) }} name="allCheckbox" id="allCheckbox" type="radio" />
+                            <label htmlFor="allCheckbox">All</label>
+                            <input checked={status == statusList.UNSQUARED} onChange={() => { setStatus(statusList.UNSQUARED) }} name="geospatialCheckbox" id="geospatialCheckbox" type="radio" />
+                            <label htmlFor="geospatialCheckbox">Geospatial</label>
+                            <input checked={status == statusList.BADVALUE} onChange={() => { setStatus(statusList.BADVALUE) }} name="semanticCheckbox" id="semanticCheckbox" type="radio" />
+                            <label htmlFor="semanticCheckbox">Semantic</label>
+                        </form>
+                    </div>
                     <UnderpassFeatureList
                         tags={tags}
                         hashtag={hashtag}

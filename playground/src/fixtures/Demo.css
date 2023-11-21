@@ -71,11 +71,22 @@
   }
 
   .optionsForm {
-    padding: .7rem;
-    margin-bottom: .8rem;
+    margin-bottom: 20px;
   }
   .optionsForm label {
     padding-left: .2rem;
     padding-right: .4rem;
   }
 
+  .stats, .options {
+    border-bottom: 1px solid var(--hottheme-color-divider);;
+  }
+
+  .stats {
+    padding: 15px;
+  }
+
+  .options {
+    padding: 15px 15px 0 15px;
+    font-size: .9rem;
+  }

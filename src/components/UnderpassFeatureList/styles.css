@@ -11,5 +11,5 @@
 .noResults,
 .loading {
   padding-left: 20px;
-  color: var(--hottheme-color-text-secondary);  
+  color: var(--hottheme-color-text-secondary);
 }
