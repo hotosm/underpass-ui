@@ -72,7 +72,7 @@ export async function fetchService(
             },
           });
           map.addLayer({
-            id: "waysLine",
+            id: "waysLineString",
             type: "line",
             source: "linestring",
             layout: {},

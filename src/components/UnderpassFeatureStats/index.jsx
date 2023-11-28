@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import API from "../api";
-import styles from './styles.css'
 
 function UnderpassFeatureStats({
     area, 
@@ -37,8 +36,8 @@ function UnderpassFeatureStats({
 
   return (
     <div>
-      <h3 className={styles.title}>{result && result.count}</h3>
-      <p className={styles.subTitle}>{tags} <span className={styles.label}>mapped</span></p>
+      <h3 className="text-2xl font-bold text-primary">{result && result.count}</h3>
+      <p className="font-bold">{tags} <span className="font-normal">mapped</span></p>
     </div>
   )
 }

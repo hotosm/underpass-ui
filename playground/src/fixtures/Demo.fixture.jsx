@@ -14,10 +14,10 @@ const statusList = {
     BADVALUE: "badvalue",
 }
 
-export default () => {
+function App() {
     const [coords, setCoords] = useState(center);
     const [activeFeature, setActiveFeature] = useState(null);
-    const [tags, setTags] = useState("building");
+    const [tags, setTags] = useState("amenity");
     const [hashtag, setHashtag] = useState("");
     const [mapSource, setMapSource] = useState("osm");
     const [realtime, setRealtime] = useState(false);
@@ -86,35 +86,37 @@ export default () => {
     
     return (
         <div>
-            <div className="top">
-                <form>
-                    <input
-                        type="text"
-                        placeholder="key (ex: building=yes)"
-                        ref={tagsInputRef}
-                        defaultValue="building"
-                    />
-                     &nbsp;
-                     <input
-                        type="text"
-                        placeholder="hashtag (ex: hotosm-project)"
-                        ref={hashtagInputRef}
-                    />
-                     &nbsp;
-                    <button onClick={handleFilterClick}>Search</button>
-                </form>
-                <select onChange={handleMapSourceSelect} ref={styleSelectRef} className="mapSourceSelect">
-                    <option value="osm">OSM</option>
-                    <option value="bing">Bing</option>
-                    <option value="esri">ESRI</option>
-                    <option value="mapbox">Mapbox</option>
-                    <option value="white">Blank</option>
-                    <option value="dark">Blank (dark)</option>
-                    <option value="oam">OAM</option>
-                </select>
-            </div>
-            <div className="container">
-                <div className="section2">
+            <div className="flex p-2">
+                <div style={{flex: 2}}>
+                    <div className="top">
+                        <form>
+                            <input
+                                className="border px-2 py-2 text-sm"
+                                type="text"
+                                placeholder="key (ex: building=yes)"
+                                ref={tagsInputRef}
+                                defaultValue="amenity"
+                            />
+                            &nbsp;
+                            <input
+                                className="border px-2 py-2 text-sm"
+                                type="text"
+                                placeholder="hashtag (ex: hotosm-project)"
+                                ref={hashtagInputRef}
+                            />
+                            &nbsp;
+                            <button className="inline-flex items-center rounded bg-primary px-2 py-2 text-sm font-medium text-white" onClick={handleFilterClick}>Search</button>
+                        </form>
+                        <select onChange={handleMapSourceSelect} ref={styleSelectRef} className="border mt-2 bg-white px-2 py-2 text-sm">
+                            <option value="osm">OSM</option>
+                            <option value="bing">Bing</option>
+                            <option value="esri">ESRI</option>
+                            <option value="mapbox">Mapbox</option>
+                            <option value="white">Blank</option>
+                            <option value="dark">Blank (dark)</option>
+                            <option value="oam">OAM</option>
+                        </select>
+                    </div>
                     <UnderpassMap
                         center={coords}
                         tags={tags}
@@ -130,10 +132,11 @@ export default () => {
                         onLoad={handleMapLoad}
                     />
                 </div>
-                <div className="section1" style={{
-                    backgroundColor: `rgb(${hottheme.colors.white})`}}
-                >
-                    <div className="stats">
+                <div style={{ 
+                    flex: 1,
+                    padding: 10,
+                    backgroundColor: `rgb(${hottheme.colors.white})`}}>
+                    <div className="border-b-2 pb-5 space-y-3">
                         <UnderpassFeatureStats
                             tags={tags}
                             hashtag={hashtag}
@@ -146,19 +149,19 @@ export default () => {
                             status="badgeom"
                         />
                     </div>
-                    <div className="options">
-                        <form className="optionsForm">
+                    <div className="border-b-2 py-5 mb-5">
+                        <form className="space-x-2 mb-3">
                             <input onChange={() => { setRealtime(!realtime)}} name="liveCheckbox" type="checkbox" />
                             <label target="liveCheckbox">Live</label>
                             <input checked={updateListWithMap} onChange={() => { setUpdateListWithMap(!updateListWithMap)}} name="visibleCheckbox" type="checkbox" />
                             <label target="visibleCheckbox">Only visible features</label>
                         </form>
-                        <form className="optionsForm">
-                            <input checked={status == statusList.ALL} onChange={() => { setStatus(statusList.ALL) }} name="allCheckbox" id="allCheckbox" type="radio" />
+                        <form className="space-x-2">
+                            <input checked={status === statusList.ALL} onChange={() => { setStatus(statusList.ALL) }} name="allCheckbox" id="allCheckbox" type="radio" />
                             <label htmlFor="allCheckbox">All</label>
-                            <input checked={status == statusList.UNSQUARED} onChange={() => { setStatus(statusList.UNSQUARED) }} name="geospatialCheckbox" id="geospatialCheckbox" type="radio" />
+                            <input checked={status === statusList.UNSQUARED} onChange={() => { setStatus(statusList.UNSQUARED) }} name="geospatialCheckbox" id="geospatialCheckbox" type="radio" />
                             <label htmlFor="geospatialCheckbox">Geospatial</label>
-                            <input checked={status == statusList.BADVALUE} onChange={() => { setStatus(statusList.BADVALUE) }} name="semanticCheckbox" id="semanticCheckbox" type="radio" />
+                            <input checked={status === statusList.BADVALUE} onChange={() => { setStatus(statusList.BADVALUE) }} name="semanticCheckbox" id="semanticCheckbox" type="radio" />
                             <label htmlFor="semanticCheckbox">Semantic</label>
                         </form>
                     </div>
@@ -190,4 +193,7 @@ export default () => {
       </div>
     );
 }
+
+export default App;
+
 

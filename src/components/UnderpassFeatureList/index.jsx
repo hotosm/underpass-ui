@@ -1,7 +1,5 @@
 
 import React, { useEffect, useState, useRef } from 'react';
-import InfiniteScroll from 'react-infinite-scroller';
-import styles from './styles.css';
 import FeatureDetailCard from '../FeatureDetailCard';
 import API from '../api';
 
@@ -21,9 +19,18 @@ function UnderpassFeatureList({
 
   const [features, setFeatures] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
   const realtimeIntervalRef = useRef();
-  const infiniteScrollRef = useRef(null);
+  const pageRef = useRef(0);
+  
+
+  const handleScroll = (e) => {
+    const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+    if (bottom && hasMore) {
+        pageRef.current += 1;
+        fetch(pageRef.current);
+    }
+ }
 
   async function fetch(page) {
     if (!loading) {
@@ -58,8 +65,8 @@ function UnderpassFeatureList({
   }
 
   useEffect(() => {
+    pageRef.current = 0;
     fetch();
-    infiniteScrollRef.current.pageLoaded = 0;
   }, [tags, hashtag, status, area]);
 
   useEffect(() => {
@@ -74,17 +81,11 @@ function UnderpassFeatureList({
   }, [realtime])
 
   return (
-    <div className={styles.featureCardsCtr}>
-      <InfiniteScroll
-        pageStart={0}
-        loadMore={fetch}
-        hasMore={hasMore}
-        useWindow={false}
-        ref={infiniteScrollRef}
-      >
+    <div>
+      <div onScroll={handleScroll}  className="space-y-3" style={{ overflow: "scroll", "height": "100vh"}}>
         {features && features.map(feature => (
           feature && (
-          <div key={feature && feature.id} onClick={() => {
+          <div key={feature && feature.id} className="border-b pb-5" onClick={() => {
             onSelect && onSelect(feature)
           }}> 
             <FeatureDetailCard
@@ -93,12 +94,12 @@ function UnderpassFeatureList({
             />
           </div>
         )))}
-      </InfiniteScroll>
-      {!loading && features && features.length == 0 &&
-        <span className={styles.noResults}>No results</span>
+      </div>
+      {!loading && features && features.length === 0 &&
+        <span className="noResults">No results</span>
       }
       {loading && 
-        <span className={styles.loading}>Loading ...</span>
+        <span className="loading">Loading ...</span>
       }
     </div>
   );
