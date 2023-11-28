@@ -1,5 +1,4 @@
 import React from 'react'
-import styles from './styles.css'
 
 const getStatusLabel = (status) => {
   switch (status) {
@@ -31,7 +30,7 @@ const getStatusClass = (status) => {
 function StatusBox({ status }) {
   const statusClass = getStatusClass(status);
   return (
-    <div className={[styles.statusCtr, styles[statusClass]].join(' ')}>
+    <div className="inline-flex items-center rounded-md bg-primary px-2 py-1 text-sm font-medium text-white">
       {getStatusLabel(status)}
     </div>
   )

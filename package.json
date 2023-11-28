@@ -12,8 +12,8 @@
     "node": ">=10"
   },
   "scripts": {
-    "build": "microbundle-crl --no-compress --format modern,cjs",
-    "start": "microbundle-crl watch --no-compress --format modern,cjs",
+    "build": "microbundle-crl --no-compress --css-modules false --format modern,cjs",
+    "start": "microbundle-crl watch --no-compress --css-modules false --format modern,cjs",
     "prepare": "run-s build",
     "test": "run-s test:unit test:lint test:build",
     "test:build": "run-s build",
@@ -43,9 +43,11 @@
     "react-scripts": "^5.0.1"
   },
   "dependencies": {
+    "autoprefixer": "^9",
     "maplibre-gl": "^3.3.1",
-    "react-infinite-scroller": "^1.2.6",
-    "react-timeago": "^7.1.0"
+    "postcss": "^7",
+    "react-timeago": "^7.1.0",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat"
   },
   "peerDependencies": {
     "react": "^18.2.0",

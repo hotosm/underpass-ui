@@ -1,17 +1,16 @@
 import React, { useEffect, useState, useRef } from "react";
-// import { createRoot } from "react-dom/client";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 
 import HOTTheme from "../HOTTheme";
 import { getMapStyle } from "./mapStyle";
-import styles from "./styles.css";
 import Popup from "./popup";
+import PopupContent from "./popupContent"
 import { getBBoxString } from './utils';
 import { fetchService } from './services';
 
 export default function UnderpassMap({
-  center,
+  center: propsCenter,
   popupFeature,
   realtime = false,
   theme: propsTheme = {},
@@ -39,11 +38,11 @@ export default function UnderpassMap({
   const dateFromRef = useRef(dateFrom);
   const dateToRef = useRef(dateTo);
   const realtimeIntervalRef = useRef();
+  const [center, setCenter] = useState(propsCenter);
+  const [activePopupFeature, setActivePopupFeature] = useState(null);
   const [map, setMap] = useState(null);
   const [loading, setLoading] = useState(true);
-  const popUpRef = useRef(
-    new maplibregl.Popup({ closeOnMove: false, closeButton: false })
-  );
+  const [showPopup, setShowPopup] = useState(false);
 
   async function fetch() {
     const theme = getTheme();
@@ -76,10 +75,10 @@ export default function UnderpassMap({
             "match",
             ["get", "status"],
             "badgeom",
-            `rgb(${theme.colors.warning})`,
-            `rgb(${theme.colors.valid})`,
+            theme.colors.primary,
+            theme.colors.info,
           ]
-        : `rgb(${theme.colors.valid})`,
+        : theme.colors.info,
         "fill-opacity": [
             "match",
             ["get", "type"],
@@ -94,10 +93,10 @@ export default function UnderpassMap({
             "match",
             ["get", "status"],
             "badgeom",
-            `rgb(${theme.colors.warning})`,
-            `rgb(${theme.colors.valid})`,
+            theme.colors.primary,
+            theme.colors.info,
           ]
-        : `rgb(${theme.colors.valid})`,
+        : theme.colors.info,
       ...theme.map.waysLine,
     };
 
@@ -132,7 +131,7 @@ export default function UnderpassMap({
   }, [center]);
 
   useEffect(() => {
-    if (!map || !propsTheme) return;    
+    if (!map || !propsTheme) return;
     const rasterStyle = getMapStyle(grayscale, source, config);
     map.once("styledata", () => {
       fetch();
@@ -159,20 +158,15 @@ export default function UnderpassMap({
     map.setZoom(zoom);
   }, [map, zoom]);
   
-  // useEffect(() => {
-  //   if (!map || !popupFeature) return;
-  //   const popupNode = document.createElement("div");
-  //   createRoot(popupNode).render(
-  //     <Popup
-  //       feature={popupFeature}
-  //       highlightDataQualityIssues={highlightDataQualityIssues}
-  //     />,
-  //   );
-  //   popUpRef.current.setLngLat([popupFeature.lat, popupFeature.lon]).setDOMContent(popupNode).addTo(map);
-  //   if (map.getZoom() < minZoom) {
-  //     map.setZoom(defaultZoom);
-  //   }
-  // }, [map, popupFeature]);
+  useEffect(() => {
+    if (!map || !popupFeature) return;
+      setActivePopupFeature(popupFeature);
+      setShowPopup(true);
+      setCenter([popupFeature.lat, popupFeature.lon])
+      if (map.getZoom() < minZoom) {
+        map.setZoom(defaultZoom);
+      }
+  }, [map, popupFeature]);
 
   useEffect(() => {
     tagsRef.current = tags;
@@ -240,75 +234,65 @@ export default function UnderpassMap({
       onMove && onMove({ bbox: getBBoxString(mapRef.current) });
     });
 
-    map.on("click", "waysFill", (e) => {
-      // const popupNode = document.createElement("div");
-      // createRoot(popupNode).render(
-      //   <Popup
-      //     feature={e.features[0]}
-      //     highlightDataQualityIssues={highlightDataQualityIssues}
-      //   />,
-      // );
-      // popUpRef.current.setLngLat(e.lngLat).setDOMContent(popupNode).addTo(map);
-    });
-
-    // map.on("click", "nodesFill", (e) => {
-    //   const popupNode = document.createElement("div");
-    //   createRoot(popupNode).render(
-    //     <Popup
-    //       feature={e.features[0]}
-    //       highlightDataQualityIssues={highlightDataQualityIssues}
-    //     />,
-    //   );
-    //   popUpRef.current.setLngLat(e.lngLat).setDOMContent(popupNode).addTo(map);
-    // });
-
-    // map.on("click", "waysLine", (e) => {
-    //   const popupNode = document.createElement("div");
-    //   createRoot(popupNode).render(
-    //     <Popup
-    //       feature={e.features[0]}
-    //       highlightDataQualityIssues={highlightDataQualityIssues}
-    //     />,
-    //   );
-    //   popUpRef.current.setLngLat(e.lngLat).setDOMContent(popupNode).addTo(map);
-    // });
+    // Open popup on layer click
+    const handleLayerClick = (e) => {
+      setActivePopupFeature(e.features[0]);
+      const coords = e.lngLat;
+      setCenter([coords.lng, coords.lat]);
+      setShowPopup(true);
+    }
+    map.on("click", "waysFill", handleLayerClick);
+    map.on("click", "nodesFill", handleLayerClick);
+    map.on("click", "waysLine", handleLayerClick);
+    map.on("click", "waysLineString", handleLayerClick);
 
     // Display pointer cursor for polygons
-    map.on("mouseenter", "waysFill", () => {
+    const handleLayerMouseEnter = (e) => {
       map.getCanvas().style.cursor = "pointer";
-    });
-
-    map.on("mouseleave", "waysFill", () => {
+    }
+    const handleLayerMouseLeave = (e) => {
       map.getCanvas().style.cursor = "";
-    });
+    }
+    map.on("mouseenter", "waysFill", handleLayerMouseEnter);
+    map.on("mouseleave", "waysFill", handleLayerMouseLeave);
+    map.on("mouseenter", "waysLine", handleLayerMouseEnter);
+    map.on("mouseleave", "waysLine", handleLayerMouseLeave);
+    map.on("mouseenter", "nodesFill", handleLayerMouseEnter);
+    map.on("mouseleave", "nodesFill", handleLayerMouseLeave);
+    map.on("mouseenter", "waysLineString", handleLayerMouseEnter);
+    map.on("mouseleave", "waysLineString", handleLayerMouseLeave);
 
-    map.on("mouseenter", "waysLine", () => {
-      map.getCanvas().style.cursor = "pointer";
-    });
-
-    map.on("mouseleave", "waysLine", () => {
-      map.getCanvas().style.cursor = "";
-    });
-
-    map.on("mouseenter", "nodesFill", () => {
-      map.getCanvas().style.cursor = "pointer";
-    });
-
-    map.on("mouseleave", "nodesFill", () => {
-      map.getCanvas().style.cursor = "";
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map]);
 
   return (
-    <div className={mapClassName || styles.underpassMapWrap}>
-      <div ref={mapContainer} className={styles.underpassMap} />
+    <div className={mapClassName || "underpassMapWrap"}>
+      <div ref={mapContainer} className="underpassMap" />
       {loading && 
-        <span className={styles.loading}>Loading ...</span>
+        <span className="loading">Loading ...</span>
       }
       { (map && map.getZoom() < minZoom) &&
-        <span className={styles.zoomMessage}>Zoom in to see data</span>
+        <span className="zoomMessage">Zoom in to see data</span>
       }
+      { map &&
+        <Popup
+          map={map}
+          longitude={center[0]}
+          latitude={center[1]}
+          show={showPopup}
+          onClose={() => {
+            setShowPopup(false);
+          }}
+          closeOnMove={false}
+          closeButton={true}
+        >
+            {activePopupFeature &&
+            <PopupContent
+              feature={activePopupFeature}
+              highlightDataQualityIssues
+            />}
+        </Popup>
+      }
+
     </div>
   );
 }
