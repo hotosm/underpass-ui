@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-// import { createRoot } from "react-dom/client";
+import { createRoot } from "react-dom/client";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 
@@ -159,20 +159,20 @@ export default function UnderpassMap({
     map.setZoom(zoom);
   }, [map, zoom]);
   
-  // useEffect(() => {
-  //   if (!map || !popupFeature) return;
-  //   const popupNode = document.createElement("div");
-  //   createRoot(popupNode).render(
-  //     <Popup
-  //       feature={popupFeature}
-  //       highlightDataQualityIssues={highlightDataQualityIssues}
-  //     />,
-  //   );
-  //   popUpRef.current.setLngLat([popupFeature.lat, popupFeature.lon]).setDOMContent(popupNode).addTo(map);
-  //   if (map.getZoom() < minZoom) {
-  //     map.setZoom(defaultZoom);
-  //   }
-  // }, [map, popupFeature]);
+  useEffect(() => {
+    if (!map || !popupFeature) return;
+    const popupNode = document.createElement("div");
+    createRoot(popupNode).render(
+      <Popup
+        feature={popupFeature}
+        highlightDataQualityIssues={highlightDataQualityIssues}
+      />,
+    );
+    popUpRef.current.setLngLat([popupFeature.lat, popupFeature.lon]).setDOMContent(popupNode).addTo(map);
+    if (map.getZoom() < minZoom) {
+      map.setZoom(defaultZoom);
+    }
+  }, [map, popupFeature]);
 
   useEffect(() => {
     tagsRef.current = tags;
@@ -241,37 +241,37 @@ export default function UnderpassMap({
     });
 
     map.on("click", "waysFill", (e) => {
-      // const popupNode = document.createElement("div");
-      // createRoot(popupNode).render(
-      //   <Popup
-      //     feature={e.features[0]}
-      //     highlightDataQualityIssues={highlightDataQualityIssues}
-      //   />,
-      // );
-      // popUpRef.current.setLngLat(e.lngLat).setDOMContent(popupNode).addTo(map);
+      const popupNode = document.createElement("div");
+      createRoot(popupNode).render(
+        <Popup
+          feature={e.features[0]}
+          highlightDataQualityIssues={highlightDataQualityIssues}
+        />,
+      );
+      popUpRef.current.setLngLat(e.lngLat).setDOMContent(popupNode).addTo(map);
     });
 
-    // map.on("click", "nodesFill", (e) => {
-    //   const popupNode = document.createElement("div");
-    //   createRoot(popupNode).render(
-    //     <Popup
-    //       feature={e.features[0]}
-    //       highlightDataQualityIssues={highlightDataQualityIssues}
-    //     />,
-    //   );
-    //   popUpRef.current.setLngLat(e.lngLat).setDOMContent(popupNode).addTo(map);
-    // });
+    map.on("click", "nodesFill", (e) => {
+      const popupNode = document.createElement("div");
+      createRoot(popupNode).render(
+        <Popup
+          feature={e.features[0]}
+          highlightDataQualityIssues={highlightDataQualityIssues}
+        />,
+      );
+      popUpRef.current.setLngLat(e.lngLat).setDOMContent(popupNode).addTo(map);
+    });
 
-    // map.on("click", "waysLine", (e) => {
-    //   const popupNode = document.createElement("div");
-    //   createRoot(popupNode).render(
-    //     <Popup
-    //       feature={e.features[0]}
-    //       highlightDataQualityIssues={highlightDataQualityIssues}
-    //     />,
-    //   );
-    //   popUpRef.current.setLngLat(e.lngLat).setDOMContent(popupNode).addTo(map);
-    // });
+    map.on("click", "waysLine", (e) => {
+      const popupNode = document.createElement("div");
+      createRoot(popupNode).render(
+        <Popup
+          feature={e.features[0]}
+          highlightDataQualityIssues={highlightDataQualityIssues}
+        />,
+      );
+      popUpRef.current.setLngLat(e.lngLat).setDOMContent(popupNode).addTo(map);
+    });
 
     // Display pointer cursor for polygons
     map.on("mouseenter", "waysFill", () => {
