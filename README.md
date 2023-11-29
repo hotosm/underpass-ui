@@ -1,6 +1,6 @@
 # Underpass UI
 
-A set of UI components for Underpass.
+A set of UI components for [Underpass](https://github.com/hotosm/underpass).
 
 ## Install
 
@@ -10,20 +10,27 @@ yarn add https://github.com/hotosm/underpass-ui.git
 
 ## Usage
 
-Include the styles file on your project:
+Include the styles file on your CSS:
 
-```js
-import "@hotosm/underpass-ui/dist/index.css"``
+```css
+@import "@hotosm/underpass-ui/dist/index.css";
 ```
 
-And use the components:
+You can also add this if you want a full view height map:
+
+```css
+.maplibregl-map {
+  height: 100vh;
+}
+```
+
+And then use the components:
 
 ```jsx
 <UnderpassMap
   center={[-79.64696, 0.95953]}
   tags="building=yes"
   highlightDataQualityIssues
-  grayscale
 />
 ```
 
@@ -35,7 +42,7 @@ The default URL for the Underpass REST API is `https://underpass.hotosm.org:8000
 
 ```sh
 const config = {
-    MAPBOX_TOKEN: "YOUR_TOKEN",
-    API_URL: "http://localhost:8000"
+    API_URL: "http://localhost:8000",
+    MAPBOX_TOKEN: "YOUR_TOKEN"
 };
 ```
