@@ -82,6 +82,12 @@ function UnderpassFeatureList({
 
   return (
     <div>
+      {!loading && features && features.length === 0 &&
+        <span className="text-sm text-secondary-light">No results</span>
+      }
+      {loading && 
+        <span className="text-sm text-secondary-light">Loading ...</span>
+      }
       <div onScroll={handleScroll}  className="space-y-3" style={{ overflow: "scroll", "height": "100vh"}}>
         {features && features.map(feature => (
           feature && (
@@ -95,12 +101,6 @@ function UnderpassFeatureList({
           </div>
         )))}
       </div>
-      {!loading && features && features.length === 0 &&
-        <span className="noResults">No results</span>
-      }
-      {loading && 
-        <span className="loading">Loading ...</span>
-      }
     </div>
   );
 }

@@ -265,13 +265,30 @@ export default function UnderpassMap({
   }, [map]);
 
   return (
-    <div className={mapClassName || "underpassMapWrap"}>
-      <div ref={mapContainer} className="underpassMap" />
-      {loading && 
-        <span className="loading">Loading ...</span>
+    <div className={mapClassName || "underpassMapWrap"} style={{"position": "relative"}}>
+      <div ref={mapContainer} />
+      { loading &&
+        <span
+          className="absolute text-sm text-secondary-light items-center rounded-md bg-white px-2 py-1"
+          style={{
+            "bottom": "20px",
+            "right": "20px"
+          }}
+        >
+            Loading ...
+        </span>
       }
       { (map && map.getZoom() < minZoom) &&
-        <span className="zoomMessage">Zoom in to see data</span>
+        <span
+          className="text-xl text-secondary[600] uppercase absolute items-center rounded-md bg-white px-2 py-1"
+          style={{
+            "left": "50%",
+            "top": "50%",
+            "transform": "translate(-50%,-50%)"
+          }}
+        >
+          Zoom in to see data
+        </span>
       }
       { map &&
         <Popup
