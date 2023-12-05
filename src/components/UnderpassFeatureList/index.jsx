@@ -10,6 +10,7 @@ function UnderpassFeatureList({
   dateFrom,
   dateTo,
   status,
+  orderBy,
   page,
   onSelect,
   realtime,
@@ -43,7 +44,8 @@ function UnderpassFeatureList({
         dateFrom,
         dateTo,
         status,
-        page, {
+        page,
+        orderBy, {
         onSuccess: (data) => {
           if (page && features) {
             setFeatures(features.concat(data));

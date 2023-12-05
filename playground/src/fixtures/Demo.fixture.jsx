@@ -178,6 +178,7 @@ function App() {
                         realtime={realtimeList}
                         config={config}
                         status={status}
+                        orderBy="created_at"
                         onFetchFirstTime={(mostRecentFeature) => {
                             if (mostRecentFeature) {
                                 setCoords([mostRecentFeature.lat, mostRecentFeature.lon]);

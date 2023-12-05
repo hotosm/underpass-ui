@@ -408,6 +408,7 @@ const API = (url) => {
       dateTo,
       status,
       page,
+      orderBy,
       options = {},
     ) => {
       fetch(API_URL + "/raw/allList", {
@@ -421,6 +422,7 @@ const API = (url) => {
           dateTo,
           status,
           page,
+          orderBy,
         }),
       })
         .then((res) => {
