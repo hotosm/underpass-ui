@@ -69,7 +69,6 @@ function UnderpassFeatureList({
   useEffect(() => {
     pageRef.current = 0;
     fetch();
-    console.log("fetch first time")
   }, [tags, hashtag, status, area]);
 
   useEffect(() => {
