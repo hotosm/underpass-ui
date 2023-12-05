@@ -149,7 +149,6 @@ export default function UnderpassMap({
   }, [map, source]);
 
   useEffect(() => {
-    console.log(propsCenter);
     if (!map || !propsCenter) return;
     map.setCenter(propsCenter);
   }, [map, propsCenter]);
