@@ -22,8 +22,8 @@ function UnderpassFeatureList({
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const realtimeIntervalRef = useRef();
+  const loadedRef = useRef();
   const pageRef = useRef(0);
-  
 
   const handleScroll = (e) => {
     const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
@@ -53,7 +53,11 @@ function UnderpassFeatureList({
           if (data && data.length > 0) {
             setHasMore(true);
             onUpdate && onUpdate(data[0]);
-            onFetchFirstTime && onFetchFirstTime(data[0]);
+            if (loadedRef.current) {
+              onFetchFirstTime && onFetchFirstTime(data[0]);
+              loadedRef.current = false;
+            }
+
           } else {
             setHasMore(false);
           }
@@ -73,7 +77,7 @@ function UnderpassFeatureList({
 
   useEffect(() => {
     if (realtime) {
-      realtimeIntervalRef.current = setInterval(fetch, 5000);
+      realtimeIntervalRef.current = setInterval(fetch, 10000);
     } else {
       if (realtimeIntervalRef.current) {
         clearInterval(realtimeIntervalRef.current);

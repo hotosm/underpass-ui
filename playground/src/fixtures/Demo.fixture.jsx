@@ -17,11 +17,11 @@ const statusList = {
 function App() {
     const [coords, setCoords] = useState(center);
     const [activeFeature, setActiveFeature] = useState(null);
-    const [tags, setTags] = useState("amenity");
+    const [tags, setTags] = useState("building");
     const [hashtag, setHashtag] = useState("");
     const [mapSource, setMapSource] = useState("osm");
-    const [realtime, setRealtime] = useState(false);
-    const [updateListWithMap, setUpdateListWithMap] = useState(false);
+    const [realtimeList, setRealtimeList] = useState(false);
+    const [realtimeMap, setRealtimeMap] = useState(false);
     const [status, setStatus] = useState(statusList.UNSQUARED);
     const [area, setArea] = useState(null);
     const tagsInputRef = useRef("");
@@ -95,7 +95,7 @@ function App() {
                                 type="text"
                                 placeholder="key (ex: building=yes)"
                                 ref={tagsInputRef}
-                                defaultValue="amenity"
+                                defaultValue="building"
                             />
                             &nbsp;
                             <input
@@ -125,7 +125,7 @@ function App() {
                         popupFeature={activeFeature}
                         source={mapSource}
                         config={config}
-                        realtime={realtime}
+                        realtime={realtimeMap}
                         theme={demoTheme}
                         zoom={17}
                         onMove={handleMapMove}
@@ -151,10 +151,10 @@ function App() {
                     </div>
                     <div className="border-b-2 py-5 mb-5">
                         <form className="space-x-2 mb-3">
-                            <input onChange={() => { setRealtime(!realtime)}} name="liveCheckbox" type="checkbox" />
-                            <label target="liveCheckbox">Live</label>
-                            <input checked={updateListWithMap} onChange={() => { setUpdateListWithMap(!updateListWithMap)}} name="visibleCheckbox" type="checkbox" />
-                            <label target="visibleCheckbox">Only visible features</label>
+                            <input onChange={() => { setRealtimeList(!realtimeList)}} name="liveListCheckbox" type="checkbox" />
+                            <label target="liveListCheckbox">Live list</label>
+                            <input onChange={() => { setRealtimeMap(!realtimeMap)}} name="liveMapCheckbox" type="checkbox" />
+                            <label target="liveMapCheckbox">Live map</label>
                         </form>
                         <form className="space-x-2">
                             <input checked={status === statusList.ALL} onChange={() => { setStatus(statusList.ALL) }} name="allCheckbox" id="allCheckbox" type="radio" />
@@ -175,23 +175,14 @@ function App() {
                             const status = feature.status;
                             setActiveFeature({properties: { tags, status } , ...feature});
                         }}
-                        realtime={realtime}
+                        realtime={realtimeList}
                         config={config}
                         status={status}
-                        area={updateListWithMap ? area : null}
                         onFetchFirstTime={(mostRecentFeature) => {
                             if (mostRecentFeature) {
                                 setCoords([mostRecentFeature.lat, mostRecentFeature.lon]);
                             }
                         }}
-                        onUpdate={realtime ? (mostRecentFeature) => {
-                            if (mostRecentFeature) {
-                                setCoords([mostRecentFeature.lat, mostRecentFeature.lon]);
-                                const tags = JSON.stringify(mostRecentFeature.tags);
-                                const status = mostRecentFeature.status;
-                                setActiveFeature({properties: { tags, status } , ...mostRecentFeature});
-                            }
-                        } : false}
                     />
                 </div>
             </div>
