@@ -10,10 +10,10 @@ const formatter = buildFormatter(enStrings)
 function FeatureDetailCard({ feature }) {
   return (
     <article className="space-y-3">
-      <div className="timeInfo">
+      <div className="flex">
         <strong>{feature.type} &nbsp;<a rel="noreferrer" target="_blank" href={"https://osm.org/" + feature.type + "/" + feature.id}>{feature.id}</a></strong>
         { feature.created_at &&
-          <abbr title={feature.created_at}>
+          <abbr className="text-right" style={{flex: 2}} title={feature.created_at}>
             <TimeAgo date={feature.created_at} formatter={formatter} />
           </abbr>
         }

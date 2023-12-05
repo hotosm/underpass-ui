@@ -14,6 +14,7 @@ function UnderpassFeatureList({
   onSelect,
   realtime,
   onUpdate,
+  onFetchFirstTime,
   config,
 }) {
 
@@ -52,6 +53,7 @@ function UnderpassFeatureList({
           if (data && data.length > 0) {
             setHasMore(true);
             onUpdate && onUpdate(data[0]);
+            onFetchFirstTime && onFetchFirstTime(data[0]);
           } else {
             setHasMore(false);
           }
@@ -67,6 +69,7 @@ function UnderpassFeatureList({
   useEffect(() => {
     pageRef.current = 0;
     fetch();
+    console.log("fetch first time")
   }, [tags, hashtag, status, area]);
 
   useEffect(() => {

@@ -1,4 +1,4 @@
 {
-  "globalImports": ["@hotosm/underpass-ui/index.css"],
+  "globalImports": ["../dist/index.css"],
   "staticPath": "public"
 }

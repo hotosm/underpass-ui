@@ -179,6 +179,11 @@ function App() {
                         config={config}
                         status={status}
                         area={updateListWithMap ? area : null}
+                        onFetchFirstTime={(mostRecentFeature) => {
+                            if (mostRecentFeature) {
+                                setCoords([mostRecentFeature.lat, mostRecentFeature.lon]);
+                            }
+                        }}
                         onUpdate={realtime ? (mostRecentFeature) => {
                             if (mostRecentFeature) {
                                 setCoords([mostRecentFeature.lat, mostRecentFeature.lon]);
