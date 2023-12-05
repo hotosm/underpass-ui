@@ -10,6 +10,7 @@ function UnderpassFeatureStats({
     status,
     onSuccess,
     apiUrl,
+    label,
     className,
   }) {
 
@@ -37,7 +38,7 @@ function UnderpassFeatureStats({
   return (
     <div>
       <h3 className="text-2xl font-bold text-primary">{result && result.count}</h3>
-      <p className="font-bold">{tags} <span className="font-normal">mapped</span></p>
+      <p className="font-bold">{tags} <span className="font-normal">{label || "found"}</span></p>
     </div>
   )
 }
