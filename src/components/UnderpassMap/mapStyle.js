@@ -1,5 +1,5 @@
 export const getMapStyle = (grayscale, source = "osm", config) => {
-  const sources = {
+  const sources = config.sources || {
     osm: {
       type: "raster",
       tiles: ["https://a.tile.openstreetmap.org/{z}/{x}/{y}.png"],
@@ -33,20 +33,6 @@ export const getMapStyle = (grayscale, source = "osm", config) => {
       attribution: "&copy; OpenStreetMap Contributors",
       maxzoom: 18,
     },
-    white: {
-      type: "raster",
-      tiles: ["/white.png?{z}{x}{y}.png"],
-      tileSize: 256,
-      attribution: "&copy; OpenStreetMap Contributors",
-      maxzoom: 19,
-    },
-    dark: {
-      type: "raster",
-      tiles: ["/dark.png?{z}{x}{y}.png"],
-      tileSize: 256,
-      attribution: "&copy; OpenStreetMap Contributors",
-      maxzoom: 19,
-    },
     oam: {
       type: "raster",
       tiles: ["https://apps.kontur.io/raster-tiler/oam/mosaic/{z}/{x}/{y}.png"],
@@ -55,7 +41,6 @@ export const getMapStyle = (grayscale, source = "osm", config) => {
         "&copy; OpenStreetMap Contributors &copy; OpenAerialMap &copy; Kontur",
       maxzoom: 19,
     },
-    ...config.sources,
   };
 
   return {
