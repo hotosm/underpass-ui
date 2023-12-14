@@ -55,6 +55,7 @@ export const getMapStyle = (grayscale, source = "osm", config) => {
         "&copy; OpenStreetMap Contributors &copy; OpenAerialMap &copy; Kontur",
       maxzoom: 19,
     },
+    ...config.sources,
   };
 
   return {
