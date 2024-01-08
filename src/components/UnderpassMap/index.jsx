@@ -28,13 +28,15 @@ export default function UnderpassMap({
   source = "osm",
   onMove,
   onLoad,
-  config
+  config,
+  featureType,
 }) {
   const mapContainer = useRef(null);
   const mapRef = useRef(null);
   const tagsRef = useRef(tags);
   const hashtagRef = useRef(hashtag);
   const statusRef = useRef(status);
+  const featureTypeRef = useRef(featureType);
   const dateFromRef = useRef(dateFrom);
   const dateToRef = useRef(dateTo);
   const realtimeIntervalRef = useRef();
@@ -55,7 +57,7 @@ export default function UnderpassMap({
       dateFromRef.current,
       dateToRef.current,
       statusRef.current,
-      0, // page always set to 0
+      featureTypeRef.current,
       mapRef.current,
       theme,
       config,
@@ -160,12 +162,12 @@ export default function UnderpassMap({
 
   useEffect(() => {
     if (!map || !popupFeature) return;
-      setActivePopupFeature(popupFeature);
-      setShowPopup(true);
-      setCenter([popupFeature.lat, popupFeature.lon])
-      if (map.getZoom() < minZoom) {
-        map.setZoom(defaultZoom);
-      }
+    setActivePopupFeature(popupFeature);
+    setShowPopup(true);
+    setCenter([popupFeature.lat, popupFeature.lon])
+    if (map.getZoom() < minZoom) {
+      map.setZoom(defaultZoom);
+    }
   }, [map, popupFeature]);
 
   useEffect(() => {
@@ -174,6 +176,8 @@ export default function UnderpassMap({
   }, [tags]);
 
   useEffect(() => {
+    setShowPopup(false);
+    setActivePopupFeature(null);
     hashtagRef.current = hashtag;
     fetch();
   }, [hashtag]);
@@ -182,6 +186,11 @@ export default function UnderpassMap({
     statusRef.current = status;
     fetch();
   }, [status]);
+
+  useEffect(() => {
+    featureTypeRef.current = featureType;
+    fetch();
+  }, [featureType]);
 
   useEffect(() => {
     dateFromRef.current = dateFrom;

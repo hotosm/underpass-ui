@@ -17,6 +17,9 @@ function UnderpassFeatureList({
   onUpdate,
   onFetchFirstTime,
   config,
+  style,
+  className,
+  featureType,
 }) {
 
   const [features, setFeatures] = useState([]);
@@ -44,6 +47,7 @@ function UnderpassFeatureList({
         dateFrom,
         dateTo,
         status,
+        featureType,
         page,
         orderBy, {
         onSuccess: (data) => {
@@ -75,7 +79,7 @@ function UnderpassFeatureList({
   useEffect(() => {
     pageRef.current = 0;
     fetch();
-  }, [tags, hashtag, status, area]);
+  }, [tags, hashtag, status, area, featureType]);
 
   useEffect(() => {
     if (realtime) {
@@ -89,26 +93,24 @@ function UnderpassFeatureList({
   }, [realtime])
 
   return (
-    <div>
+    <div style={{"overflow-y": "scroll", ...style}} className={className} onScroll={handleScroll}>
+      {features && features.map((feature, index) => (
+        feature && (
+        <div key={feature && feature.id} className="border-b pb-5" onClick={() => {
+          onSelect && onSelect(feature)
+        }}>
+          <FeatureDetailCard
+            key={feature.id}
+            feature={feature}
+          />
+        </div>
+      )))}
       {!loading && features && features.length === 0 &&
         <span className="text-sm text-secondary-light">No results</span>
       }
       {loading && 
         <span className="text-sm text-secondary-light">Loading ...</span>
       }
-      <div onScroll={handleScroll}  className="space-y-3" style={{ overflow: "scroll", "height": "100vh"}}>
-        {features && features.map(feature => (
-          feature && (
-          <div key={feature && feature.id} className="border-b pb-5" onClick={() => {
-            onSelect && onSelect(feature)
-          }}> 
-            <FeatureDetailCard
-              key={feature.id}
-              feature={feature}
-            />
-          </div>
-        )))}
-      </div>
     </div>
   );
 }

@@ -8,13 +8,14 @@ const config = {
 
 export default (
   <div style={{height: "100vh"}}>
-    <UnderpassMap
-      center={center}
-      tags="building=yes"
-      highlightDataQualityIssues
-      grayscale
-      config={config}
-      source="osm"
-    />
+      <UnderpassMap
+          center={center}
+          tags="building=yes"
+          highlightDataQualityIssues
+          config={config}
+          zoom={17}
+          theme={{}}
+          featureType="polygon"
+      />
   </div>
 );

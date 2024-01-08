@@ -7,7 +7,7 @@ export async function fetchService(
   dateFrom,
   dateTo,
   status,
-  page,
+  featureType,
   map,
   theme,
   config,
@@ -20,7 +20,7 @@ export async function fetchService(
     dateFrom,
     dateTo,
     status,
-    page,
+    featureType,
     {
       onSuccess: (data) => {
         if (map.getSource("polygon")) {

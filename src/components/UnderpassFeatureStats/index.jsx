@@ -8,6 +8,7 @@ function UnderpassFeatureStats({
     dateFrom, 
     dateTo, 
     status,
+    featureType,
     onSuccess,
     apiUrl,
     label,
@@ -20,7 +21,7 @@ function UnderpassFeatureStats({
   useEffect(() => {
     const getData = async () => {
       setLoading(true);
-      await API(apiUrl)["statsCount"](area, tags, hashtag, dateFrom, dateTo, status, {
+      await API(apiUrl)["statsCount"](area, tags, hashtag, dateFrom, dateTo, status, featureType, {
         onSuccess: (data) => {
           setResult(data);
           setLoading(false);

@@ -23,6 +23,7 @@ function App() {
     const [realtimeList, setRealtimeList] = useState(false);
     const [realtimeMap, setRealtimeMap] = useState(false);
     const [status, setStatus] = useState(statusList.UNSQUARED);
+    const [featureType, setFeatureType] = useState("polygon");
     const [area, setArea] = useState(null);
     const tagsInputRef = useRef("");
     const hashtagInputRef = useRef("");
@@ -86,7 +87,7 @@ function App() {
     
     return (
         <div>
-            <div className="flex p-2">
+            <div className="flex">
                 <div style={{flex: 2}}>
                     <div className="top">
                         <form>
@@ -130,33 +131,38 @@ function App() {
                         zoom={17}
                         onMove={handleMapMove}
                         onLoad={handleMapLoad}
+                        featureType={featureType}
                     />
                 </div>
                 <div style={{ 
                     flex: 1,
                     padding: 10,
+                    display: "flex",
+                    "flex-direction": "column",
                     backgroundColor: `rgb(${hottheme.colors.white})`}}>
                     <div className="border-b-2 pb-5 space-y-3">
                         <UnderpassFeatureStats
                             tags={tags}
                             hashtag={hashtag}
                             apiUrl={config.API_URL}
+                            featureType={featureType}
                         />
                         <UnderpassValidationStats
                             tags={tags}
                             hashtag={hashtag}
                             apiUrl={config.API_URL}
                             status="badgeom"
+                            featureType={featureType}
                         />
                     </div>
-                    <div className="border-b-2 py-5 mb-5">
-                        <form className="space-x-2 mb-3">
+                    <div className="border-b-2 py-5 mb-4">
+                        <form className="space-x-2">
                             <input onChange={() => { setRealtimeList(!realtimeList)}} name="liveListCheckbox" type="checkbox" />
                             <label target="liveListCheckbox">Live list</label>
                             <input onChange={() => { setRealtimeMap(!realtimeMap)}} name="liveMapCheckbox" type="checkbox" />
                             <label target="liveMapCheckbox">Live map</label>
                         </form>
-                        <form className="space-x-2">
+                        <form className="space-x-2 py-4">
                             <input checked={status === statusList.ALL} onChange={() => { setStatus(statusList.ALL) }} name="allCheckbox" id="allCheckbox" type="radio" />
                             <label htmlFor="allCheckbox">All</label>
                             <input checked={status === statusList.UNSQUARED} onChange={() => { setStatus(statusList.UNSQUARED) }} name="geospatialCheckbox" id="geospatialCheckbox" type="radio" />
@@ -164,8 +170,24 @@ function App() {
                             <input checked={status === statusList.BADVALUE} onChange={() => { setStatus(statusList.BADVALUE) }} name="semanticCheckbox" id="semanticCheckbox" type="radio" />
                             <label htmlFor="semanticCheckbox">Semantic</label>
                         </form>
+                        <form className="space-x-2">
+                            <input checked={featureType === "all"} onChange={() => { setFeatureType("all") }} name="featureTypeAllCheckbox" id="featureTypeAllCheckbox" type="radio" />
+                            <label htmlFor="featureTypeAllCheckbox">All</label>
+                            <input checked={featureType === "polygon"} onChange={() => { setFeatureType("polygon") }} name="featureTypePolygonCheckbox" id="featureTypePolygonCheckbox" type="radio" />
+                            <label htmlFor="featureTypePolygonCheckbox">Polygon</label>
+                            <input checked={featureType === "line"} onChange={() => { setFeatureType("line") }} name="featureTypeLineCheckbox" id="featureTypeLineCheckbox" type="radio" />
+                            <label htmlFor="featureTypeLineCheckbox">Line</label>
+                            <input checked={featureType === "node"} onChange={() => { setFeatureType("node") }} name="featureTypeNodeCheckbox" id="featureTypeNodeCheckbox" type="radio" />
+                            <label htmlFor="featureTypeNodeCheckbox">Node</label>
+                        </form>
                     </div>
                     <UnderpassFeatureList
+                        style={{
+                            display: "flex",
+                            "flex-flow": "column",
+                            height: "1px",
+                            flex: "1 1 auto"
+                        }}
                         tags={tags}
                         hashtag={hashtag}
                         page={0}
@@ -178,7 +200,8 @@ function App() {
                         realtime={realtimeList}
                         config={config}
                         status={status}
-                        orderBy="created_at"
+                        // orderBy="created_at"
+                        featureType={featureType}
                         onFetchFirstTime={(mostRecentFeature) => {
                             if (mostRecentFeature) {
                                 setCoords([mostRecentFeature.lat, mostRecentFeature.lon]);
