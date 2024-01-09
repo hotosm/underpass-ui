@@ -37,7 +37,7 @@ function UnderpassValidationStats({
       });
     };
     getData();
-  }, [area, tags, hashtag, dateFrom, dateTo, status]);
+  }, [area, tags, hashtag, dateFrom, dateTo, status, featureType]);
 
   return (result &&
     <div>

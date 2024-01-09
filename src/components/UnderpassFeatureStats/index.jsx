@@ -34,7 +34,7 @@ function UnderpassFeatureStats({
       });
     };
     getData();
-  }, [area, tags, hashtag, dateFrom, dateTo, status]);
+  }, [area, tags, hashtag, dateFrom, dateTo, status, featureType]);
 
   return (
     <div>
