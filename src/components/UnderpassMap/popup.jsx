@@ -11,34 +11,33 @@ export default function Popup({
   closeButton,
   closeOnClick,
   show,
-  onClose
+  onClose,
+  popupRef,
 }) {
+  useEffect(() => {
+    if (!popupRef.current) {
+      popupRef.current = new maplibregl.Popup({
+        closeOnClick,
+        closeOnMove,
+        closeButton,
+        className: "min-w-fit",
+      });
+    }
+    popupRef.current
+      .setLngLat([longitude, latitude])
+      .setHTML(renderToString(children));
+  }, [
+    latitude,
+    longitude,
+    children,
+    map,
+    closeOnClick,
+    closeOnMove,
+    closeButton,
+    onClose,
+    show,
+    popupRef,
+  ]);
 
-    const popupRef = useRef(null);
-
-    useEffect(() => {
-      if (!popupRef.current) {
-        popupRef.current = new maplibregl.Popup(
-          {
-            closeOnClick,
-            closeOnMove,
-            closeButton,
-            className: "min-w-fit"
-          },
-        )
-        popupRef.current.on('close', () => {
-          onClose();
-        });
-      }
-
-      if (show) {
-        popupRef.current.addTo(map);
-      }
-
-      popupRef.current.setLngLat([longitude, latitude])
-      .setHTML(renderToString(children))
-      
-    }, [latitude, longitude, children, map, closeOnClick, closeOnMove, closeButton, onClose, show]);
-
-    return (null);
-  }
+  return null;
+}

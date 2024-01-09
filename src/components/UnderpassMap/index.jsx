@@ -45,6 +45,7 @@ export default function UnderpassMap({
   const [map, setMap] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showPopup, setShowPopup] = useState(false);
+  const popupRef = useRef(null);
 
   async function fetch() {
     const theme = getTheme();
@@ -164,6 +165,7 @@ export default function UnderpassMap({
     if (!map || !popupFeature) return;
     setActivePopupFeature(popupFeature);
     setShowPopup(true);
+    popupRef.current.addTo(map);
     setCenter([popupFeature.lat, popupFeature.lon])
     if (map.getZoom() < minZoom) {
       map.setZoom(defaultZoom);
@@ -177,7 +179,11 @@ export default function UnderpassMap({
 
   useEffect(() => {
     setShowPopup(false);
+    popupRef.current && popupRef.current.remove();
     setActivePopupFeature(null);
+  }, [hashtag, tags, featureType]);
+
+  useEffect(() => {
     hashtagRef.current = hashtag;
     fetch();
   }, [hashtag]);
@@ -249,6 +255,7 @@ export default function UnderpassMap({
       const coords = e.lngLat;
       setCenter([coords.lng, coords.lat]);
       setShowPopup(true);
+      popupRef.current.addTo(map);
     }
     map.on("click", "waysFill", handleLayerClick);
     map.on("click", "nodesFill", handleLayerClick);
@@ -304,14 +311,11 @@ export default function UnderpassMap({
           map={map}
           longitude={center[0]}
           latitude={center[1]}
-          show={showPopup}
-          onClose={() => {
-            setShowPopup(false);
-          }}
+          popupRef={popupRef}
           closeOnMove={false}
           closeButton={true}
         >
-            {activePopupFeature &&
+            {activePopupFeature && showPopup &&
             <PopupContent
               feature={activePopupFeature}
               highlightDataQualityIssues

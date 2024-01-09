@@ -23,7 +23,7 @@ export default function PopupContent({
     }
 
     return (
-      <div className="space-y-3 text-lg">
+      <div className="space-y-3 text-lg truncate">
         <table className="table-auto w-full">
           <tbody>
             <tr>
