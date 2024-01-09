@@ -31,7 +31,7 @@ function UnderpassFeatureList({
 
   const handleScroll = (e) => {
     const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
-    if (bottom && hasMore) {
+    if (bottom && hasMore && !loading) {
         pageRef.current += 1;
         fetch(pageRef.current);
     }
