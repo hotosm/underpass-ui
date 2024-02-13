@@ -6,7 +6,7 @@
 yarn install
 ```
 
-## Run 
+## Run
 
 ```sh
 yarn cosmos

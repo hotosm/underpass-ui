@@ -3,10 +3,7 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  extends: [
-    "plugin:prettier/recommended",
-    "plugin:react-hooks/recommended",
-  ],
+  extends: ["plugin:prettier/recommended", "plugin:react-hooks/recommended"],
   overrides: [
     {
       env: {

@@ -1,6 +1,5 @@
-
 .maplibregl-popup-close-button {
-    font-size: 1.3rem;
-    padding: .5rem;
-    opacity: .5;
-  }
+  font-size: 1.3rem;
+  padding: 0.5rem;
+  opacity: 0.5;
+}

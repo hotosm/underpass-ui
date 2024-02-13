@@ -8,7 +8,6 @@ const API = (url) => {
     process.env.REACT_APP_UNDERPASS_API ||
     "https://underpass.hotosm.org:8000";
   return {
-
     raw: async (
       area,
       tags,
@@ -123,7 +122,6 @@ const API = (url) => {
           },
         );
     },
-
   };
 };
 

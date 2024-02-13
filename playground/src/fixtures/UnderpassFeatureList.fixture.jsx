@@ -2,10 +2,11 @@ import React from "react";
 import { UnderpassFeatureList } from "@hotosm/underpass-ui";
 
 const config = {
-    API_URL: "http://localhost:8000"
+  API_URL: "http://localhost:8000",
 };
 
-export default <UnderpassFeatureList 
+export default (
+  <UnderpassFeatureList
     tags="building=yes"
     page={0}
     config={config}
@@ -14,4 +15,5 @@ export default <UnderpassFeatureList
     // dateTo={"2023-10-18T00:00:00"}
     // hashtags="hotosm"
     status="badgeom"
-/>;
+  />
+);

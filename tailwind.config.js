@@ -2,7 +2,6 @@ const colors = require("tailwindcss/colors");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     colors: {
       ...colors,
@@ -14,5 +13,11 @@ module.exports = {
       success: "rgb(var(--hot-success-rgb) / <alpha-value>)",
     },
   },
+  purge: [
+    "./src/components/**/*.js",
+    "./src/components/**/*.jsx",
+    "./playground/src/fixtures/*.jsx",
+  ],
+  variants: {},
   plugins: [],
 };

@@ -5,9 +5,9 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import HOTTheme from "../HOTTheme";
 import { getMapStyle } from "./mapStyle";
 import Popup from "./popup";
-import PopupContent from "./popupContent"
-import { getBBoxString } from './utils';
-import { fetchService } from './services';
+import PopupContent from "./popupContent";
+import { getBBoxString } from "./utils";
+import { fetchService } from "./services";
 
 export default function UnderpassMap({
   center: propsCenter,
@@ -64,8 +64,8 @@ export default function UnderpassMap({
       config,
       () => {
         setLoading(false);
-      }
-    )
+      },
+    );
   }
 
   const getTheme = () => {
@@ -82,12 +82,8 @@ export default function UnderpassMap({
             theme.colors.info,
           ]
         : theme.colors.info,
-        "fill-opacity": [
-            "match",
-            ["get", "type"],
-            "LineString", 0, 0.5
-          ],
-          ...theme.map.waysFill,
+      "fill-opacity": ["match", ["get", "type"], "LineString", 0, 0.5],
+      ...theme.map.waysFill,
     };
 
     theme.map.waysLine = {
@@ -104,16 +100,12 @@ export default function UnderpassMap({
     };
 
     theme.map.nodesSymbol = {
-      "icon-opacity": [
-        "match",
-        ["get", "type"],
-        "Point", 1, 0
-      ],
+      "icon-opacity": ["match", ["get", "type"], "Point", 1, 0],
       ...theme.map.nodesSymbol,
     };
 
     return theme;
-  }
+  };
 
   useEffect(() => {
     if (mapRef.current) return;
@@ -166,7 +158,7 @@ export default function UnderpassMap({
     setActivePopupFeature(popupFeature);
     setShowPopup(true);
     popupRef.current.addTo(map);
-    setCenter([popupFeature.lat, popupFeature.lon])
+    setCenter([popupFeature.lat, popupFeature.lon]);
     if (map.getZoom() < minZoom) {
       map.setZoom(defaultZoom);
     }
@@ -205,7 +197,7 @@ export default function UnderpassMap({
   }, [dateFrom, dateTo]);
 
   useEffect(() => {
-    if (!map || !tagsRef.current ) return;
+    if (!map || !tagsRef.current) return;
     fetch();
   }, [map]);
 
@@ -216,9 +208,8 @@ export default function UnderpassMap({
       if (realtimeIntervalRef.current) {
         clearInterval(realtimeIntervalRef.current);
       }
-      
     }
-  }, [realtime])
+  }, [realtime]);
 
   useEffect(() => {
     if (!map) return;
@@ -238,13 +229,13 @@ export default function UnderpassMap({
       const zoom = map.getZoom();
       if (zoom > minZoom) {
         fetch();
-        map.setLayoutProperty('waysLine', 'visibility', 'visible');
-        map.setLayoutProperty('waysFill', 'visibility', 'visible');
-        map.setLayoutProperty('nodesFill', 'visibility', 'visible');
+        map.setLayoutProperty("waysLine", "visibility", "visible");
+        map.setLayoutProperty("waysFill", "visibility", "visible");
+        map.setLayoutProperty("nodesFill", "visibility", "visible");
       } else {
-        map.setLayoutProperty('waysLine', 'visibility', 'none');
-        map.setLayoutProperty('waysFill', 'visibility', 'none');
-        map.setLayoutProperty('nodesFill', 'visibility', 'none');
+        map.setLayoutProperty("waysLine", "visibility", "none");
+        map.setLayoutProperty("waysFill", "visibility", "none");
+        map.setLayoutProperty("nodesFill", "visibility", "none");
       }
       onMove && onMove({ bbox: getBBoxString(mapRef.current) });
     });
@@ -256,7 +247,7 @@ export default function UnderpassMap({
       setCenter([coords.lng, coords.lat]);
       setShowPopup(true);
       popupRef.current.addTo(map);
-    }
+    };
     map.on("click", "waysFill", handleLayerClick);
     map.on("click", "nodesFill", handleLayerClick);
     map.on("click", "waysLine", handleLayerClick);
@@ -265,10 +256,10 @@ export default function UnderpassMap({
     // Display pointer cursor for polygons
     const handleLayerMouseEnter = (e) => {
       map.getCanvas().style.cursor = "pointer";
-    }
+    };
     const handleLayerMouseLeave = (e) => {
       map.getCanvas().style.cursor = "";
-    }
+    };
     map.on("mouseenter", "waysFill", handleLayerMouseEnter);
     map.on("mouseleave", "waysFill", handleLayerMouseLeave);
     map.on("mouseenter", "waysLine", handleLayerMouseEnter);
@@ -277,36 +268,38 @@ export default function UnderpassMap({
     map.on("mouseleave", "nodesFill", handleLayerMouseLeave);
     map.on("mouseenter", "waysLineString", handleLayerMouseEnter);
     map.on("mouseleave", "waysLineString", handleLayerMouseLeave);
-
   }, [map]);
 
   return (
-    <div className={mapClassName || "underpassMapWrap"} style={{"position": "relative"}}>
+    <div
+      className={mapClassName || "underpassMapWrap"}
+      style={{ position: "relative" }}
+    >
       <div ref={mapContainer} />
-      { loading &&
+      {loading && (
         <span
           className="absolute text-sm text-secondary-light items-center rounded-md bg-white px-2 py-1"
           style={{
-            "bottom": "20px",
-            "right": "20px"
+            bottom: "20px",
+            right: "20px",
           }}
         >
-            Loading ...
+          Loading ...
         </span>
-      }
-      { (map && map.getZoom() < minZoom) &&
+      )}
+      {map && map.getZoom() < minZoom && (
         <span
           className="text-xl text-secondary[600] uppercase absolute items-center rounded-md bg-white px-2 py-1"
           style={{
-            "left": "50%",
-            "top": "50%",
-            "transform": "translate(-50%,-50%)"
+            left: "50%",
+            top: "50%",
+            transform: "translate(-50%,-50%)",
           }}
         >
           Zoom in to see data
         </span>
-      }
-      { map &&
+      )}
+      {map && (
         <Popup
           map={map}
           longitude={center[0]}
@@ -315,14 +308,14 @@ export default function UnderpassMap({
           closeOnMove={false}
           closeButton={true}
         >
-            {activePopupFeature && showPopup &&
+          {activePopupFeature && showPopup && (
             <PopupContent
               feature={activePopupFeature}
               highlightDataQualityIssues
-            />}
+            />
+          )}
         </Popup>
-      }
-
+      )}
     </div>
   );
 }

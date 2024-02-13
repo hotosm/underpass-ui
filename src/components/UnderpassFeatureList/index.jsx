@@ -1,7 +1,6 @@
-
-import React, { useEffect, useState, useRef } from 'react';
-import FeatureDetailCard from '../FeatureDetailCard';
-import API from '../api';
+import React, { useEffect, useState, useRef } from "react";
+import FeatureDetailCard from "../FeatureDetailCard";
+import API from "../api";
 
 function UnderpassFeatureList({
   area,
@@ -21,7 +20,6 @@ function UnderpassFeatureList({
   className,
   featureType,
 }) {
-
   const [features, setFeatures] = useState([]);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
@@ -30,12 +28,13 @@ function UnderpassFeatureList({
   const pageRef = useRef(0);
 
   const handleScroll = (e) => {
-    const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+    const bottom =
+      e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
     if (bottom && hasMore && !loading) {
-        pageRef.current += 1;
-        fetch(pageRef.current);
+      pageRef.current += 1;
+      fetch(pageRef.current);
     }
- }
+  };
 
   async function fetch(page) {
     if (!loading) {
@@ -49,30 +48,31 @@ function UnderpassFeatureList({
         status,
         featureType,
         page,
-        orderBy, {
-        onSuccess: (data) => {
-          if (page && features) {
-            setFeatures(features.concat(data));
-          } else {
-            setFeatures(data);
-          }
-          if (data && data.length > 0) {
-            setHasMore(true);
-            onUpdate && onUpdate(data[0]);
-            if (loadedRef.current) {
-              onFetchFirstTime && onFetchFirstTime(data[0]);
-              loadedRef.current = false;
+        orderBy,
+        {
+          onSuccess: (data) => {
+            if (page && features) {
+              setFeatures(features.concat(data));
+            } else {
+              setFeatures(data);
             }
-
-          } else {
-            setHasMore(false);
-          }
-          setLoading(false);
+            if (data && data.length > 0) {
+              setHasMore(true);
+              onUpdate && onUpdate(data[0]);
+              if (loadedRef.current) {
+                onFetchFirstTime && onFetchFirstTime(data[0]);
+                loadedRef.current = false;
+              }
+            } else {
+              setHasMore(false);
+            }
+            setLoading(false);
+          },
+          onError: (error) => {
+            console.log(error);
+          },
         },
-        onError: (error) => {
-          console.log(error);
-        },
-      });
+      );
     }
   }
 
@@ -88,29 +88,36 @@ function UnderpassFeatureList({
       if (realtimeIntervalRef.current) {
         clearInterval(realtimeIntervalRef.current);
       }
-      
     }
-  }, [realtime])
+  }, [realtime]);
 
   return (
-    <div style={{"overflow-y": "scroll", ...style}} className={className} onScroll={handleScroll}>
-      {features && features.map((feature, index) => (
-        feature && (
-        <div key={feature && feature.id} className="border-b pb-5" onClick={() => {
-          onSelect && onSelect(feature)
-        }}>
-          <FeatureDetailCard
-            key={feature.id}
-            feature={feature}
-          />
-        </div>
-      )))}
-      {!loading && features && features.length === 0 &&
+    <div
+      style={{ "overflow-y": "scroll", ...style }}
+      className={className}
+      onScroll={handleScroll}
+    >
+      {features &&
+        features.map(
+          (feature, index) =>
+            feature && (
+              <div
+                key={feature && feature.id}
+                className="border-b pb-5"
+                onClick={() => {
+                  onSelect && onSelect(feature);
+                }}
+              >
+                <FeatureDetailCard key={feature.id} feature={feature} />
+              </div>
+            ),
+        )}
+      {!loading && features && features.length === 0 && (
         <span className="text-sm text-secondary-light">No results</span>
-      }
-      {loading && 
+      )}
+      {loading && (
         <span className="text-sm text-secondary-light">Loading ...</span>
-      }
+      )}
     </div>
   );
 }
