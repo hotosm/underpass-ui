@@ -14,7 +14,6 @@
   "scripts": {
     "build": "NODE_ENV=production microbundle-crl --no-compress --css-modules false --format modern,cjs",
     "start": "microbundle-crl watch --no-compress --css-modules false --format modern,cjs",
-    "prepare": "run-s build",
     "lint": "eslint --fix --ext .js,.jsx src/",
     "format": "prettier -w ."
   },
