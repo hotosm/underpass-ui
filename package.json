@@ -6,7 +6,6 @@
   "license": "LGPL-3.0-only",
   "repository": "@hotosm/underpass-ui",
   "main": "dist/index.js",
-  "module": "dist/index.modern.js",
   "source": "src/index.js",
   "engines": {
     "node": ">=10"
