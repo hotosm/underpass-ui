@@ -15,8 +15,6 @@
     "build": "NODE_ENV=production microbundle-crl --no-compress --css-modules false --format modern,cjs",
     "start": "microbundle-crl watch --no-compress --css-modules false --format modern,cjs",
     "prepare": "run-s build",
-    "predeploy": "cd example && yarn install && yarn run build",
-    "deploy": "gh-pages -d example/build",
     "lint": "eslint --fix --ext .js,.jsx src/",
     "format": "prettier -w ."
   },
