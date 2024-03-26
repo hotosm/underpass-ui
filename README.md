@@ -5,7 +5,7 @@ A set of UI components for [Underpass](https://github.com/hotosm/underpass).
 ## Install
 
 ```sh
-yarn add https://github.com/hotosm/underpass-ui.git
+yarn add @hotosm/underpass-ui
 ```
 
 ## Usage
