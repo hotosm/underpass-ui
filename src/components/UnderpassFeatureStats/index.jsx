@@ -7,7 +7,6 @@ function UnderpassFeatureStats({
   hashtag,
   dateFrom,
   dateTo,
-  status,
   featureType,
   onSuccess,
   apiUrl,
@@ -26,7 +25,6 @@ function UnderpassFeatureStats({
         hashtag,
         dateFrom,
         dateTo,
-        status,
         featureType,
         {
           onSuccess: (data) => {
@@ -42,7 +40,7 @@ function UnderpassFeatureStats({
       );
     };
     getData();
-  }, [area, tags, hashtag, dateFrom, dateTo, status, featureType]);
+  }, [area, tags, hashtag, dateFrom, dateTo, featureType]);
 
   return (
     <div>

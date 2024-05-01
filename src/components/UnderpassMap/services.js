@@ -13,7 +13,7 @@ export async function fetchService(
   config,
   onSuccess,
 ) {
-  await API(config && config.API_URL).raw(
+  await API(config && config.API_URL).rawValidation(
     bbox,
     tags,
     hashtag,

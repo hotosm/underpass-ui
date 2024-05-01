@@ -15,6 +15,7 @@ function UnderpassValidationStats({
   featureType,
   onSuccess,
   apiUrl,
+  label,
   className,
 }) {
   const [result, setResult] = useState(null);
@@ -23,7 +24,7 @@ function UnderpassValidationStats({
   useEffect(() => {
     const getData = async () => {
       setLoading(true);
-      await API(apiUrl)["statsCount"](
+      await API(apiUrl)["validationStatsCount"](
         area,
         tags,
         hashtag,
@@ -50,6 +51,14 @@ function UnderpassValidationStats({
   return (
     result && (
       <div>
+        <div className="mb-2">
+          <h3 className="text-2xl font-bold text-primary">
+            {result && result.total}
+          </h3>
+          <p className="font-bold">
+            {tags} <span className="font-normal">{label || "found"}</span>
+          </p>
+        </div>
         <h3 className="text-lg font-bold mb-2">
           {result.count}{" "}
           <span className="text-base font-normal">{statusLabel[status]}</span>

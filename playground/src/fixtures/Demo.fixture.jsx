@@ -150,12 +150,6 @@ function App() {
           }}
         >
           <div className="border-b-2 pb-5 space-y-3">
-            <UnderpassFeatureStats
-              tags={tags}
-              hashtag={hashtag}
-              apiUrl={config.API_URL}
-              featureType={featureType}
-            />
             <UnderpassValidationStats
               tags={tags}
               hashtag={hashtag}
