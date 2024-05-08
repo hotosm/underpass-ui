@@ -1,37 +1,42 @@
 import React, { useState, useEffect } from "react";
 import API from "../api";
+import {
+  RawValidationStatsRequest
+} from "../api/models";
+
+const getEndpoint = (featureType) => {
+  switch(featureType) {
+    case "polygons":
+    case "nodes":
+    case "lines":
+      return featureType;
+    default:
+      return "stats";
+    }
+}
 
 const statusLabel = {
   badgeom: "Un-squared",
 };
 
 function UnderpassValidationStats({
-  area,
-  tags,
-  hashtag,
-  dateFrom,
-  dateTo,
-  status,
-  featureType,
   onSuccess,
-  apiUrl,
+  featureType,
+  config,
   label,
   className,
+  ...params  
 }) {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const api = API(config && config.API_URL);
+  const endpoint = getEndpoint(featureType);
+  const request = new RawValidationStatsRequest(params);
 
   useEffect(() => {
     const getData = async () => {
       setLoading(true);
-      await API(apiUrl)["validationStatsCount"](
-        area,
-        tags,
-        hashtag,
-        dateFrom,
-        dateTo,
-        status,
-        featureType,
+      await api.rawValidation[endpoint](request,
         {
           onSuccess: (data) => {
             setResult(data);
@@ -46,7 +51,7 @@ function UnderpassValidationStats({
       );
     };
     getData();
-  }, [area, tags, hashtag, dateFrom, dateTo, status, featureType]);
+  }, [params.area, params.tags, params.hashtag, params.dateFrom, params.dateTo, params.status, featureType]);
 
   return (
     result && (
@@ -56,21 +61,22 @@ function UnderpassValidationStats({
             {result && result.total}
           </h3>
           <p className="font-bold">
-            {tags} <span className="font-normal">{label || "found"}</span>
+            {params.tags} <span className="font-normal">{label || "found"}</span>
           </p>
         </div>
-        <h3 className="text-lg font-bold mb-2">
-          {result.count}{" "}
-          <span className="text-base font-normal">{statusLabel[status]}</span>
-        </h3>
-        <div className="rounded-md bg-gray-300">
-          <div
-            className="rounded-md bg-primary py-1.5"
-            style={{
-              width: (result.count * 100) / result.total + "%",
-            }}
-          ></div>
-        </div>
+        { params.status &&
+        <><h3 className="text-lg font-bold mb-2">
+            {result.count}{" "}
+            <span className="text-base font-normal">{statusLabel[params.status]}</span>
+          </h3><div className="rounded-md bg-gray-300">
+              <div
+                className="rounded-md bg-primary py-1.5"
+                style={{
+                  width: (result.count * 100) / result.total + "%",
+                }}
+              ></div>
+            </div></>
+        }
       </div>
     )
   );

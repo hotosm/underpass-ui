@@ -1,5 +1,7 @@
-.maplibregl-popup-close-button {
-  font-size: 1.3rem;
-  padding: 0.5rem;
-  opacity: 0.5;
+.underpass-ui {
+  .maplibregl-popup-close-button {
+    font-size: 1.3rem;
+    padding: 0.5rem;
+    opacity: 0.5;
+  }
 }

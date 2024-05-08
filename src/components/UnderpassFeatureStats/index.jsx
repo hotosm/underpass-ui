@@ -1,31 +1,38 @@
 import React, { useState, useEffect } from "react";
 import API from "../api";
+import {
+  StatsRequest
+} from "../api/models";
+
+const getEndpoint = (featureType) => {
+  switch(featureType) {
+    case "polygons":
+    case "nodes":
+    case "lines":
+      return featureType;
+    default:
+      return "features";
+    }
+}
 
 function UnderpassFeatureStats({
-  area,
-  tags,
-  hashtag,
-  dateFrom,
-  dateTo,
-  featureType,
   onSuccess,
-  apiUrl,
+  featureType,
+  config,
   label,
   className,
+  ...params
 }) {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const api = API(config && config.API_URL);
+  const endpoint = getEndpoint(featureType);
+  const request = new StatsRequest(params);
 
   useEffect(() => {
     const getData = async () => {
       setLoading(true);
-      await API(apiUrl)["statsCount"](
-        area,
-        tags,
-        hashtag,
-        dateFrom,
-        dateTo,
-        featureType,
+      await api.raw[endpoint](request,
         {
           onSuccess: (data) => {
             setResult(data);
@@ -40,7 +47,7 @@ function UnderpassFeatureStats({
       );
     };
     getData();
-  }, [area, tags, hashtag, dateFrom, dateTo, featureType]);
+  }, [params.area, params.tags, params.hashtag, params.dateFrom, params.dateTo, featureType]);
 
   return (
     <div>

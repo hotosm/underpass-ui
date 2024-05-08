@@ -1,9 +1,9 @@
 import React from "react";
 import { UnderpassMap } from "@hotosm/underpass-ui";
-import { center } from "./center";
+import { center, API_URL } from "./config";
 
 const config = {
-  API_URL: "http://localhost:8000",
+  API_URL,
 };
 
 export default (

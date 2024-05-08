@@ -3,14 +3,13 @@ import {
   UnderpassFeatureList,
   UnderpassMap,
   HOTTheme,
-  UnderpassFeatureStats,
   UnderpassValidationStats,
 } from "@hotosm/underpass-ui";
-import { center } from "./center";
+import { center, AOI, API_URL } from "./config";
 import "./Demo.css";
 
 const config = {
-  API_URL: "http://localhost:8000",
+  API_URL,
 };
 
 const statusList = {
@@ -44,6 +43,12 @@ function App() {
       document.body.style.backgroundColor = `rgb(${hottheme.colors.white})`;
     }
   }, [mapSource]);
+
+  useEffect(() => {
+    if (!tags.startsWith("building")) {
+      setStatus(statusList.ALL)
+    }
+  }, [tags, status]);
 
   const defaultMapStyle = {
     waysLine: {
@@ -153,9 +158,10 @@ function App() {
             <UnderpassValidationStats
               tags={tags}
               hashtag={hashtag}
-              apiUrl={config.API_URL}
-              status="badgeom"
+              config={config}
+              status={tags.startsWith("building") ? statusList.UNSQUARED : null}
               featureType={featureType}
+              area={AOI}
             />
           </div>
           <div className="border-b-2 py-5 mb-4">
@@ -177,38 +183,40 @@ function App() {
               />
               <label target="liveMapCheckbox">Live map</label>
             </form>
-            <form className="space-x-2 py-4">
-              <input
-                checked={status === statusList.ALL}
-                onChange={() => {
-                  setStatus(statusList.ALL);
-                }}
-                name="allCheckbox"
-                id="allCheckbox"
-                type="radio"
-              />
-              <label htmlFor="allCheckbox">All</label>
-              <input
-                checked={status === statusList.UNSQUARED}
-                onChange={() => {
-                  setStatus(statusList.UNSQUARED);
-                }}
-                name="geospatialCheckbox"
-                id="geospatialCheckbox"
-                type="radio"
-              />
-              <label htmlFor="geospatialCheckbox">Geospatial</label>
-              <input
-                checked={status === statusList.BADVALUE}
-                onChange={() => {
-                  setStatus(statusList.BADVALUE);
-                }}
-                name="semanticCheckbox"
-                id="semanticCheckbox"
-                type="radio"
-              />
-              <label htmlFor="semanticCheckbox">Semantic</label>
-            </form>
+            {/* { tags.startsWith("building") ? */}
+              <form className="space-x-2 py-4">
+                <input
+                  checked={status === statusList.ALL}
+                  onChange={() => {
+                    setStatus(statusList.ALL);
+                  }}
+                  name="allCheckbox"
+                  id="allCheckbox"
+                  type="radio"
+                />
+                <label htmlFor="allCheckbox">All</label>
+                <input
+                  checked={status === statusList.UNSQUARED}
+                  onChange={() => {
+                    setStatus(statusList.UNSQUARED);
+                  }}
+                  name="geospatialCheckbox"
+                  id="geospatialCheckbox"
+                  type="radio"
+                />
+                <label htmlFor="geospatialCheckbox">Un-squared</label>
+                {/* <input
+                  checked={status === statusList.BADVALUE}
+                  onChange={() => {
+                    setStatus(statusList.BADVALUE);
+                  }}
+                  name="semanticCheckbox"
+                  id="semanticCheckbox"
+                  type="radio"
+                />
+                <label htmlFor="semanticCheckbox">Semantic</label> */}
+              </form>
+            {/* : <br />} */}
             <form className="space-x-2">
               <input
                 checked={featureType === "all"}
@@ -256,9 +264,9 @@ function App() {
             style={{
               display: "flex",
               "flex-flow": "column",
-              height: "1px",
               flex: "1 1 auto",
             }}
+            area={AOI}
             tags={tags}
             hashtag={hashtag}
             page={0}
