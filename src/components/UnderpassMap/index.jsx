@@ -51,21 +51,21 @@ export default function UnderpassMap({
     const theme = getTheme();
     if (!mapRef || !theme) return;
     setLoading(true);
-    fetchService(
-      getBBoxString(mapRef.current),
-      tagsRef.current,
-      hashtagRef.current,
-      dateFromRef.current,
-      dateToRef.current,
-      statusRef.current,
-      featureTypeRef.current,
-      mapRef.current,
-      theme,
-      config,
-      () => {
+    fetchService({
+      area: getBBoxString(mapRef.current),
+      tags: tagsRef.current,
+      hashtag: hashtagRef.current,
+      dateFrom: dateFromRef.current,
+      dateTO: dateToRef.current,
+      status: statusRef.current,
+      featureType: featureTypeRef.current,
+      map: mapRef.current,
+      theme: theme,
+      config: config,
+      onSuccess: () => {
         setLoading(false);
       },
-    );
+    });
   }
 
   const getTheme = () => {
@@ -177,24 +177,12 @@ export default function UnderpassMap({
 
   useEffect(() => {
     hashtagRef.current = hashtag;
-    fetch();
-  }, [hashtag]);
-
-  useEffect(() => {
     statusRef.current = status;
-    fetch();
-  }, [status]);
-
-  useEffect(() => {
     featureTypeRef.current = featureType;
-    fetch();
-  }, [featureType]);
-
-  useEffect(() => {
     dateFromRef.current = dateFrom;
     dateToRef.current = dateTo;
     fetch();
-  }, [dateFrom, dateTo]);
+  }, [hashtag, status, featureType, dateFrom, dateTo]);
 
   useEffect(() => {
     if (!map || !tagsRef.current) return;

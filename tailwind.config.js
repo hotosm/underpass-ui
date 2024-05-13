@@ -17,7 +17,9 @@ module.exports = {
     "./src/components/**/*.js",
     "./src/components/**/*.jsx",
     "./playground/src/fixtures/*.jsx",
+    "./src/components/HOTTheme/hot.css",
   ],
   variants: {},
   plugins: [],
+  prefix: "hui-",
 };

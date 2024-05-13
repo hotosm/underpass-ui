@@ -1,24 +1,33 @@
 import React, { useEffect, useState, useRef } from "react";
 import FeatureDetailCard from "../FeatureDetailCard";
 import API from "../api";
+import {
+  RawValidationListRequest
+} from "../api/models";
+
+const getEndpoint = (featureType) => {
+  switch(featureType) {
+    case "polygon":
+      return "polygonsList";
+    case "line":
+      return "linesList";
+    case "node":
+      return "nodesList";
+    default:
+      return "list";
+    }
+}
 
 function UnderpassFeatureList({
-  area,
-  tags,
-  hashtag,
-  dateFrom,
-  dateTo,
-  status,
-  orderBy,
-  page,
   onSelect,
-  realtime,
   onUpdate,
   onFetchFirstTime,
+  featureType,
+  realtime,
   config,
   style,
   className,
-  featureType,
+  ...params
 }) {
   const [features, setFeatures] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -26,6 +35,9 @@ function UnderpassFeatureList({
   const realtimeIntervalRef = useRef();
   const loadedRef = useRef();
   const pageRef = useRef(0);
+  const api = API(config && config.API_URL);
+  const endpoint = getEndpoint(featureType);
+  const request = new RawValidationListRequest(params);
 
   const handleScroll = (e) => {
     const bottom =
@@ -39,16 +51,7 @@ function UnderpassFeatureList({
   async function fetch(page) {
     if (!loading) {
       setLoading(true);
-      await API(config && config.API_URL)["rawList"](
-        area,
-        tags,
-        hashtag,
-        dateFrom,
-        dateTo,
-        status,
-        featureType,
-        page,
-        orderBy,
+      await api.rawValidation[endpoint](request,
         {
           onSuccess: (data) => {
             if (page && features) {
@@ -79,7 +82,7 @@ function UnderpassFeatureList({
   useEffect(() => {
     pageRef.current = 0;
     fetch();
-  }, [tags, hashtag, status, area, featureType]);
+  }, [params.area, params.tags, params.hashtag, params.dateFrom, params.dateTo, params.status, params.status, featureType]);
 
   useEffect(() => {
     if (realtime) {
@@ -103,7 +106,7 @@ function UnderpassFeatureList({
             feature && (
               <div
                 key={feature && feature.id}
-                className="border-b pb-5"
+                className="hui-border-b hui-pb-5"
                 onClick={() => {
                   onSelect && onSelect(feature);
                 }}
@@ -113,10 +116,10 @@ function UnderpassFeatureList({
             ),
         )}
       {!loading && features && features.length === 0 && (
-        <span className="text-sm text-secondary-light">No results</span>
+        <span className="hui-text-sm hui-text-secondary-light">No results</span>
       )}
       {loading && (
-        <span className="text-sm text-secondary-light">Loading ...</span>
+        <span className="hui-text-sm hui-text-secondary-light">Loading ...</span>
       )}
     </div>
   );

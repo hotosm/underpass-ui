@@ -3,14 +3,13 @@ import {
   UnderpassFeatureList,
   UnderpassMap,
   HOTTheme,
-  UnderpassFeatureStats,
   UnderpassValidationStats,
 } from "@hotosm/underpass-ui";
-import { center } from "./center";
+import { center, AOI, API_URL } from "./config";
 import "./Demo.css";
 
 const config = {
-  API_URL: "http://localhost:8000",
+  API_URL,
 };
 
 const statusList = {
@@ -44,6 +43,12 @@ function App() {
       document.body.style.backgroundColor = `rgb(${hottheme.colors.white})`;
     }
   }, [mapSource]);
+
+  useEffect(() => {
+    if (!tags.startsWith("building")) {
+      setStatus(statusList.ALL)
+    }
+  }, [tags, status]);
 
   const defaultMapStyle = {
     waysLine: {
@@ -84,12 +89,12 @@ function App() {
 
   return (
     <div>
-      <div className="flex">
+      <div className="hui-flex">
         <div style={{ flex: 2 }}>
           <div className="top">
             <form>
               <input
-                className="border px-2 py-2 text-sm"
+                className="hui-input-text"
                 type="text"
                 placeholder="key (ex: building=yes)"
                 ref={tagsInputRef}
@@ -97,14 +102,14 @@ function App() {
               />
               &nbsp;
               <input
-                className="border px-2 py-2 text-sm"
+                className="hui-input-text"
                 type="text"
                 placeholder="hashtag (ex: hotosm-project)"
                 ref={hashtagInputRef}
               />
               &nbsp;
               <button
-                className="inline-flex items-center rounded bg-primary px-2 py-2 text-sm font-medium text-white"
+                className="hui-button"
                 onClick={handleFilterClick}
               >
                 Search
@@ -113,7 +118,7 @@ function App() {
             <select
               onChange={handleMapSourceSelect}
               ref={styleSelectRef}
-              className="border mt-2 bg-white px-2 py-2 text-sm"
+              className="hui-input-text hui-mt-2 hui-bg-white"
             >
               <option value="osm">OSM</option>
               <option value="bing">Bing</option>
@@ -149,23 +154,18 @@ function App() {
             backgroundColor: `rgb(${hottheme.colors.white})`,
           }}
         >
-          <div className="border-b-2 pb-5 space-y-3">
-            <UnderpassFeatureStats
-              tags={tags}
-              hashtag={hashtag}
-              apiUrl={config.API_URL}
-              featureType={featureType}
-            />
+          <div className="hui-border-b-2 hui-pb-5 hui-space-y-3">
             <UnderpassValidationStats
               tags={tags}
               hashtag={hashtag}
-              apiUrl={config.API_URL}
-              status="badgeom"
+              config={config}
+              status={tags.startsWith("building") ? statusList.UNSQUARED : null}
               featureType={featureType}
+              area={AOI}
             />
           </div>
-          <div className="border-b-2 py-5 mb-4">
-            <form className="space-x-2">
+          <div className="hui-border-b-2 hui-py-5 hui-mb-4">
+            <form className="hui-space-x-2">
               <input
                 onChange={() => {
                   setRealtimeList(!realtimeList);
@@ -183,39 +183,41 @@ function App() {
               />
               <label target="liveMapCheckbox">Live map</label>
             </form>
-            <form className="space-x-2 py-4">
-              <input
-                checked={status === statusList.ALL}
-                onChange={() => {
-                  setStatus(statusList.ALL);
-                }}
-                name="allCheckbox"
-                id="allCheckbox"
-                type="radio"
-              />
-              <label htmlFor="allCheckbox">All</label>
-              <input
-                checked={status === statusList.UNSQUARED}
-                onChange={() => {
-                  setStatus(statusList.UNSQUARED);
-                }}
-                name="geospatialCheckbox"
-                id="geospatialCheckbox"
-                type="radio"
-              />
-              <label htmlFor="geospatialCheckbox">Geospatial</label>
-              <input
-                checked={status === statusList.BADVALUE}
-                onChange={() => {
-                  setStatus(statusList.BADVALUE);
-                }}
-                name="semanticCheckbox"
-                id="semanticCheckbox"
-                type="radio"
-              />
-              <label htmlFor="semanticCheckbox">Semantic</label>
-            </form>
-            <form className="space-x-2">
+            {/* { tags.startsWith("building") ? */}
+              <form className="hui-space-x-2 hui-py-4">
+                <input
+                  checked={status === statusList.ALL}
+                  onChange={() => {
+                    setStatus(statusList.ALL);
+                  }}
+                  name="allCheckbox"
+                  id="allCheckbox"
+                  type="radio"
+                />
+                <label htmlFor="allCheckbox">All</label>
+                <input
+                  checked={status === statusList.UNSQUARED}
+                  onChange={() => {
+                    setStatus(statusList.UNSQUARED);
+                  }}
+                  name="geospatialCheckbox"
+                  id="geospatialCheckbox"
+                  type="radio"
+                />
+                <label htmlFor="geospatialCheckbox">Un-squared</label>
+                {/* <input
+                  checked={status === statusList.BADVALUE}
+                  onChange={() => {
+                    setStatus(statusList.BADVALUE);
+                  }}
+                  name="semanticCheckbox"
+                  id="semanticCheckbox"
+                  type="radio"
+                />
+                <label htmlFor="semanticCheckbox">Semantic</label> */}
+              </form>
+            {/* : <br />} */}
+            <form className="hui-space-x-2">
               <input
                 checked={featureType === "all"}
                 onChange={() => {
@@ -262,9 +264,9 @@ function App() {
             style={{
               display: "flex",
               "flex-flow": "column",
-              height: "1px",
               flex: "1 1 auto",
             }}
+            area={AOI}
             tags={tags}
             hashtag={hashtag}
             page={0}

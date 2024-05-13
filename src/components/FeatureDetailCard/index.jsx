@@ -9,8 +9,8 @@ const formatter = buildFormatter(enStrings);
 
 function FeatureDetailCard({ feature }) {
   return (
-    <article className="space-y-3">
-      <div className="flex">
+    <article className="hui-space-y-3">
+      <div className="hui-flex">
         <strong>
           {feature.type} &nbsp;
           <a
@@ -23,7 +23,7 @@ function FeatureDetailCard({ feature }) {
         </strong>
         {feature.created_at && (
           <abbr
-            className="text-right"
+            className="hui-text-right"
             style={{ flex: 2 }}
             title={feature.created_at}
           >
@@ -32,13 +32,13 @@ function FeatureDetailCard({ feature }) {
         )}
       </div>
       <div>
-        <table className="table-auto w-full">
+        <table className="hui-able-auto hui-w-full">
           <tbody>
             {feature.tags &&
               Object.keys(feature.tags).map((key) => (
                 <tr key={[key, feature.tags[key]].join("=")}>
-                  <td className="font-bold">{key}</td>
-                  <td className="text-right">
+                  <td className="hui-font-bold">{key}</td>
+                  <td className="hui-text-right">
                     <abbr title={feature.tags[key]}>{feature.tags[key]}</abbr>
                   </td>
                 </tr>
