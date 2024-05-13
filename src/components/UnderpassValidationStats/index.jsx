@@ -56,21 +56,21 @@ function UnderpassValidationStats({
   return (
     result && (
       <div>
-        <div className="mb-2">
-          <h3 className="text-2xl font-bold text-primary">
+        <div className="hui-b-2">
+          <h3 className="hui-text-2xl hui-font-bold hui-text-primary">
             {result && result.total}
           </h3>
           <p className="font-bold">
-            {params.tags} <span className="font-normal">{label || "found"}</span>
+            {params.tags} <span className="hui-font-normal">{label || "found"}</span>
           </p>
         </div>
         { params.status &&
-        <><h3 className="text-lg font-bold mb-2">
+        <><h3 className="hui-text-lg hui-font-bold hui-mb-2">
             {result.count}{" "}
-            <span className="text-base font-normal">{statusLabel[params.status]}</span>
-          </h3><div className="rounded-md bg-gray-300">
+            <span className="hui-text-base hui-font-normal">{statusLabel[params.status]}</span>
+          </h3><div className="hui-rounded-md hui-bg-gray-300">
               <div
-                className="rounded-md bg-primary py-1.5"
+                className="hui-rounded-md hui-bg-primary hui-py-1.5"
                 style={{
                   width: (result.count * 100) / result.total + "%",
                 }}

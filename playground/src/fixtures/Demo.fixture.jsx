@@ -89,12 +89,12 @@ function App() {
 
   return (
     <div>
-      <div className="flex">
+      <div className="hui-flex">
         <div style={{ flex: 2 }}>
           <div className="top">
             <form>
               <input
-                className="border px-2 py-2 text-sm"
+                className="hui-input-text"
                 type="text"
                 placeholder="key (ex: building=yes)"
                 ref={tagsInputRef}
@@ -102,14 +102,14 @@ function App() {
               />
               &nbsp;
               <input
-                className="border px-2 py-2 text-sm"
+                className="hui-input-text"
                 type="text"
                 placeholder="hashtag (ex: hotosm-project)"
                 ref={hashtagInputRef}
               />
               &nbsp;
               <button
-                className="inline-flex items-center rounded bg-primary px-2 py-2 text-sm font-medium text-white"
+                className="hui-button"
                 onClick={handleFilterClick}
               >
                 Search
@@ -118,7 +118,7 @@ function App() {
             <select
               onChange={handleMapSourceSelect}
               ref={styleSelectRef}
-              className="border mt-2 bg-white px-2 py-2 text-sm"
+              className="hui-input-text hui-mt-2 hui-bg-white"
             >
               <option value="osm">OSM</option>
               <option value="bing">Bing</option>
@@ -154,7 +154,7 @@ function App() {
             backgroundColor: `rgb(${hottheme.colors.white})`,
           }}
         >
-          <div className="border-b-2 pb-5 space-y-3">
+          <div className="hui-border-b-2 hui-pb-5 hui-space-y-3">
             <UnderpassValidationStats
               tags={tags}
               hashtag={hashtag}
@@ -164,8 +164,8 @@ function App() {
               area={AOI}
             />
           </div>
-          <div className="border-b-2 py-5 mb-4">
-            <form className="space-x-2">
+          <div className="hui-border-b-2 hui-py-5 hui-mb-4">
+            <form className="hui-space-x-2">
               <input
                 onChange={() => {
                   setRealtimeList(!realtimeList);
@@ -184,7 +184,7 @@ function App() {
               <label target="liveMapCheckbox">Live map</label>
             </form>
             {/* { tags.startsWith("building") ? */}
-              <form className="space-x-2 py-4">
+              <form className="hui-space-x-2 hui-py-4">
                 <input
                   checked={status === statusList.ALL}
                   onChange={() => {
@@ -217,7 +217,7 @@ function App() {
                 <label htmlFor="semanticCheckbox">Semantic</label> */}
               </form>
             {/* : <br />} */}
-            <form className="space-x-2">
+            <form className="hui-space-x-2">
               <input
                 checked={featureType === "all"}
                 onChange={() => {

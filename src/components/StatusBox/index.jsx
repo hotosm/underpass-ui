@@ -30,7 +30,7 @@ const getStatusClass = (status) => {
 function StatusBox({ status }) {
   const statusClass = getStatusClass(status);
   return (
-    <div className="inline-flex items-center rounded-md bg-primary px-2 py-1 text-sm font-medium text-white">
+    <div className="hui-label">
       {getStatusLabel(status)}
     </div>
   );

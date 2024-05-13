@@ -51,11 +51,11 @@ function UnderpassFeatureStats({
 
   return (
     <div>
-      <h3 className="text-2xl font-bold text-primary">
+      <h3 className="hui-text-2xl hui-font-bold hui-text-primary">
         {result && result.count}
       </h3>
-      <p className="font-bold">
-        {tags} <span className="font-normal">{label || "found"}</span>
+      <p className="hui-font-bold">
+        {tags} <span className="hui-font-normal">{label || "found"}</span>
       </p>
     </div>
   );

@@ -106,7 +106,7 @@ function UnderpassFeatureList({
             feature && (
               <div
                 key={feature && feature.id}
-                className="border-b pb-5"
+                className="hui-border-b hui-pb-5"
                 onClick={() => {
                   onSelect && onSelect(feature);
                 }}
@@ -116,10 +116,10 @@ function UnderpassFeatureList({
             ),
         )}
       {!loading && features && features.length === 0 && (
-        <span className="text-sm text-secondary-light">No results</span>
+        <span className="hui-text-sm hui-text-secondary-light">No results</span>
       )}
       {loading && (
-        <span className="text-sm text-secondary-light">Loading ...</span>
+        <span className="hui-text-sm hui-text-secondary-light">Loading ...</span>
       )}
     </div>
   );

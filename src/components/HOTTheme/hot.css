@@ -1,4 +1,6 @@
-
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   --hot-red-900: #b9302d;
@@ -119,4 +121,19 @@
   --hot-success-dark: var(--hot-green-600);
   --hot-success-contrastText: var(--hot-white);
   --hot-success-rgb: var(--hot-green-rgb);
+}
+
+@layer components {
+  .hui-button {
+    @apply hui-inline-flex hui-items-center hui-bg-primary hui-rounded hui-px-2 hui-py-2 hui-text-sm hui-font-medium hui-text-white
+  }
+
+  .hui-input-text {
+    @apply hui-border hui-px-2 hui-py-2 hui-text-sm
+  }
+
+  .hui-label {
+    @apply hui-inline-flex hui-items-center hui-rounded-md hui-bg-primary hui-px-2 hui-py-1 hui-text-sm hui-font-medium hui-text-white
+  }
+
 }
