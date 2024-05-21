@@ -1,3 +1,7 @@
+
+// Default available styles
+// You can overwrite this passing a new `sources.config` property
+
 export const getMapStyle = (grayscale, source = "osm", config) => {
   const sources = config.sources || {
     osm: {

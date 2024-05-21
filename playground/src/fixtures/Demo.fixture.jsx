@@ -5,7 +5,7 @@ import {
   HOTTheme,
   UnderpassValidationStats,
 } from "@hotosm/underpass-ui";
-import { center, AOI, API_URL } from "./config";
+import { center, AOI, API_URL, AOI_GEOJSON, MAX_BOUNDS } from "./config";
 import "./Demo.css";
 
 const config = {
@@ -139,10 +139,11 @@ function App() {
             config={config}
             realtime={realtimeMap}
             theme={demoTheme}
-            zoom={17}
+            zoom={16}
             onMove={handleMapMove}
             onLoad={handleMapLoad}
             featureType={featureType}
+            aoi={AOI_GEOJSON}
           />
         </div>
         <div
@@ -183,7 +184,7 @@ function App() {
               />
               <label target="liveMapCheckbox">Live map</label>
             </form>
-            {/* { tags.startsWith("building") ? */}
+            { tags.startsWith("building") ?
               <form className="hui-space-x-2 hui-py-4">
                 <input
                   checked={status === statusList.ALL}
@@ -205,18 +206,8 @@ function App() {
                   type="radio"
                 />
                 <label htmlFor="geospatialCheckbox">Un-squared</label>
-                {/* <input
-                  checked={status === statusList.BADVALUE}
-                  onChange={() => {
-                    setStatus(statusList.BADVALUE);
-                  }}
-                  name="semanticCheckbox"
-                  id="semanticCheckbox"
-                  type="radio"
-                />
-                <label htmlFor="semanticCheckbox">Semantic</label> */}
               </form>
-            {/* : <br />} */}
+            : <br />}
             <form className="hui-space-x-2">
               <input
                 checked={featureType === "all"}

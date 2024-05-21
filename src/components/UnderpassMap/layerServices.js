@@ -1,5 +1,5 @@
 import API from "../api";
-import { RawRequest, RawValidationRequest } from "../api/models";
+import { RawValidationRequest } from "../api/models";
 
 const getEndpoint = (featureType) => {
   switch (featureType) {
@@ -96,10 +96,11 @@ export async function fetchService({
         });
         map.addLayer({
           id: "nodesFill",
-          type: "symbol",
+          type: "circle",
           source: "point",
-          layout: {
-            "icon-image": "custom-marker",
+          paint: theme.map.point || {
+            "circle-color": theme.colors.info,
+            "circle-radius": 7,
           },
         });
       }
@@ -110,4 +111,5 @@ export async function fetchService({
       console.log(error);
     },
   });
+
 }

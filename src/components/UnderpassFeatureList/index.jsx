@@ -96,7 +96,7 @@ function UnderpassFeatureList({
 
   return (
     <div
-      style={{ "overflow-y": "scroll", ...style }}
+      style={{ "overflow-y": "scroll", ...style, "height": "100vh" }}
       className={className}
       onScroll={handleScroll}
     >

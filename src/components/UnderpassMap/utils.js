@@ -1,3 +1,4 @@
+// Return the map's boundary box
 export function getBBoxString(map) {
   const bbox = [
     [

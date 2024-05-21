@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import StatusBox from "../StatusBox";
 import TimeAgo from "react-timeago";
 import enStrings from "react-timeago/lib/language-strings/en";
@@ -20,11 +20,11 @@ export default function PopupContent({ feature, highlightDataQualityIssues }) {
   }
 
   return (
-    <div className="space-y-3 text-lg truncate">
-      <table className="table-auto w-full">
+    <div className="hui-space-y-3 hui-text-lg hui-truncate">
+      <table className="hui-table-auto hui-w-full">
         <tbody>
           <tr>
-            <td colSpan="2" className="pt-1 pb-1">
+            <td colSpan="2" className="hui-t-1 hui-pb-1">
               <b>{type}</b>&nbsp;
               <a
                 target="blank"
@@ -42,16 +42,16 @@ export default function PopupContent({ feature, highlightDataQualityIssues }) {
             </td>
           </tr>
           {visibleTags.map((tag) => (
-            <tr key={tag} className="border-b">
-              <td className="pr-5 pt-1 pb-1">{tag}</td>
-              <td className="p2-5 pb-1">
+            <tr key={tag} className="hui-border-b">
+              <td className="hui-pr-5 hui-pt-1 hui-pb-1">{tag}</td>
+              <td className="hui-p2-5 hui-pb-1">
                 <abbr title={tags[tag]}>{tags[tag]}</abbr>
               </td>
             </tr>
           ))}
           {highlightDataQualityIssues && feature.properties.status && (
             <tr>
-              <td colSpan="2" className="pt-1 pb-1">
+              <td colSpan="2" className="hui-pt-1 hui-pb-1">
                 <StatusBox status={feature.properties.status} />
               </td>
             </tr>

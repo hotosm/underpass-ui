@@ -136,4 +136,12 @@
     @apply hui-inline-flex hui-items-center hui-rounded-md hui-bg-primary hui-px-2 hui-py-1 hui-text-sm hui-font-medium hui-text-white
   }
 
+  .hui-loading-label {
+    @apply hui-items-center hui-rounded-md hui-bg-white hui-px-2 hui-py-1
+  }
+
+  .hui-information-label {
+    @apply hui-items-center hui-rounded-md hui-px-2 hui-py-1 hui-uppercase hui-absolute hui-bg-white
+  }
+
 }
