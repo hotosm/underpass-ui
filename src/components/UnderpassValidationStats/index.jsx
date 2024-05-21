@@ -65,7 +65,8 @@ function UnderpassValidationStats({
           </p>
         </div>
         { params.status &&
-        <><h3 className="hui-text-lg hui-font-bold hui-mb-2">
+        <div>
+        <h3 className="hui-text-lg hui-font-bold hui-mb-2">
             {result.count}{" "}
             <span className="hui-text-base hui-font-normal">{statusLabel[params.status]}</span>
           </h3><div className="hui-rounded-md hui-bg-gray-300">
@@ -75,7 +76,8 @@ function UnderpassValidationStats({
                   width: (result.count * 100) / result.total + "%",
                 }}
               ></div>
-            </div></>
+            </div>
+          </div>
         }
       </div>
     )
