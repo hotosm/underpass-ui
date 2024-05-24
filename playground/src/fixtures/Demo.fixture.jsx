@@ -28,7 +28,7 @@ function App() {
   const [realtimeList, setRealtimeList] = useState(false);
   const [realtimeMap, setRealtimeMap] = useState(false);
   const [status, setStatus] = useState(statusList.UNSQUARED);
-  const [featureType, setFeatureType] = useState("polygon");
+  const [featureType, setFeatureType] = useState("polygons");
   const [area, setArea] = useState(null);
   const tagsInputRef = useRef("");
   const hashtagInputRef = useRef("");
@@ -139,7 +139,7 @@ function App() {
             config={config}
             realtime={realtimeMap}
             theme={demoTheme}
-            zoom={16}
+            zoom={17}
             onMove={handleMapMove}
             onLoad={handleMapLoad}
             featureType={featureType}
@@ -220,9 +220,9 @@ function App() {
               />
               <label htmlFor="featureTypeAllCheckbox">All</label>
               <input
-                checked={featureType === "polygon"}
+                checked={featureType === "polygons"}
                 onChange={() => {
-                  setFeatureType("polygon");
+                  setFeatureType("polygons");
                 }}
                 name="featureTypePolygonCheckbox"
                 id="featureTypePolygonCheckbox"
@@ -230,9 +230,9 @@ function App() {
               />
               <label htmlFor="featureTypePolygonCheckbox">Polygon</label>
               <input
-                checked={featureType === "line"}
+                checked={featureType === "lines"}
                 onChange={() => {
-                  setFeatureType("line");
+                  setFeatureType("lines");
                 }}
                 name="featureTypeLineCheckbox"
                 id="featureTypeLineCheckbox"
@@ -240,9 +240,9 @@ function App() {
               />
               <label htmlFor="featureTypeLineCheckbox">Line</label>
               <input
-                checked={featureType === "node"}
+                checked={featureType === "nodes"}
                 onChange={() => {
-                  setFeatureType("node");
+                  setFeatureType("nodes");
                 }}
                 name="featureTypeNodeCheckbox"
                 id="featureTypeNodeCheckbox"

@@ -7,11 +7,11 @@ import {
 
 const getEndpoint = (featureType) => {
   switch(featureType) {
-    case "polygon":
+    case "polygons":
       return "polygonsList";
-    case "line":
+    case "lines":
       return "linesList";
-    case "node":
+    case "nodes":
       return "nodesList";
     default:
       return "list";
