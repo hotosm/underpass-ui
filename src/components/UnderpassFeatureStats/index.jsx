@@ -30,9 +30,9 @@ function UnderpassFeatureStats({
   const request = new StatsRequest(params);
 
   useEffect(() => {
-    const getData = async () => {
+  const getData = async () => {
       setLoading(true);
-      await api.raw[endpoint](request,
+      await api.stats[endpoint](request,
         {
           onSuccess: (data) => {
             setResult(data);
@@ -45,7 +45,7 @@ function UnderpassFeatureStats({
           },
         },
       );
-    };
+    }
     getData();
   }, [params.area, params.tags, params.hashtag, params.dateFrom, params.dateTo, featureType]);
 
@@ -55,7 +55,7 @@ function UnderpassFeatureStats({
         {result && result.count}
       </h3>
       <p className="hui-font-bold">
-        {tags} <span className="hui-font-normal">{label || "found"}</span>
+        {params.tags} <span className="hui-font-normal">{params.label || "found"}</span>
       </p>
     </div>
   );

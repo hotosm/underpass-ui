@@ -9,7 +9,7 @@ const getEndpoint = (featureType) => {
     case "polygons":
       return "statsPolygons";
     case "nodes":
-      return "statNnodes";
+      return "statsNodes";
     case "lines":
       return "statsLines";
     default:

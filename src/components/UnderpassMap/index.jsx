@@ -33,44 +33,43 @@ export default function UnderpassMap({
   featureType,
   aoi,
 }) {
-  const mapContainer = useRef(null);
-  const mapRef = useRef(null);
-  const tagsRef = useRef(tags);
-  const hashtagRef = useRef(hashtag);
-  const statusRef = useRef(status);
-  const featureTypeRef = useRef(featureType);
-  const dateFromRef = useRef(dateFrom);
-  const dateToRef = useRef(dateTo);
-  const realtimeIntervalRef = useRef();
-  const [center, setCenter] = useState(propsCenter);
+
   const [activePopupFeature, setActivePopupFeature] = useState(null);
   const [map, setMap] = useState(null);
+  const [center, setCenter] = useState(propsCenter);
   const [loading, setLoading] = useState(true);
   const [showPopup, setShowPopup] = useState(false);
+  const [fetchSwitch, setFetchSwitch] = useState(false);
   const popupRef = useRef(null);
+  const mapContainer = useRef(null);
+  const mapRef = useRef(null);
 
   // Fetch data from the Underpass API
-  async function fetch() {
-    const theme = getTheme();
-    if ((!mapRef || !theme) || (map && map.getZoom() < minZoom)) return;
-    setLoading(true);
-    fetchService({
-      area: getBBoxString(mapRef.current),
-      tags: tagsRef.current,
-      hashtag: hashtagRef.current,
-      dateFrom: dateFromRef.current,
-      dateTo: dateToRef.current,
-      status: statusRef.current,
-      featureType: featureTypeRef.current,
-      map: mapRef.current,
-      theme: theme,
-      config: config,
-      aoi: aoi,
-      onSuccess: () => {
-        setLoading(false);
-      },
-    });
-  }
+  useEffect(() => {
+    console.log('fetch!')
+    async function fetch() {
+      const theme = getTheme();
+      if ((!mapRef || !mapRef.current || !theme) || (map && map.getZoom() < minZoom)) return;
+      setLoading(true);
+      fetchService({
+        area: getBBoxString(mapRef.current),
+        tags: tags,
+        hashtag: hashtag,
+        dateFrom: dateFrom,
+        dateTo: dateTo,
+        status: status,
+        featureType: featureType,
+        map: map,
+        theme: theme,
+        config: config,
+        aoi: aoi,
+        onSuccess: () => {
+          setLoading(false);
+        },
+      });
+    }
+    fetch();
+  }, [map, fetchSwitch, tags, hashtag, dateFrom, dateTo, status, featureType, aoi, center]);
 
   // Create a theme and highlight quality issues if the feature is enabled
   const getTheme = () => {
@@ -116,7 +115,7 @@ export default function UnderpassMap({
   // Initialization
   useEffect(() => {
     if (!map) return;
-
+    
     // Run immediately on the first time
     map.on("load", () => {
       onLoad && onLoad({ bbox: getBBoxString(mapRef.current) });
@@ -125,7 +124,6 @@ export default function UnderpassMap({
       map.on("moveend", () => {
         const zoom = map.getZoom();
         if (zoom > minZoom) {
-          fetch();
           map.setLayoutProperty("waysLine", "visibility", "visible");
           map.setLayoutProperty("waysFill", "visibility", "visible");
           map.setLayoutProperty("nodesFill", "visibility", "visible");  
@@ -137,6 +135,9 @@ export default function UnderpassMap({
         // OnMove event
         onMove && onMove({ bbox: getBBoxString(mapRef.current) });
       });
+
+      console.log("Load!");
+      setFetchSwitch(!fetchSwitch);
 
     });
 
@@ -170,6 +171,8 @@ export default function UnderpassMap({
     map.on("mouseleave", "nodesFill", handleLayerMouseLeave);
     map.on("mouseenter", "waysLineString", handleLayerMouseEnter);
     map.on("mouseleave", "waysLineString", handleLayerMouseLeave);
+
+    setMap(map);
   }, [map]);
 
   // Map initialization
@@ -183,14 +186,14 @@ export default function UnderpassMap({
     let mapLibreOptions = {
       container: mapContainer.current,
       style: rasterStyle,
-      center,
+      propsCenter,
       zoom: defaultZoom || 17,
       ...mapProps
     }
     mapRef.current = new maplibregl.Map(mapLibreOptions);
     mapRef.current.addControl(new maplibregl.NavigationControl());
     setMap(mapRef.current);
-  }, [center]);
+  }, [propsCenter]);
 
   // AOI
   useEffect(() => {
@@ -206,7 +209,7 @@ export default function UnderpassMap({
     if (!map || !propsTheme) return;
     const rasterStyle = getMapStyle(grayscale, source, config);
     map.once("styledata", () => {
-      fetch();
+      setFetchSwitch(!fetchSwitch);
     });
     mapRef.current.setStyle(rasterStyle);
   }, [map, propsTheme]);
@@ -216,7 +219,7 @@ export default function UnderpassMap({
     if (!map || !source) return;
     const rasterStyle = getMapStyle(grayscale, source, config);
     map.once("styledata", () => {
-      fetch();
+      setFetchSwitch(!fetchSwitch);
       if (aoi) {
         map.addSource("aoi", {
           type: "geojson",
@@ -262,39 +265,17 @@ export default function UnderpassMap({
     }
   }, [map, popupFeature]);
 
-  // Hide popup
-  useEffect(() => {
-    setShowPopup(false);
-    popupRef.current && popupRef.current.remove();
-    setActivePopupFeature(null);
-  }, [hashtag, tags, featureType]);
-
-  // Tags
-  useEffect(() => {
-    tagsRef.current = tags;
-    fetch();
-  }, [tags]);
-
-  // Filters: hashtag, status, featureType, dataFrom, dateTo
-  useEffect(() => {
-    hashtagRef.current = hashtag;
-    statusRef.current = status;
-    featureTypeRef.current = featureType;
-    dateFromRef.current = dateFrom;
-    dateToRef.current = dateTo;
-    fetch();
-  }, [hashtag, status, featureType, dateFrom, dateTo]);
-
-  // Realtime map update
+  // Realtime handler (fetch data every X seconds)
   useEffect(() => {
     if (realtime) {
-      realtimeIntervalRef.current = setInterval(fetch, 10000);
-    } else {
-      if (realtimeIntervalRef.current) {
-        clearInterval(realtimeIntervalRef.current);
-      }
+      const realtimeInterval = setInterval(() => {
+        setFetchSwitch(!fetchSwitch);
+      }, 1000);
+      return () => {
+        clearInterval(realtimeInterval);
+      };
     }
-  }, [realtime]);
+  }, [realtime, fetchSwitch]);
 
   return (
     <div

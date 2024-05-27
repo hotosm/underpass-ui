@@ -4,8 +4,9 @@ import {
   UnderpassMap,
   HOTTheme,
   UnderpassValidationStats,
+  UnderpassFeatureStats
 } from "@hotosm/underpass-ui";
-import { center, AOI, API_URL, AOI_GEOJSON, MAX_BOUNDS } from "./config";
+import { center, AOI, API_URL, AOI_GEOJSON } from "./config";
 import "./Demo.css";
 
 const config = {
@@ -29,7 +30,6 @@ function App() {
   const [realtimeMap, setRealtimeMap] = useState(false);
   const [status, setStatus] = useState(statusList.UNSQUARED);
   const [featureType, setFeatureType] = useState("polygons");
-  const [area, setArea] = useState(null);
   const tagsInputRef = useRef("");
   const hashtagInputRef = useRef("");
   const styleSelectRef = useRef();
@@ -78,13 +78,6 @@ function App() {
 
   const handleMapSourceSelect = (e) => {
     setMapSource(e.target.options[e.target.selectedIndex].value);
-  };
-
-  const handleMapMove = ({ bbox }) => {
-    setArea(bbox);
-  };
-  const handleMapLoad = ({ bbox }) => {
-    setArea(bbox);
   };
 
   return (
@@ -140,8 +133,6 @@ function App() {
             realtime={realtimeMap}
             theme={demoTheme}
             zoom={17}
-            onMove={handleMapMove}
-            onLoad={handleMapLoad}
             featureType={featureType}
             aoi={AOI_GEOJSON}
           />
@@ -156,15 +147,25 @@ function App() {
           }}
         >
           <div className="hui-border-b-2 hui-pb-5 hui-space-y-3">
-            <UnderpassValidationStats
-              tags={tags}
-              hashtag={hashtag}
-              config={config}
-              status={tags.startsWith("building") ? statusList.UNSQUARED : null}
-              featureType={featureType}
-              area={AOI}
-            />
-          </div>
+          { tags.startsWith("building") && (featureType === "polygons" || featureType === "all") ?
+              <UnderpassValidationStats
+                tags={tags}
+                hashtag={hashtag}
+                config={config}
+                status={tags.startsWith("building") ? statusList.UNSQUARED : null}
+                featureType={featureType}
+                area={AOI}
+              />
+            :
+              <UnderpassFeatureStats
+                tags={tags}
+                hashtag={hashtag}
+                config={config}
+                featureType={featureType}
+                area={AOI}
+              />
+          }
+      </div>
           <div className="hui-border-b-2 hui-py-5 hui-mb-4">
             <form className="hui-space-x-2">
               <input
@@ -260,7 +261,6 @@ function App() {
             area={AOI}
             tags={tags}
             hashtag={hashtag}
-            page={0}
             onSelect={(feature) => {
               setCoords([feature.lat, feature.lon]);
               const tags = JSON.stringify(feature.tags);

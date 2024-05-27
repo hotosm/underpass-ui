@@ -32,73 +32,125 @@ function UnderpassFeatureList({
   const [features, setFeatures] = useState([]);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-  const realtimeIntervalRef = useRef();
-  const loadedRef = useRef();
-  const pageRef = useRef(0);
+  const [fetchSwitch, setFetchSwitch] = useState(false);
+  const [page, setPage] = useState(0);
+  const featureIndexes = useRef({});
+  const [loaded, setLoaded] = useState(false);
+  const listDivRef = useRef(null);
+
   const api = API(config && config.API_URL);
   const endpoint = getEndpoint(featureType);
   const request = new RawValidationListRequest(params);
 
+  // Handle infinite list scroll
   const handleScroll = (e) => {
     const bottom =
-      e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+      e.target.clientHeight + e.target.scrollTop >= e.target.scrollHeight;
     if (bottom && hasMore && !loading) {
-      pageRef.current += 1;
-      fetch(pageRef.current);
+      setPage(page+1);
     }
   };
 
-  async function fetch(page) {
-    if (!loading) {
-      setLoading(true);
+  // Get data from the API
+  useEffect(() => {
+    async function fetch() {
+      request.page = page;
+      if (!loading) {
+        setLoading(true);
+        await api.rawValidation[endpoint](request,
+          {
+            onSuccess: (data) => {
+              if (page && features) {
+                  const newFeatures = [];
+                  data.forEach(feature => {
+                    if (!featureIndexes.current[feature.id]) {
+                      newFeatures.push(feature);
+                      featureIndexes.current[feature.id] = true;
+                    }
+                    setFeatures([...features, ...newFeatures]);
+                  })
+              } else {
+                setFeatures(data);
+                featureIndexes.current = {};
+                data.forEach(feature => {
+                  featureIndexes.current[feature.id] = true;
+                });
+              }
+              if (data && data.length > 0) {
+                setHasMore(true);
+                onUpdate && onUpdate(data[0]);
+                if (!loaded) {
+                  onFetchFirstTime && onFetchFirstTime(data[0]);
+                  setLoaded(true);
+                }
+              } else {
+                setHasMore(false);
+              }
+              setLoading(false);
+            },
+            onError: (error) => {
+              console.log(error);
+            },
+          },
+        );
+      }
+    }
+    fetch();
+  }, [page, fetchSwitch]);
+
+  // Get new data from API
+  useEffect(() => {
+    if (!realtime) { return; }
+    async function fetch() {
+      request.page = 0;
       await api.rawValidation[endpoint](request,
         {
           onSuccess: (data) => {
-            if (page && features) {
-              setFeatures(features.concat(data));
-            } else {
-              setFeatures(data);
-            }
-            if (data && data.length > 0) {
-              setHasMore(true);
-              onUpdate && onUpdate(data[0]);
-              if (loadedRef.current) {
-                onFetchFirstTime && onFetchFirstTime(data[0]);
-                loadedRef.current = false;
+            if (features) {
+              const newFeatures = [];
+              data.forEach(feature => {
+                if (!featureIndexes.current[feature.id]) {
+                  newFeatures.push(feature);
+                  featureIndexes.current[feature.id] = true;  
+                }
+              })
+              if (newFeatures.length > 0) {
+                setFeatures([...newFeatures, ...features]);
               }
-            } else {
-              setHasMore(false);
             }
-            setLoading(false);
-          },
-          onError: (error) => {
-            console.log(error);
-          },
-        },
-      );
+          }
+        }
+      )
     }
-  }
-
-  useEffect(() => {
-    pageRef.current = 0;
     fetch();
-  }, [params.area, params.tags, params.hashtag, params.dateFrom, params.dateTo, params.status, params.status, featureType]);
+  }, [realtime, fetchSwitch]);
 
+  // Reset page and scroll when params change
+  useEffect(() => {
+    setPage(0);
+    setFetchSwitch(!fetchSwitch);
+    listDivRef.current.scrollTo(0, 0);
+  }, [
+    params.tags, params.hashtag, params.status, featureType]);
+    
+  // Realtime handler (fetch data every X seconds)
   useEffect(() => {
     if (realtime) {
-      realtimeIntervalRef.current = setInterval(fetch, 10000);
-    } else {
-      if (realtimeIntervalRef.current) {
-        clearInterval(realtimeIntervalRef.current);
-      }
+      const realtimeInterval = setInterval(() => {
+        setFetchSwitch(!fetchSwitch);
+      }, 1000);
+      return () => {
+        clearInterval(realtimeInterval);
+      };
     }
-  }, [realtime]);
+  }, [realtime, fetchSwitch]);
 
   return (
     <div
-      style={{ "overflow-y": "scroll", ...style, "height": "100vh" }}
+      style={{ "overflow-y": "scroll", ...style, "height": "350px" }}
       className={className}
       onScroll={handleScroll}
+      ref={listDivRef}
     >
       {features &&
         features.map(
