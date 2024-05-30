@@ -20,6 +20,10 @@ export default function HOTTheme() {
       waysLine: {
         "line-width": 2,
       },
+      nodes: {
+        "circle-color": "#D63F40",
+        "circle-radius": 7,
+      },
     },
   };
 }

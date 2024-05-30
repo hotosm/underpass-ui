@@ -129,6 +129,7 @@ function UnderpassFeatureList({
   useEffect(() => {
     setPage(0);
     setFetchSwitch(!fetchSwitch);
+    setFeatures([]);
     listDivRef.current.scrollTo(0, 0);
   }, [
     params.tags, params.hashtag, params.status, featureType]);

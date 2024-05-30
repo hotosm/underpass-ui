@@ -26,85 +26,102 @@ export async function fetchService({
 
   await api.rawValidation[endpoint](request, {
     onSuccess: (data) => {
-      if (data.features) {
-        if (map.getSource("polygon")) {
-          map.getSource("polygon").setData({
+      if (!data.features) {
+        data.features = []
+      }
+      // Polygons
+      if (map.getSource("polygon")) {
+        map.getSource("polygon").setData({
+          ...data,
+          features: data.features.filter((x) => x.geometry.type == "Polygon"),
+        });
+      } else {
+        // Polygon source
+        map.addSource("polygon", {
+          type: "geojson",
+          data: {
             ...data,
-            features: data.features.filter((x) => x.geometry.type == "Polygon"),
-          });
-        } else {
-          map.addSource("polygon", {
-            type: "geojson",
-            data: {
-              ...data,
-              features: data.features.filter((x) => x.geometry.type == "Polygon"),
-            },
-          });
-          map.addLayer({
-            id: "waysFill",
-            type: "fill",
-            source: "polygon",
-            layout: {},
-            paint: theme.map.waysFill || {},
-          });
-          map.addLayer({
-            id: "waysLine",
-            type: "line",
-            source: "polygon",
-            layout: {},
-            paint: theme.map.waysLine || {},
-          });
-        }
+            features: data.features.filter(
+              (x) => x.geometry.type == "Polygon",
+            ),
+          },
+        });
 
-        if (map.getSource("linestring")) {
-          map.getSource("linestring").setData({
+        // Ways fill layer
+        map.addLayer({
+          id: "waysFill",
+          type: "fill",
+          source: "polygon",
+          layout: {},
+          paint: theme.map.waysFill || {},
+        });
+
+        // Ways stroke layer
+        map.addLayer({
+          id: "waysLine",
+          type: "line",
+          source: "polygon",
+          layout: {},
+          paint: theme.map.waysLine || {},
+        });
+      }
+
+      // Linestring
+      if (map.getSource("linestring")) {
+        map.getSource("linestring").setData({
+          ...data,
+          features: data.features.filter(
+            (x) => x.geometry.type == "LineString",
+          ),
+        });
+      } else {
+        // Linestring source
+        map.addSource("linestring", {
+          type: "geojson",
+          data: {
             ...data,
             features: data.features.filter(
               (x) => x.geometry.type == "LineString",
             ),
-          });
-        } else {
-          map.addSource("linestring", {
-            type: "geojson",
-            data: {
-              ...data,
-              features: data.features.filter(
-                (x) => x.geometry.type == "LineString",
-              ),
-            },
-          });
-          map.addLayer({
-            id: "waysLineString",
-            type: "line",
-            source: "linestring",
-            layout: {},
-            paint: theme.map.waysLine || {},
-          });
-        }
+          },
+        });
 
-        if (map.getSource("point")) {
-          map.getSource("point").setData({
+        // Linestring stroke layer
+        map.addLayer({
+          id: "waysLineString",
+          type: "line",
+          source: "linestring",
+          layout: {},
+          paint: theme.map.waysLine || {},
+        });
+      }
+
+      // Nodes
+      if (map.getSource("node")) {
+        map.getSource("node").setData({
+          ...data,
+          features: data.features.filter((x) => x.geometry.type == "Point"),
+        });
+      } else {
+        // Node source
+        map.addSource("node", {
+          type: "geojson",
+          data: {
             ...data,
             features: data.features.filter((x) => x.geometry.type == "Point"),
-          });
-        } else {
-          map.addSource("point", {
-            type: "geojson",
-            data: {
-              ...data,
-              features: data.features.filter((x) => x.geometry.type == "Point"),
-            },
-          });
-          map.addLayer({
-            id: "nodesFill",
-            type: "circle",
-            source: "point",
-            paint: theme.map.point || {
-              "circle-color": theme.colors.info,
-              "circle-radius": 7,
-            },
-          });
-        }
+          },
+        });
+
+        // Node circle layer
+        map.addLayer({
+          id: "nodes",
+          type: "circle",
+          source: "node",
+          paint: theme.map.nodes || {
+            "circle-color": "red",
+            "circle-radius": 7,
+          },
+        });
       }
       onSuccess();
     },
@@ -112,5 +129,4 @@ export async function fetchService({
       console.log(error);
     },
   });
-
 }
