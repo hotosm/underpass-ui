@@ -1,5 +1,5 @@
 import API from "../api";
-import { RawRequest, RawValidationRequest } from "../api/models";
+import { RawValidationRequest } from "../api/models";
 
 const getEndpoint = (featureType) => {
   switch (featureType) {
@@ -26,19 +26,28 @@ export async function fetchService({
 
   await api.rawValidation[endpoint](request, {
     onSuccess: (data) => {
+      if (!data.features) {
+        data.features = []
+      }
+      // Polygons
       if (map.getSource("polygon")) {
         map.getSource("polygon").setData({
           ...data,
           features: data.features.filter((x) => x.geometry.type == "Polygon"),
         });
       } else {
+        // Polygon source
         map.addSource("polygon", {
           type: "geojson",
           data: {
             ...data,
-            features: data.features.filter((x) => x.geometry.type == "Polygon"),
+            features: data.features.filter(
+              (x) => x.geometry.type == "Polygon",
+            ),
           },
         });
+
+        // Ways fill layer
         map.addLayer({
           id: "waysFill",
           type: "fill",
@@ -46,6 +55,8 @@ export async function fetchService({
           layout: {},
           paint: theme.map.waysFill || {},
         });
+
+        // Ways stroke layer
         map.addLayer({
           id: "waysLine",
           type: "line",
@@ -55,6 +66,7 @@ export async function fetchService({
         });
       }
 
+      // Linestring
       if (map.getSource("linestring")) {
         map.getSource("linestring").setData({
           ...data,
@@ -63,6 +75,7 @@ export async function fetchService({
           ),
         });
       } else {
+        // Linestring source
         map.addSource("linestring", {
           type: "geojson",
           data: {
@@ -72,6 +85,8 @@ export async function fetchService({
             ),
           },
         });
+
+        // Linestring stroke layer
         map.addLayer({
           id: "waysLineString",
           type: "line",
@@ -81,29 +96,33 @@ export async function fetchService({
         });
       }
 
-      if (map.getSource("point")) {
-        map.getSource("point").setData({
+      // Nodes
+      if (map.getSource("node")) {
+        map.getSource("node").setData({
           ...data,
           features: data.features.filter((x) => x.geometry.type == "Point"),
         });
       } else {
-        map.addSource("point", {
+        // Node source
+        map.addSource("node", {
           type: "geojson",
           data: {
             ...data,
             features: data.features.filter((x) => x.geometry.type == "Point"),
           },
         });
+
+        // Node circle layer
         map.addLayer({
-          id: "nodesFill",
-          type: "symbol",
-          source: "point",
-          layout: {
-            "icon-image": "custom-marker",
+          id: "nodes",
+          type: "circle",
+          source: "node",
+          paint: theme.map.nodes || {
+            "circle-color": "red",
+            "circle-radius": 7,
           },
         });
       }
-
       onSuccess();
     },
     onError: (error) => {

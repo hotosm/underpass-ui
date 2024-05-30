@@ -4,8 +4,9 @@ import {
   UnderpassMap,
   HOTTheme,
   UnderpassValidationStats,
+  UnderpassFeatureStats
 } from "@hotosm/underpass-ui";
-import { center, AOI, API_URL } from "./config";
+import { center, AOI, API_URL, AOI_GEOJSON } from "./config";
 import "./Demo.css";
 
 const config = {
@@ -28,8 +29,7 @@ function App() {
   const [realtimeList, setRealtimeList] = useState(false);
   const [realtimeMap, setRealtimeMap] = useState(false);
   const [status, setStatus] = useState(statusList.UNSQUARED);
-  const [featureType, setFeatureType] = useState("polygon");
-  const [area, setArea] = useState(null);
+  const [featureType, setFeatureType] = useState("polygons");
   const tagsInputRef = useRef("");
   const hashtagInputRef = useRef("");
   const styleSelectRef = useRef();
@@ -78,13 +78,6 @@ function App() {
 
   const handleMapSourceSelect = (e) => {
     setMapSource(e.target.options[e.target.selectedIndex].value);
-  };
-
-  const handleMapMove = ({ bbox }) => {
-    setArea(bbox);
-  };
-  const handleMapLoad = ({ bbox }) => {
-    setArea(bbox);
   };
 
   return (
@@ -140,9 +133,8 @@ function App() {
             realtime={realtimeMap}
             theme={demoTheme}
             zoom={17}
-            onMove={handleMapMove}
-            onLoad={handleMapLoad}
             featureType={featureType}
+            aoi={AOI_GEOJSON}
           />
         </div>
         <div
@@ -155,15 +147,25 @@ function App() {
           }}
         >
           <div className="hui-border-b-2 hui-pb-5 hui-space-y-3">
-            <UnderpassValidationStats
-              tags={tags}
-              hashtag={hashtag}
-              config={config}
-              status={tags.startsWith("building") ? statusList.UNSQUARED : null}
-              featureType={featureType}
-              area={AOI}
-            />
-          </div>
+          { tags.startsWith("building") && (featureType === "polygons" || featureType === "all") ?
+              <UnderpassValidationStats
+                tags={tags}
+                hashtag={hashtag}
+                config={config}
+                status={tags.startsWith("building") ? statusList.UNSQUARED : null}
+                featureType={featureType}
+                area={AOI}
+              />
+            :
+              <UnderpassFeatureStats
+                tags={tags}
+                hashtag={hashtag}
+                config={config}
+                featureType={featureType}
+                area={AOI}
+              />
+          }
+      </div>
           <div className="hui-border-b-2 hui-py-5 hui-mb-4">
             <form className="hui-space-x-2">
               <input
@@ -183,7 +185,7 @@ function App() {
               />
               <label target="liveMapCheckbox">Live map</label>
             </form>
-            {/* { tags.startsWith("building") ? */}
+            { tags.startsWith("building") ?
               <form className="hui-space-x-2 hui-py-4">
                 <input
                   checked={status === statusList.ALL}
@@ -205,18 +207,8 @@ function App() {
                   type="radio"
                 />
                 <label htmlFor="geospatialCheckbox">Un-squared</label>
-                {/* <input
-                  checked={status === statusList.BADVALUE}
-                  onChange={() => {
-                    setStatus(statusList.BADVALUE);
-                  }}
-                  name="semanticCheckbox"
-                  id="semanticCheckbox"
-                  type="radio"
-                />
-                <label htmlFor="semanticCheckbox">Semantic</label> */}
               </form>
-            {/* : <br />} */}
+            : <br />}
             <form className="hui-space-x-2">
               <input
                 checked={featureType === "all"}
@@ -229,9 +221,9 @@ function App() {
               />
               <label htmlFor="featureTypeAllCheckbox">All</label>
               <input
-                checked={featureType === "polygon"}
+                checked={featureType === "polygons"}
                 onChange={() => {
-                  setFeatureType("polygon");
+                  setFeatureType("polygons");
                 }}
                 name="featureTypePolygonCheckbox"
                 id="featureTypePolygonCheckbox"
@@ -239,9 +231,9 @@ function App() {
               />
               <label htmlFor="featureTypePolygonCheckbox">Polygon</label>
               <input
-                checked={featureType === "line"}
+                checked={featureType === "lines"}
                 onChange={() => {
-                  setFeatureType("line");
+                  setFeatureType("lines");
                 }}
                 name="featureTypeLineCheckbox"
                 id="featureTypeLineCheckbox"
@@ -249,9 +241,9 @@ function App() {
               />
               <label htmlFor="featureTypeLineCheckbox">Line</label>
               <input
-                checked={featureType === "node"}
+                checked={featureType === "nodes"}
                 onChange={() => {
-                  setFeatureType("node");
+                  setFeatureType("nodes");
                 }}
                 name="featureTypeNodeCheckbox"
                 id="featureTypeNodeCheckbox"
@@ -269,7 +261,6 @@ function App() {
             area={AOI}
             tags={tags}
             hashtag={hashtag}
-            page={0}
             onSelect={(feature) => {
               setCoords([feature.lat, feature.lon]);
               const tags = JSON.stringify(feature.tags);

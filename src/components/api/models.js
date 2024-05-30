@@ -29,7 +29,7 @@ class BaseListRequest extends BaseRequest {
   constructor(data) {
     super(data);
     this.orderBy = data.orderBy;
-    this.page = data.page;
+    this.page = data.page || 0;
   }
 
   getObject() {
@@ -59,7 +59,7 @@ export class RawValidationListRequest extends BaseRawValidationRequest {
   constructor(data) {
     super(data);
     this.orderBy = data.orderBy;
-    this.page = data.page;
+    this.page = data.page || 0;
   }
 
   getObject() {

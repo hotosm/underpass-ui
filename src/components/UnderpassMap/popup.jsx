@@ -20,7 +20,7 @@ export default function Popup({
         closeOnClick,
         closeOnMove,
         closeButton,
-        className: "min-w-fit",
+        className: "hui-min-w-fit",
       });
     }
     popupRef.current

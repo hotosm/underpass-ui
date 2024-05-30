@@ -15,7 +15,7 @@ export default (
       config={config}
       zoom={17}
       theme={{}}
-      featureType="polygon"
+      featureType="polygons"
     />
   </div>
 );
