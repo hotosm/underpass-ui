@@ -15,6 +15,7 @@ import { fetchService } from "./layerServices";
     const theme = { ...hottheme, ...propsTheme };
 
     theme.map.waysFill = {
+      ...theme.map.waysFill,
       "fill-color": highlightDataQualityIssues
         ? [
             "match",
@@ -25,10 +26,10 @@ import { fetchService } from "./layerServices";
           ]
         : theme.colors.info,
       "fill-opacity": ["match", ["get", "type"], "LineString", 0, 0.5],
-      ...theme.map.waysFill,
     };
 
     theme.map.waysLine = {
+      ...theme.map.waysLine,
       "line-color": highlightDataQualityIssues
         ? [
             "match",
@@ -38,7 +39,6 @@ import { fetchService } from "./layerServices";
             theme.colors.info,
           ]
         : theme.colors.info,
-      ...theme.map.waysLine,
     };
 
     theme.map.nodes = {
@@ -84,7 +84,7 @@ export default function UnderpassMap({
   const [theme, setTheme] = useState(null);
 
   useEffect(() => {
-    setTheme(getTheme)
+    setTheme(getTheme(propsTheme, highlightDataQualityIssues));
   }, []);
 
   // Fetch data from the Underpass API

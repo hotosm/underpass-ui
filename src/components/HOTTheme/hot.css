@@ -1,4 +1,5 @@
 @tailwind components;
+@tailwind utilities;
 
 :root {
   --hot-red-900: #b9302d;
@@ -120,11 +121,6 @@
   --hot-success-contrastText: var(--hot-white);
   --hot-success-rgb: var(--hot-green-rgb);
 }
-
-body {
-  margin: 0;
-}
-
 
 .maplibregl-popup-close-button {
   font-size: 1.5rem;

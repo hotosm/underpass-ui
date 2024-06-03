@@ -27,7 +27,7 @@ export async function fetchService({
   await api.rawValidation[endpoint](request, {
     onSuccess: (data) => {
       if (!data.features) {
-        data.features = []
+        data.features = [];
       }
       // Polygons
       if (map.getSource("polygon")) {
@@ -41,9 +41,7 @@ export async function fetchService({
           type: "geojson",
           data: {
             ...data,
-            features: data.features.filter(
-              (x) => x.geometry.type == "Polygon",
-            ),
+            features: data.features.filter((x) => x.geometry.type == "Polygon"),
           },
         });
 
