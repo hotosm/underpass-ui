@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import maplibregl from "maplibre-gl";
 import { renderToString } from "react-dom/server";
 
@@ -20,7 +20,7 @@ export default function Popup({
         closeOnClick,
         closeOnMove,
         closeButton,
-        className: "hui-min-w-fit",
+        className: "hui-popup",
       });
     }
     popupRef.current

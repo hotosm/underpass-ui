@@ -1,5 +1,4 @@
 import "./components/HOTTheme/hot.css";
-import "./components/HOTTheme/maplibre.css";
 
 import UnderpassMapComponent from "./components/UnderpassMap";
 import FeatureDetailCardComponent from "./components/FeatureDetailCard";

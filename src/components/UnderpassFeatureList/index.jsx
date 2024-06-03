@@ -149,7 +149,7 @@ function UnderpassFeatureList({
   return (
     <div
       style={{ "overflow-y": "scroll", ...style, "height": "350px" }}
-      className={className}
+      className={className || "hui-theme"}
       onScroll={handleScroll}
       ref={listDivRef}
     >
@@ -159,7 +159,7 @@ function UnderpassFeatureList({
             feature && (
               <div
                 key={feature && feature.id}
-                className="hui-border-b hui-pb-5"
+                className="hui-list-item"
                 onClick={() => {
                   onSelect && onSelect(feature);
                 }}

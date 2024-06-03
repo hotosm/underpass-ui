@@ -57,12 +57,12 @@ function UnderpassValidationStats({
 
   return (
     result && (
-      <div>
+      <div className="hui-theme">
         <div className="hui-b-2">
           <h3 className="hui-text-2xl hui-font-bold hui-text-primary">
             {result && result.total}
           </h3>
-          <p className="font-bold">
+          <p className="hui-font-bold">
             {params.tags} <span className="hui-font-normal">{label || "found"}</span>
           </p>
         </div>

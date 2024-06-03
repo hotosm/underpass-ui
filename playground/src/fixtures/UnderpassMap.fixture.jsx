@@ -7,7 +7,7 @@ const config = {
 };
 
 export default (
-  <div style={{ height: "100vh" }}>
+  <div className="hui-theme" style={{ height: "100vh" }}>
     <UnderpassMap
       center={center}
       tags="building=yes"

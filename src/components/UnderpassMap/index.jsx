@@ -269,35 +269,35 @@ export default function UnderpassMap({
   }, [realtime, fetchSwitch]);
 
   return (
-    <div
-      className={mapClassName || "underpassMapWrap"}
-      style={{ position: "relative" }}
-    >
-      <div ref={mapContainer} />
-      {loading && (
-        <span
-          className="hui-loading-label hui-absolute hui-text-sm"
-          style={{
-            bottom: "20px",
-            right: "20px",
-          }}
-        >
-          Loading ...
-        </span>
-      )}
-      {map.current && map.current.getZoom() < minZoom && (
-        <span
-          className="hui-information-label hui-absolut hui-text-xl"
-          style={{
-            left: "50%",
-            top: "50%",
-            transform: "translate(-50%,-50%)",
-          }}
-        >
-          Zoom in to see data
-        </span>
-      )}
-      {map.current && (
+    <div className="hui-theme">
+      <div
+        className={mapClassName || "underpassMapWrap"}
+        style={{ position: "relative" }}
+      >
+        <div ref={mapContainer} />
+        {loading && (
+          <span
+            className="hui-loading-label hui-absolute hui-text-sm"
+            style={{
+              bottom: "20px",
+              right: "20px",
+            }}
+          >
+            Loading ...
+          </span>
+        )}
+        {map.current && map.current.getZoom() < minZoom && (
+          <span
+            className="hui-information-label hui-absolut hui-text-xl"
+            style={{
+              left: "50%",
+              top: "50%",
+              transform: "translate(-50%,-50%)",
+            }}
+          >
+            Zoom in to see data
+          </span>
+        )}
         <Popup
           longitude={center[0]}
           latitude={center[1]}
@@ -312,7 +312,7 @@ export default function UnderpassMap({
             />
           )}
         </Popup>
-      )}
+      </div>
     </div>
   );
 }

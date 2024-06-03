@@ -50,7 +50,7 @@ function UnderpassFeatureStats({
   }, [params.area, params.tags, params.hashtag, params.dateFrom, params.dateTo, featureType]);
 
   return (
-    <div>
+    <div className="hui-theme">
       <h3 className="hui-text-2xl hui-font-bold hui-text-primary">
         {result && result.count}
       </h3>

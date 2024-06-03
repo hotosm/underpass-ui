@@ -81,7 +81,7 @@ function App() {
   };
 
   return (
-    <div>
+    <div className="hui-theme">
       <div className="hui-flex">
         <div style={{ flex: 2 }}>
           <div className="top">
@@ -166,7 +166,7 @@ function App() {
               />
           }
       </div>
-          <div className="hui-border-b-2 hui-py-5 hui-mb-4">
+          <div className="demo-options">
             <form className="hui-space-x-2">
               <input
                 onChange={() => {

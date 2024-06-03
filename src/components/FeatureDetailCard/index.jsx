@@ -17,6 +17,7 @@ function FeatureDetailCard({ feature }) {
             rel="noreferrer"
             target="_blank"
             href={"https://osm.org/" + feature.type + "/" + feature.id}
+            className="hui-no-decoration"
           >
             {feature.id}
           </a>

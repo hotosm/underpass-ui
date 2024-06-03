@@ -20,17 +20,18 @@ export default function PopupContent({ feature, highlightDataQualityIssues }) {
   }
 
   return (
-    <div className="hui-space-y-3 hui-text-lg hui-truncate">
+    <div className="hui-space-y-3 hui-text-lg hui-truncate hui-popup-content">
       <table className="hui-table-auto hui-w-full">
         <tbody>
           <tr>
             <td colSpan="2" className="hui-t-1 hui-pb-1">
               <b>{type}</b>&nbsp;
               <a
+                className="hui-no-decoration"
                 target="blank"
                 href={`https://www.openstreetmap.org/${type}/${feature.id}`}
               >
-                {feature.id}
+               {feature.id}
               </a>
               <br />
               <abbr title={feature.properties.created_at}>
