@@ -34,9 +34,9 @@ export default function PopupContent({ feature, highlightDataQualityIssues }) {
                {feature.id}
               </a>
               <br />
-              <abbr title={feature.properties.created_at}>
+              <abbr title={feature.properties.closed_at}>
                 <TimeAgo
-                  date={feature.properties.created_at}
+                  date={feature.properties.closed_at}
                   formatter={formatter}
                 />
               </abbr>

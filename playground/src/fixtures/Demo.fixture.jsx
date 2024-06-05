@@ -306,7 +306,7 @@ function App() {
                 realtime={realtimeList}
                 config={config}
                 status={status}
-                // orderBy="created_at"
+                // orderBy="closed_at"
                 featureType={featureType}
                 onFetchFirstTime={(mostRecentFeature) => {
                   if (mostRecentFeature) {

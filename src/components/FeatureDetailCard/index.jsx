@@ -22,13 +22,13 @@ function FeatureDetailCard({ feature }) {
             {feature.id}
           </a>
         </strong>
-        {feature.created_at && (
+        {feature.closed_at && (
           <abbr
             className="hui-text-right"
             style={{ flex: 2 }}
-            title={feature.created_at}
+            title={feature.closed_at}
           >
-            <TimeAgo date={feature.created_at} formatter={formatter} />
+            <TimeAgo date={feature.closed_at} formatter={formatter} />
           </abbr>
         )}
       </div>
