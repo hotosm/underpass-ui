@@ -27,6 +27,7 @@ function UnderpassFeatureList({
   config,
   style,
   className,
+  aoi,
   ...params
 }) {
   const [features, setFeatures] = useState([]);
@@ -37,10 +38,10 @@ function UnderpassFeatureList({
   const featureIndexes = useRef({});
   const [loaded, setLoaded] = useState(false);
   const listDivRef = useRef(null);
+  const request = new RawValidationListRequest(params);
 
   const api = API(config && config.API_URL);
   const endpoint = getEndpoint(featureType);
-  const request = new RawValidationListRequest(params);
 
   // Handle infinite list scroll
   const handleScroll = (e) => {
@@ -57,6 +58,8 @@ function UnderpassFeatureList({
       request.page = page;
       if (!loading) {
         setLoading(true);
+        const request = new RawValidationListRequest(params);
+        console.log(params);
         await api.rawValidation[endpoint](request,
           {
             onSuccess: (data) => {
@@ -132,7 +135,7 @@ function UnderpassFeatureList({
     setFeatures([]);
     listDivRef.current.scrollTo(0, 0);
   }, [
-    params.tags, params.hashtag, params.status, featureType]);
+    params.tags, params.hashtag, params.status, params.area, featureType]);
     
   // Realtime handler (fetch data every X seconds)
   useEffect(() => {
@@ -148,7 +151,7 @@ function UnderpassFeatureList({
 
   return (
     <div
-      style={{ "overflow-y": "scroll", ...style, "height": "350px" }}
+      style={{ overflowY: "scroll", ...style, "height": "350px" }}
       className={className || "hui-theme"}
       onScroll={handleScroll}
       ref={listDivRef}

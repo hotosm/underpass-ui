@@ -1,0 +1,70 @@
+/* @import '@hotosm/underpass-ui/dist/index.css'; */
+
+body {
+  overflow: hidden;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.maplibregl-map {
+  height: 100vh;
+}
+
+.top {
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  z-index: 999;
+}
+
+.demo-options {
+  border-top: 2px solid var(--hot-gray-100);
+  border-bottom: 2px solid var(--hot-gray-100);
+  padding-top: .5rem;
+  margin-top: .5rem;
+  padding-bottom: .5rem;
+  margin-bottom: 1rem;
+}
+
+.hui-input-text {
+  margin-top: 10px;
+}
+
+.hui-theme h3.title-text {
+  line-height: 0;
+  margin-bottom: 0;
+}
+
+.hui-theme h3 {
+  font-size: 2rem;
+  margin-bottom: 0;
+}
+
+.hui-theme p {
+  line-height: 1.4rem;
+  margin-bottom: .4rem;
+}
+
+.hui-theme p.fileUploadDropAreaTitle {
+ margin-bottom: 1.5rem;
+}
+
+.labelDisabled {
+  color: var(--hot-gray-100);
+}
+
+.fileName {
+  font-size: 1rem;
+  line-height: 1rem;
+  margin: 0;
+  margin-left: 10px;
+}
+
+.fileOptions {
+  display: inline-flex;
+  align-items: center;
+}

@@ -103,7 +103,6 @@ export default function UnderpassMap({
         map: map.current,
         theme: theme,
         config: config,
-        aoi: aoi,
         onSuccess: () => {
           setLoading(false);
         },
